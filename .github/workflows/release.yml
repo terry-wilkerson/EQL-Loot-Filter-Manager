@@ -1,0 +1,73 @@
+name: publish
+
+# Build and publish a (draft) GitHub Release whenever a version tag is pushed,
+# e.g.  git tag app-v0.1.0 && git push origin app-v0.1.0
+# Can also be run manually from the Actions tab.
+on:
+  push:
+    tags:
+      - "app-v*"
+  workflow_dispatch:
+
+jobs:
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: "macos-latest" # Apple Silicon (M1 and above)
+            args: "--target aarch64-apple-darwin"
+          - platform: "macos-latest" # Intel macs
+            args: "--target x86_64-apple-darwin"
+          - platform: "ubuntu-22.04" # Linux x64
+            args: ""
+          - platform: "ubuntu-22.04-arm" # Linux Arm64 (public repos only)
+            args: ""
+          - platform: "windows-latest" # Windows x64
+            args: ""
+
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          lfs: true # pull the real .sqlite DB and icon sheets, not LFS pointers
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04' || matrix.platform == 'ubuntu-22.04-arm'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf xdg-utils
+
+      - name: setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: "npm"
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          # These targets are only used on the macOS runners.
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: "./src-tauri -> target"
+
+      - name: install frontend dependencies
+        run: npm ci
+
+      - uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # The action replaces __VERSION__ with the version in tauri.conf.json.
+          tagName: app-v__VERSION__
+          releaseName: "EQL Loot Filter Manager v__VERSION__"
+          releaseBody: "See the assets below to download and install this version."
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}

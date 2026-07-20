@@ -1,2 +1,36 @@
+# Normalize line endings: store text as LF in the repo and check out as LF on
+# all platforms. This keeps diffs clean across Windows/macOS/Linux and CI.
+* text=auto eol=lf
+
+# Explicit text types (documentation for humans; behavior matches the rule above)
+*.rs    text
+*.ts    text
+*.tsx   text
+*.js    text
+*.jsx   text
+*.json  text
+*.html  text
+*.css   text
+*.md    text
+*.toml  text
+*.yml   text
+*.yaml  text
+*.svg   text
+# Item catalog database is stored via Git LFS (see README).
 *.sqlite filter=lfs diff=lfs merge=lfs -text
+# Binary assets — Git must never munge line endings or try to diff these.
+*.png    binary
+*.ico    binary
+*.icns   binary
+*.dll    binary
+*.lib    binary
+*.woff   binary
+*.woff2  binary
+*.ttf    binary
+# Icon sprite sheets are large and numerous — store via Git LFS. Scoped to
+# public/icons so the small app icons in src-tauri/icons stay in regular Git.
+# (This line comes after *.png binary so it wins for these paths.)
 public/icons/*.png filter=lfs diff=lfs merge=lfs -text
+# Generated lockfiles: collapse in diffs and exclude from language stats.
+Cargo.lock        linguist-generated=true
+package-lock.json linguist-generated=true
