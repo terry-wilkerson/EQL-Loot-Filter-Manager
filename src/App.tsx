@@ -196,8 +196,10 @@ export default function App() {
     if (!formatted) return;
     const newPath = `${uiDirectory}/${formatted}`;
 
-    // Saving under the current name is just a normal overwrite of this file.
-    if (formatted.toLowerCase() === baseName(activeFilePath).toLowerCase()) {
+    // Saving under the current name is just a normal overwrite of this file, so
+    // skip the overwrite prompt. Compare exactly: on case-sensitive filesystems
+    // (Linux) LF_Zek.ini and LF_zek.ini really are different files.
+    if (formatted === baseName(activeFilePath)) {
       await performSaveAs(newPath);
       return;
     }
