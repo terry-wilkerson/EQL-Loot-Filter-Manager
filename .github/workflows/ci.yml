@@ -8,6 +8,32 @@ on:
     branches: [main]
 
 jobs:
+  # Fail fast if a file that should live in Git LFS (the sqlite catalog or an
+  # icon sprite sheet) was committed as a raw blob instead of an LFS pointer.
+  lfs-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7 # default (lfs: false) is fine — we only read pointers
+      - name: verify LFS-tracked assets are not committed raw
+        run: |
+          set -e
+          mapfile -t tracked < <(git ls-files 'public/icons/*.png' '*.sqlite')
+          mapfile -t lfs < <(git lfs ls-files -n)
+          violations=0
+          for f in "${tracked[@]}"; do
+            [ -z "$f" ] && continue
+            if ! printf '%s\n' "${lfs[@]}" | grep -qxF -- "$f"; then
+              echo "::error file=$f::$f is committed as a raw blob but must be stored via Git LFS"
+              violations=1
+            fi
+          done
+          if [ "$violations" -ne 0 ]; then
+            echo "Assets above bypassed Git LFS. Fix with:"
+            echo "  git lfs migrate import --include=\"*.sqlite,public/icons/*.png\""
+            exit 1
+          fi
+          echo "OK: all .sqlite and public/icons PNG assets are stored via Git LFS."
+
   frontend:
     runs-on: ubuntu-latest
     steps:

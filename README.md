@@ -116,6 +116,8 @@ git clone <repo-url>        # LFS files are fetched automatically
 ```
 
 The release workflow checks out with `lfs: true` so builds get the real bytes.
+CI also runs an `lfs-guard` job that fails if a `.sqlite` file or an icon PNG is
+ever committed as a raw blob instead of an LFS pointer.
 
 ## Continuous integration & releases
 
