@@ -3,6 +3,11 @@
 
 import type { LootItem } from "./types";
 
+// Extract just the file name from a path, handling both / and \ separators.
+export function baseName(path: string): string {
+  return path.split(/[\\/]/).pop() ?? "";
+}
+
 // Enforce the LF_{Name}_{Server}.ini naming convention on a user-typed name.
 export function formatFilterFileName(raw: string): string {
   let name = raw.trim();

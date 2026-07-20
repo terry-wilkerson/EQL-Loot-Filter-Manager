@@ -57,56 +57,96 @@ struct AppState {
     settings_path: PathBuf,
 }
 
-/// Validate that `file_path` refers to a `LF_*.ini` file living directly inside
-/// the currently selected UI directory, and return the resolved path.
-///
-/// This is the security boundary: without it, the webview could ask the backend
-/// to read or overwrite arbitrary files anywhere on disk. `require_existing`
-/// distinguishes reads/overwrites (file must already exist) from creation.
-fn resolve_in_ui_dir(
-    state: &AppState,
-    file_path: &str,
-    require_existing: bool,
-) -> Result<PathBuf, String> {
-    let root = state
+/// Extract and validate just the file name from whatever path string the
+/// frontend sent. Splitting on both separators (rather than relying on
+/// `Path::file_name`) is deliberate: the confined root is a canonicalized path,
+/// which on Windows carries the `\\?\` verbatim prefix where `/` is NOT treated
+/// as a separator — so a frontend-built `root/name` path would otherwise yield a
+/// bogus "file name". Rejecting `..` plus the fact that the result contains no
+/// separator means it can't traverse out of the root once joined.
+fn sanitized_filter_file_name(file_path: &str) -> Result<String, String> {
+    let name = file_path
+        .rsplit(|c| c == '/' || c == '\\')
+        .next()
+        .unwrap_or("");
+    if name.is_empty()
+        || name.contains("..")
+        || !(name.starts_with("LF_") && name.to_lowercase().ends_with(".ini"))
+    {
+        return Err("File name must match LF_*.ini".to_string());
+    }
+    Ok(name.to_string())
+}
+
+/// The confined root directory recorded by `scan_ui_directory`.
+fn ui_root(state: &AppState) -> Result<PathBuf, String> {
+    state
         .ui_dir
         .lock()
         .map_err(|_| "Failed to lock UI directory state".to_string())?
         .clone()
-        .ok_or_else(|| "No UI directory selected".to_string())?;
-    let root = root
-        .canonicalize()
-        .map_err(|e| format!("Invalid UI directory: {e}"))?;
+        .ok_or_else(|| "No UI directory selected".to_string())
+}
 
-    let candidate = PathBuf::from(file_path);
-
-    let file_name = candidate
-        .file_name()
-        .and_then(|n| n.to_str())
-        .ok_or_else(|| "Invalid file path".to_string())?
-        .to_string();
-    if !(file_name.starts_with("LF_") && file_name.to_lowercase().ends_with(".ini")) {
-        return Err("File name must match LF_*.ini".to_string());
-    }
-
-    // Resolve the parent directory (which must already exist) and confirm it is
-    // exactly the selected UI directory. Canonicalizing both sides defeats
-    // "..", symlinks, and mixed separators.
-    let parent = candidate
-        .parent()
-        .filter(|p| !p.as_os_str().is_empty())
-        .ok_or_else(|| "Path must include a directory".to_string())?
-        .canonicalize()
-        .map_err(|e| format!("Invalid target directory: {e}"))?;
-    if parent != root {
-        return Err("Path is outside the selected directory".to_string());
-    }
-
-    let resolved = parent.join(&file_name);
+/// Resolve `file_path` to a `LF_*.ini` file inside `root`. Only the file name
+/// from `file_path` is used; the directory is always `root`.
+///
+/// This is the security boundary: the resolved path is always inside `root`, so
+/// the webview cannot reach any file outside the selected directory.
+/// `require_existing` distinguishes reads/overwrites from creation.
+fn resolve_in_root(
+    root: &Path,
+    file_path: &str,
+    require_existing: bool,
+) -> Result<PathBuf, String> {
+    let file_name = sanitized_filter_file_name(file_path)?;
+    let resolved = root.join(&file_name);
     if require_existing && !resolved.exists() {
         return Err("File does not exist".to_string());
     }
     Ok(resolved)
+}
+
+/// Create an empty filter file inside `root`. Errors if it already exists.
+fn create_file_in(root: &Path, file_path: &str) -> Result<(), String> {
+    let path = resolve_in_root(root, file_path, false)?;
+    if path.exists() {
+        return Err("File already exists".into());
+    }
+    fs::write(path, "[Filters]\n").map_err(|e| e.to_string())
+}
+
+/// Read and parse a filter file's items.
+fn load_file_in(root: &Path, file_path: &str) -> Result<Vec<LootItem>, String> {
+    let path = resolve_in_root(root, file_path, true)?;
+    let content = fs::read_to_string(&path).map_err(|e| e.to_string())?;
+    Ok(content.lines().filter_map(parse_filter_line).collect())
+}
+
+/// Validate every item, back up an existing file, then write the new contents.
+fn save_file_in(root: &Path, file_path: &str, items: &[LootItem]) -> Result<(), String> {
+    let path = resolve_in_root(root, file_path, false)?;
+
+    // Validate before writing anything, so a bad item can't leave a half-written
+    // file. The '^' delimiter and newlines would corrupt the format.
+    for item in items {
+        validate_item(item)?;
+    }
+
+    // Back up the existing file before overwriting, then prune old backups.
+    if path.exists() {
+        let timestamp = Local::now().format("%Y%m%d_%H%M%S");
+        let backup = format!("{}.bak_{}", path.to_string_lossy(), timestamp);
+        let _ = fs::copy(&path, &backup);
+        prune_backups(&path);
+    }
+
+    fs::write(&path, serialize_items(items)).map_err(|e| e.to_string())
+}
+
+/// Whether a filter file exists inside `root`.
+fn file_exists_in(root: &Path, file_path: &str) -> Result<bool, String> {
+    Ok(resolve_in_root(root, file_path, false)?.exists())
 }
 
 #[tauri::command]
@@ -205,11 +245,7 @@ fn scan_ui_directory(state: State<AppState>, dir_path: String) -> Result<ScanRes
 
 #[tauri::command]
 fn create_advloot_file(state: State<AppState>, file_path: String) -> Result<(), String> {
-    let path = resolve_in_ui_dir(&state, &file_path, false)?;
-    if path.exists() {
-        return Err("File already exists".into());
-    }
-    fs::write(path, "[Filters]\n").map_err(|e| e.to_string())
+    create_file_in(&ui_root(&state)?, &file_path)
 }
 
 /// Parse one caret-delimited filter line into a LootItem. Returns None for
@@ -265,9 +301,7 @@ fn validate_item(item: &LootItem) -> Result<(), String> {
 
 #[tauri::command]
 fn load_advloot_file(state: State<AppState>, file_path: String) -> Result<Vec<LootItem>, String> {
-    let path = resolve_in_ui_dir(&state, &file_path, true)?;
-    let content = fs::read_to_string(&path).map_err(|e| e.to_string())?;
-    Ok(content.lines().filter_map(parse_filter_line).collect())
+    load_file_in(&ui_root(&state)?, &file_path)
 }
 
 #[tauri::command]
@@ -276,23 +310,13 @@ fn save_advloot_file(
     file_path: String,
     items: Vec<LootItem>,
 ) -> Result<(), String> {
-    let path = resolve_in_ui_dir(&state, &file_path, false)?;
+    save_file_in(&ui_root(&state)?, &file_path, &items)
+}
 
-    // Validate every record before writing anything, so a bad item can't leave a
-    // half-written file. The '^' delimiter and newlines would corrupt the format.
-    for item in &items {
-        validate_item(item)?;
-    }
-
-    // Back up the existing file before overwriting, then prune old backups.
-    if path.exists() {
-        let timestamp = Local::now().format("%Y%m%d_%H%M%S");
-        let backup = format!("{}.bak_{}", path.to_string_lossy(), timestamp);
-        let _ = fs::copy(&path, &backup);
-        prune_backups(&path);
-    }
-
-    fs::write(&path, serialize_items(&items)).map_err(|e| e.to_string())
+#[tauri::command]
+fn advloot_file_exists(state: State<AppState>, file_path: String) -> Result<bool, String> {
+    // Used by "Save As" to warn before overwriting an existing filter.
+    file_exists_in(&ui_root(&state)?, &file_path)
 }
 
 #[tauri::command]
@@ -379,6 +403,7 @@ pub fn run() {
             create_advloot_file,
             load_advloot_file,
             save_advloot_file,
+            advloot_file_exists,
             search_eq_items,
             load_settings,
             save_settings
@@ -390,6 +415,8 @@ pub fn run() {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::fs;
+    use tempfile::tempdir;
 
     fn item(item_id: u32, filter_id: u8, icon_id: u32, name: &str) -> LootItem {
         LootItem {
@@ -447,5 +474,152 @@ mod tests {
         let s = AppSettings::default();
         assert!(s.dark_mode);
         assert!(s.ui_directory.is_none());
+    }
+
+    #[test]
+    fn extracts_file_name_from_any_separator_style() {
+        assert_eq!(
+            sanitized_filter_file_name("LF_Zek.ini").unwrap(),
+            "LF_Zek.ini"
+        );
+        assert_eq!(
+            sanitized_filter_file_name("C:\\eq\\userdata\\LF_Zek.ini").unwrap(),
+            "LF_Zek.ini"
+        );
+        assert_eq!(
+            sanitized_filter_file_name("/home/eq/userdata/LF_Zek.ini").unwrap(),
+            "LF_Zek.ini"
+        );
+        // Windows verbatim root (\\?\) joined with a forward slash — the exact
+        // shape that broke "Save As".
+        assert_eq!(
+            sanitized_filter_file_name("\\\\?\\C:\\eq\\userdata/LF_Barrenn_freeport.ini").unwrap(),
+            "LF_Barrenn_freeport.ini"
+        );
+        // .ini matched case-insensitively.
+        assert_eq!(
+            sanitized_filter_file_name("LF_Zek.INI").unwrap(),
+            "LF_Zek.INI"
+        );
+        // A leading ../ is discarded because only the last segment is used.
+        assert_eq!(
+            sanitized_filter_file_name("../LF_evil.ini").unwrap(),
+            "LF_evil.ini"
+        );
+    }
+
+    #[test]
+    fn rejects_non_lf_names() {
+        assert!(sanitized_filter_file_name("notes.txt").is_err());
+        assert!(sanitized_filter_file_name("config.ini").is_err());
+        assert!(sanitized_filter_file_name("LF_no_extension").is_err());
+        assert!(sanitized_filter_file_name("").is_err());
+    }
+
+    // --- Integration tests against a real temp directory ------------------
+
+    fn sample_items() -> Vec<LootItem> {
+        vec![
+            item(1001, 2, 540, "Fine Steel Sword"),
+            item(2002, 4, 555, "Cloth Cap"),
+        ]
+    }
+
+    fn count_backups(root: &Path, name: &str) -> usize {
+        let prefix = format!("{name}.bak_");
+        fs::read_dir(root)
+            .unwrap()
+            .flatten()
+            .filter(|e| e.file_name().to_string_lossy().starts_with(&prefix))
+            .count()
+    }
+
+    #[test]
+    fn create_writes_empty_filter_and_rejects_duplicate() {
+        let dir = tempdir().unwrap();
+        let root = dir.path();
+
+        create_file_in(root, "LF_Test_Server.ini").unwrap();
+        let created = root.join("LF_Test_Server.ini");
+        assert!(created.exists());
+        assert_eq!(fs::read_to_string(&created).unwrap(), "[Filters]\n");
+
+        // Creating the same file again must fail.
+        assert!(create_file_in(root, "LF_Test_Server.ini").is_err());
+    }
+
+    #[test]
+    fn save_then_load_round_trips_items() {
+        let dir = tempdir().unwrap();
+        let root = dir.path();
+
+        save_file_in(root, "LF_Round_Trip.ini", &sample_items()).unwrap();
+        let loaded = load_file_in(root, "LF_Round_Trip.ini").unwrap();
+
+        assert_eq!(loaded.len(), 2);
+        assert_eq!(loaded[0].item_id, 1001);
+        assert_eq!(loaded[0].filter_id, 2);
+        assert_eq!(loaded[0].icon_id, 540);
+        assert_eq!(loaded[0].name, "Fine Steel Sword");
+        assert_eq!(loaded[1].name, "Cloth Cap");
+    }
+
+    #[test]
+    fn save_uses_only_the_file_name_from_a_full_path() {
+        // Mirrors the frontend passing `<root>/LF_x.ini`; the directory part is
+        // ignored and the file lands directly in `root`.
+        let dir = tempdir().unwrap();
+        let root = dir.path();
+        let full = format!("{}/LF_Nested.ini", root.display());
+
+        save_file_in(root, &full, &sample_items()).unwrap();
+        assert!(root.join("LF_Nested.ini").exists());
+    }
+
+    #[test]
+    fn save_backs_up_before_overwriting() {
+        let dir = tempdir().unwrap();
+        let root = dir.path();
+
+        save_file_in(root, "LF_Backup.ini", &sample_items()).unwrap();
+        assert_eq!(count_backups(root, "LF_Backup.ini"), 0);
+
+        // Overwriting should leave exactly one timestamped backup behind.
+        save_file_in(root, "LF_Backup.ini", &[item(3, 1, 500, "Only One")]).unwrap();
+        assert_eq!(count_backups(root, "LF_Backup.ini"), 1);
+
+        // The live file reflects the most recent save.
+        let loaded = load_file_in(root, "LF_Backup.ini").unwrap();
+        assert_eq!(loaded.len(), 1);
+        assert_eq!(loaded[0].name, "Only One");
+    }
+
+    #[test]
+    fn load_missing_file_errors() {
+        let dir = tempdir().unwrap();
+        assert!(load_file_in(dir.path(), "LF_Nope.ini").is_err());
+    }
+
+    #[test]
+    fn file_exists_reflects_creation() {
+        let dir = tempdir().unwrap();
+        let root = dir.path();
+
+        assert!(!file_exists_in(root, "LF_Exists.ini").unwrap());
+        create_file_in(root, "LF_Exists.ini").unwrap();
+        assert!(file_exists_in(root, "LF_Exists.ini").unwrap());
+    }
+
+    #[test]
+    fn save_rejects_bad_name_and_bad_item_without_writing() {
+        let dir = tempdir().unwrap();
+        let root = dir.path();
+
+        // Bad file name is rejected outright.
+        assert!(save_file_in(root, "notes.txt", &sample_items()).is_err());
+
+        // A caret in a name is rejected, and nothing is written.
+        assert!(save_file_in(root, "LF_Bad.ini", &[item(1, 1, 500, "Has^Caret")]).is_err());
+        assert!(!root.join("LF_Bad.ini").exists());
     }
 }
