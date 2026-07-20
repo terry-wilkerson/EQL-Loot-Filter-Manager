@@ -4,7 +4,27 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri + React + Typescript</title>
+    <title>EverQuest Legends Loot Manager</title>
+    <!--
+      Base reset applied statically (not via React) so the dark background and
+      "no window scrollbar" rules are in effect from the very first paint. In
+      production the bundled index.html would otherwise show the webview's
+      default white background and a window-level scrollbar until React mounts
+      and injects its styles. The default is dark (the app's default theme);
+      React overrides the background per-theme after it mounts.
+    -->
+    <style>
+      html,
+      body,
+      #root {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #0f172a;
+      }
+    </style>
   </head>
 
   <body>
