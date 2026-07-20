@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import {
+  advlootFileExists,
   createAdvlootFile,
   loadAdvlootFile,
   loadSettings,
@@ -15,6 +16,7 @@ import {
   type LootRow,
 } from "./types";
 import {
+  baseName,
   formatFilterFileName,
   matchesSearch,
   nextSort,
@@ -28,6 +30,7 @@ import { Dashboard } from "./components/Dashboard";
 import { ItemTable } from "./components/ItemTable";
 import { ConfirmModal } from "./components/ConfirmModal";
 import { NewFileModal } from "./components/NewFileModal";
+import { SaveAsModal } from "./components/SaveAsModal";
 import { AddItemModal } from "./components/AddItemModal";
 import type { FilterFileInfo } from "./types";
 
@@ -58,6 +61,8 @@ export default function App() {
   const [showNewFileModal, setShowNewFileModal] = useState(false);
   const [newFileName, setNewFileName] = useState("LF_CharacterName_ServerName.ini");
   const [showAddItemModal, setShowAddItemModal] = useState(false);
+  const [showSaveAsModal, setShowSaveAsModal] = useState(false);
+  const [saveAsName, setSaveAsName] = useState("");
   const [confirmModal, setConfirmModal] = useState<ConfirmState>(CONFIRM_CLOSED);
   const [sort, setSort] = useState<SortState | null>(null);
 
@@ -164,6 +169,56 @@ export default function App() {
       showToast("Loot filter saved successfully!", "success");
     } catch (err) {
       showToast(`Save failed: ${err}`, "error");
+    }
+  };
+
+  const openSaveAs = () => {
+    setSaveAsName(baseName(activeFilePath));
+    setShowSaveAsModal(true);
+  };
+
+  // Write the current items to `newPath`, switch the editor to it, and refresh.
+  const performSaveAs = async (newPath: string) => {
+    try {
+      const payload: LootItem[] = items.map(({ uid: _uid, ...rest }) => rest);
+      await saveAdvlootFile(newPath, payload);
+      setShowSaveAsModal(false);
+      await scanDirectory(uiDirectory);
+      setActiveFilePath(newPath);
+      showToast("Saved as new file!", "success");
+    } catch (err) {
+      showToast(`Save As failed: ${err}`, "error");
+    }
+  };
+
+  const handleSaveAsConfirm = async () => {
+    const formatted = formatFilterFileName(saveAsName);
+    if (!formatted) return;
+    const newPath = `${uiDirectory}/${formatted}`;
+
+    // Saving under the current name is just a normal overwrite of this file.
+    if (formatted.toLowerCase() === baseName(activeFilePath).toLowerCase()) {
+      await performSaveAs(newPath);
+      return;
+    }
+
+    try {
+      const exists = await advlootFileExists(newPath);
+      if (exists) {
+        setConfirmModal({
+          isOpen: true,
+          title: "Overwrite File?",
+          message: `A filter named "${formatted}" already exists. Overwrite it? (a timestamped backup is kept.)`,
+          action: () => {
+            closeConfirm();
+            performSaveAs(newPath);
+          },
+        });
+      } else {
+        await performSaveAs(newPath);
+      }
+    } catch (err) {
+      showToast(`Save As failed: ${err}`, "error");
     }
   };
 
@@ -481,6 +536,20 @@ export default function App() {
                 💾 Save Changes
               </button>
               <button
+                onClick={openSaveAs}
+                style={{
+                  padding: "10px 18px",
+                  borderRadius: "10px",
+                  border: theme.cardBorder,
+                  background: theme.buttonSecondary,
+                  color: theme.textPrimary,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                Save As…
+              </button>
+              <button
                 onClick={handleClearAll}
                 style={{
                   padding: "10px 18px",
@@ -515,6 +584,16 @@ export default function App() {
           onFileNameChange={setNewFileName}
           onCancel={() => setShowNewFileModal(false)}
           onCreate={handleCreateNewFile}
+        />
+      )}
+
+      {showSaveAsModal && (
+        <SaveAsModal
+          theme={theme}
+          fileName={saveAsName}
+          onFileNameChange={setSaveAsName}
+          onCancel={() => setShowSaveAsModal(false)}
+          onConfirm={handleSaveAsConfirm}
         />
       )}
 

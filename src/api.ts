@@ -29,6 +29,10 @@ export function searchEqItems(query: string): Promise<LootItem[]> {
   return invoke<LootItem[]>("search_eq_items", { query });
 }
 
+export function advlootFileExists(filePath: string): Promise<boolean> {
+  return invoke<boolean>("advloot_file_exists", { filePath });
+}
+
 // Opens the native folder picker; returns the chosen path or null if cancelled.
 export async function selectDirectory(): Promise<string | null> {
   const selected = await open({ directory: true });

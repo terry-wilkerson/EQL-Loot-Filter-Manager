@@ -1,10 +1,25 @@
 import { describe, expect, it } from "vitest";
 import {
+  baseName,
   formatFilterFileName,
   matchesSearch,
   nextSort,
   sortRows,
 } from "./utils";
+
+describe("baseName", () => {
+  it("extracts the file name from a Windows path", () => {
+    expect(baseName("C:\\eq\\userdata\\LF_Zek.ini")).toBe("LF_Zek.ini");
+  });
+
+  it("extracts the file name from a POSIX path", () => {
+    expect(baseName("/home/eq/userdata/LF_Zek.ini")).toBe("LF_Zek.ini");
+  });
+
+  it("returns the input when there is no separator", () => {
+    expect(baseName("LF_Zek.ini")).toBe("LF_Zek.ini");
+  });
+});
 
 describe("formatFilterFileName", () => {
   it("adds the LF_ prefix and .ini suffix", () => {

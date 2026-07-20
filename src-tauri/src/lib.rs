@@ -296,6 +296,14 @@ fn save_advloot_file(
 }
 
 #[tauri::command]
+fn advloot_file_exists(state: State<AppState>, file_path: String) -> Result<bool, String> {
+    // Validates confinement + LF_*.ini naming, then reports existence. Used by
+    // the "Save As" flow to warn before overwriting an existing filter.
+    let path = resolve_in_ui_dir(&state, &file_path, false)?;
+    Ok(path.exists())
+}
+
+#[tauri::command]
 fn load_settings(state: State<AppState>) -> Result<AppSettings, String> {
     if !state.settings_path.exists() {
         return Ok(AppSettings::default());
@@ -379,6 +387,7 @@ pub fn run() {
             create_advloot_file,
             load_advloot_file,
             save_advloot_file,
+            advloot_file_exists,
             search_eq_items,
             load_settings,
             save_settings
