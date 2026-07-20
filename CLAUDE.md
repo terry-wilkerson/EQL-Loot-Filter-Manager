@@ -35,6 +35,14 @@ frontend in `src/`. See `README.md` for the full layout and file format.
   `settings.json` in `app_data_dir`). Do not reintroduce `localStorage` for
   persistence.
 
+## Branching & commits
+
+This repo follows **GitHub Flow** (see `CONTRIBUTING.md`). `main` is protected
+and always releasable. Do work on a short-lived branch (`feature/`, `fix/`,
+`refactor/`, `docs/`, `chore/`), use Conventional Commit messages
+(`feat:`, `fix:`, …), and land changes via a PR that passes the `ci` workflow.
+Releases are cut by tagging `main` with `app-v*`.
+
 ## Verifying changes
 
 - Frontend: `npm run build` (runs `tsc`) and `npm test` (Vitest).
