@@ -57,12 +57,34 @@ struct AppState {
     settings_path: PathBuf,
 }
 
-/// Validate that `file_path` refers to a `LF_*.ini` file living directly inside
-/// the currently selected UI directory, and return the resolved path.
+/// Extract and validate just the file name from whatever path string the
+/// frontend sent. Splitting on both separators (rather than relying on
+/// `Path::file_name`) is deliberate: the confined root is a canonicalized path,
+/// which on Windows carries the `\\?\` verbatim prefix where `/` is NOT treated
+/// as a separator — so a frontend-built `root/name` path would otherwise yield a
+/// bogus "file name". Rejecting `..` plus the fact that the result contains no
+/// separator means it can't traverse out of the root once joined.
+fn sanitized_filter_file_name(file_path: &str) -> Result<String, String> {
+    let name = file_path
+        .rsplit(|c| c == '/' || c == '\\')
+        .next()
+        .unwrap_or("");
+    if name.is_empty()
+        || name.contains("..")
+        || !(name.starts_with("LF_") && name.to_lowercase().ends_with(".ini"))
+    {
+        return Err("File name must match LF_*.ini".to_string());
+    }
+    Ok(name.to_string())
+}
+
+/// Resolve `file_path` to a `LF_*.ini` file inside the currently selected UI
+/// directory. Only the file name from `file_path` is used; the directory is
+/// always the confined root recorded by `scan_ui_directory`.
 ///
-/// This is the security boundary: without it, the webview could ask the backend
-/// to read or overwrite arbitrary files anywhere on disk. `require_existing`
-/// distinguishes reads/overwrites (file must already exist) from creation.
+/// This is the security boundary: the webview cannot reach any file outside the
+/// selected directory. `require_existing` distinguishes reads/overwrites (file
+/// must already exist) from creation.
 fn resolve_in_ui_dir(
     state: &AppState,
     file_path: &str,
@@ -74,35 +96,9 @@ fn resolve_in_ui_dir(
         .map_err(|_| "Failed to lock UI directory state".to_string())?
         .clone()
         .ok_or_else(|| "No UI directory selected".to_string())?;
-    let root = root
-        .canonicalize()
-        .map_err(|e| format!("Invalid UI directory: {e}"))?;
 
-    let candidate = PathBuf::from(file_path);
-
-    let file_name = candidate
-        .file_name()
-        .and_then(|n| n.to_str())
-        .ok_or_else(|| "Invalid file path".to_string())?
-        .to_string();
-    if !(file_name.starts_with("LF_") && file_name.to_lowercase().ends_with(".ini")) {
-        return Err("File name must match LF_*.ini".to_string());
-    }
-
-    // Resolve the parent directory (which must already exist) and confirm it is
-    // exactly the selected UI directory. Canonicalizing both sides defeats
-    // "..", symlinks, and mixed separators.
-    let parent = candidate
-        .parent()
-        .filter(|p| !p.as_os_str().is_empty())
-        .ok_or_else(|| "Path must include a directory".to_string())?
-        .canonicalize()
-        .map_err(|e| format!("Invalid target directory: {e}"))?;
-    if parent != root {
-        return Err("Path is outside the selected directory".to_string());
-    }
-
-    let resolved = parent.join(&file_name);
+    let file_name = sanitized_filter_file_name(file_path)?;
+    let resolved = root.join(&file_name);
     if require_existing && !resolved.exists() {
         return Err("File does not exist".to_string());
     }
@@ -456,5 +452,45 @@ mod tests {
         let s = AppSettings::default();
         assert!(s.dark_mode);
         assert!(s.ui_directory.is_none());
+    }
+
+    #[test]
+    fn extracts_file_name_from_any_separator_style() {
+        assert_eq!(
+            sanitized_filter_file_name("LF_Zek.ini").unwrap(),
+            "LF_Zek.ini"
+        );
+        assert_eq!(
+            sanitized_filter_file_name("C:\\eq\\userdata\\LF_Zek.ini").unwrap(),
+            "LF_Zek.ini"
+        );
+        assert_eq!(
+            sanitized_filter_file_name("/home/eq/userdata/LF_Zek.ini").unwrap(),
+            "LF_Zek.ini"
+        );
+        // Windows verbatim root (\\?\) joined with a forward slash — the exact
+        // shape that broke "Save As".
+        assert_eq!(
+            sanitized_filter_file_name("\\\\?\\C:\\eq\\userdata/LF_Barrenn_freeport.ini").unwrap(),
+            "LF_Barrenn_freeport.ini"
+        );
+        // .ini matched case-insensitively.
+        assert_eq!(
+            sanitized_filter_file_name("LF_Zek.INI").unwrap(),
+            "LF_Zek.INI"
+        );
+        // A leading ../ is discarded because only the last segment is used.
+        assert_eq!(
+            sanitized_filter_file_name("../LF_evil.ini").unwrap(),
+            "LF_evil.ini"
+        );
+    }
+
+    #[test]
+    fn rejects_non_lf_names() {
+        assert!(sanitized_filter_file_name("notes.txt").is_err());
+        assert!(sanitized_filter_file_name("config.ini").is_err());
+        assert!(sanitized_filter_file_name("LF_no_extension").is_err());
+        assert!(sanitized_filter_file_name("").is_err());
     }
 }
