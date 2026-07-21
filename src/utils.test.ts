@@ -3,9 +3,19 @@ import {
   baseName,
   formatFilterFileName,
   matchesSearch,
+  mergeFilters,
   nextSort,
+  sameItems,
   sortRows,
 } from "./utils";
+import type { LootItem } from "./types";
+
+const li = (
+  item_id: number,
+  filter_id: number,
+  name = `item${item_id}`,
+  icon_id = 500,
+): LootItem => ({ item_id, filter_id, icon_id, name });
 
 describe("baseName", () => {
   it("extracts the file name from a Windows path", () => {
@@ -105,5 +115,70 @@ describe("nextSort", () => {
 
   it("switches to asc when a different key is clicked", () => {
     expect(nextSort({ key: "name", dir: "desc" }, "item_id")).toEqual({ key: "item_id", dir: "asc" });
+  });
+});
+
+describe("sameItems", () => {
+  it("is true for identical lists", () => {
+    expect(sameItems([li(1, 1), li(2, 2)], [li(1, 1), li(2, 2)])).toBe(true);
+  });
+
+  it("is false when a filter, name, or length differs", () => {
+    expect(sameItems([li(1, 1)], [li(1, 2)])).toBe(false);
+    expect(sameItems([li(1, 1, "a")], [li(1, 1, "b")])).toBe(false);
+    expect(sameItems([li(1, 1)], [li(1, 1), li(2, 2)])).toBe(false);
+  });
+
+  it("is order-sensitive", () => {
+    expect(sameItems([li(1, 1), li(2, 2)], [li(2, 2), li(1, 1)])).toBe(false);
+  });
+});
+
+describe("mergeFilters", () => {
+  it("pulls in items the game added, counting them", () => {
+    const base = [li(1, 1)];
+    const local = [li(1, 1)];
+    const disk = [li(1, 1), li(2, 2)]; // game looted item 2
+    const { merged, addedFromDisk, conflicts } = mergeFilters(base, local, disk);
+    expect(addedFromDisk).toBe(1);
+    expect(conflicts).toBe(0);
+    expect(merged.map((i) => i.item_id)).toEqual([2, 1]); // new item surfaced first
+  });
+
+  it("keeps our edits and our additions when the disk is unchanged there", () => {
+    const base = [li(1, 1)];
+    const local = [li(1, 3), li(9, 2)]; // we changed 1 and added 9
+    const disk = [li(1, 1)];
+    const { merged, conflicts } = mergeFilters(base, local, disk);
+    expect(conflicts).toBe(0);
+    expect(merged.find((i) => i.item_id === 1)?.filter_id).toBe(3);
+    expect(merged.find((i) => i.item_id === 9)?.filter_id).toBe(2);
+  });
+
+  it("takes the disk edit when we didn't touch that item", () => {
+    const base = [li(1, 1)];
+    const local = [li(1, 1)];
+    const disk = [li(1, 4)]; // game re-ruled item 1
+    const { merged, conflicts } = mergeFilters(base, local, disk);
+    expect(conflicts).toBe(0);
+    expect(merged[0].filter_id).toBe(4);
+  });
+
+  it("flags a true conflict and keeps our version", () => {
+    const base = [li(1, 1)];
+    const local = [li(1, 2)]; // we set Loot
+    const disk = [li(1, 4)]; // game set Sell
+    const { merged, conflicts } = mergeFilters(base, local, disk);
+    expect(conflicts).toBe(1);
+    expect(merged[0].filter_id).toBe(2); // ours wins
+  });
+
+  it("drops an item the game removed when we hadn't changed it", () => {
+    const base = [li(1, 1), li(2, 2)];
+    const local = [li(1, 1), li(2, 2)];
+    const disk = [li(1, 1)]; // game removed item 2
+    const { merged, conflicts } = mergeFilters(base, local, disk);
+    expect(conflicts).toBe(0);
+    expect(merged.map((i) => i.item_id)).toEqual([1]);
   });
 });

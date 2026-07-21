@@ -59,6 +59,12 @@ export function advlootFileExists(filePath: string): Promise<boolean> {
   return invoke<boolean>("advloot_file_exists", { filePath });
 }
 
+// Last-modified time (ms since epoch) of a filter file, or null if it's gone.
+// Polled to detect the game rewriting the file while it's open.
+export function advlootFileMtime(filePath: string): Promise<number | null> {
+  return invoke<number | null>("advloot_file_mtime", { filePath });
+}
+
 // Opens the native folder picker; returns the chosen path or null if cancelled.
 export async function selectDirectory(): Promise<string | null> {
   const selected = await open({ directory: true });

@@ -493,6 +493,27 @@ fn advloot_file_exists(state: State<AppState>, file_path: String) -> Result<bool
     file_exists_in(&ui_root(&state)?, &file_path)
 }
 
+/// Last-modified time of a filter file, in milliseconds since the Unix epoch, or
+/// `None` if the file doesn't exist. Polled by the frontend to detect when the
+/// game (or anything else) rewrites the file while it's open. Path-confined like
+/// every other file command.
+#[tauri::command]
+fn advloot_file_mtime(state: State<AppState>, file_path: String) -> Result<Option<u64>, String> {
+    let root = ui_root(&state)?;
+    let path = resolve_in_root(&root, &file_path, false)?;
+    if !path.exists() {
+        return Ok(None);
+    }
+    let modified = fs::metadata(&path)
+        .and_then(|m| m.modified())
+        .map_err(|e| e.to_string())?;
+    let ms = modified
+        .duration_since(std::time::UNIX_EPOCH)
+        .map_err(|e| e.to_string())?
+        .as_millis() as u64;
+    Ok(Some(ms))
+}
+
 #[tauri::command]
 fn load_settings(state: State<AppState>) -> Result<AppSettings, String> {
     if !state.settings_path.exists() {
@@ -587,6 +608,7 @@ pub fn run() {
             load_advloot_file,
             save_advloot_file,
             advloot_file_exists,
+            advloot_file_mtime,
             search_eq_items,
             classify_tradeskill_ids,
             list_tradeskill_items,
