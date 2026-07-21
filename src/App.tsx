@@ -695,7 +695,7 @@ export default function App() {
                 letterSpacing: "-0.5px",
               }}
             >
-              EverQuest Legends Loot Manager
+              EQL - Loot Filter
             </h1>
             {activeFilePath && (
               <span style={{ fontSize: "12px", color: theme.textSecondary }}>
