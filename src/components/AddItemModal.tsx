@@ -19,8 +19,9 @@ interface AddItemModalProps {
 }
 
 const SEARCH_DEBOUNCE_MS = 300;
-// "Add ALL Tradeskill Items" always files them under Always Store (filter id 2).
-const TRADESKILL_BULK_FILTER_ID = 2;
+// "Add ALL Tradeskill Items" always files them under Always Store, which is
+// in-game filter id 1 (see FILTER_MAP) so they go to the tradeskill depot.
+const TRADESKILL_BULK_FILTER_ID = 1;
 // Mirrors SEARCH_RESULT_LIMIT in the Rust backend. When exactly this many
 // results come back, the list was capped and there are likely more matches.
 const SEARCH_RESULT_LIMIT = 200;
@@ -35,7 +36,8 @@ export function AddItemModal({
   const [results, setResults] = useState<LootItem[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selected, setSelected] = useState<SelectedItem | null>(null);
-  const [filterId, setFilterId] = useState(1);
+  // Default a newly-added item to Always Loot (in-game filter id 2, see FILTER_MAP).
+  const [filterId, setFilterId] = useState(2);
   const searchTimeout = useRef<number | null>(null);
 
   const handleSearch = (query: string) => {

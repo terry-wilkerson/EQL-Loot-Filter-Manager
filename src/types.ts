@@ -2,9 +2,11 @@
 
 // Custom filter definitions for EverQuest Legends. The numeric ids match the
 // caret-delimited on-disk format and the backend's validation range (1-4).
+// NOTE: in-game, id 1 is Store and id 2 is Loot (the on-disk numbers are the
+// source of truth); these labels are set to match the actual in-game actions.
 export const FILTER_MAP: Record<number, string> = {
-  1: "Always Loot",
-  2: "Always Store",
+  1: "Always Store",
+  2: "Always Loot",
   3: "Always Merge",
   4: "Always Sell",
 };
