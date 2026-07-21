@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import {
   addCustomItems,
   advlootFileExists,
+  advlootFileMtime,
   classifyTradeskillIds,
   createAdvlootFile,
   findUnknownItemIds,
@@ -23,7 +24,9 @@ import {
   baseName,
   formatFilterFileName,
   matchesSearch,
+  mergeFilters,
   nextSort,
+  sameItems,
   sortRows,
   type SortKey,
   type SortState,
@@ -38,7 +41,11 @@ import { SaveAsModal } from "./components/SaveAsModal";
 import { AddItemModal } from "./components/AddItemModal";
 import { UnknownItemsModal } from "./components/UnknownItemsModal";
 import { LoadingOverlay } from "./components/LoadingOverlay";
+import { ReconcileModal } from "./components/ReconcileModal";
 import type { FilterFileInfo } from "./types";
+
+// How often to check whether the open file changed on disk (game writes).
+const FILE_WATCH_INTERVAL_MS = 3000;
 
 // Yield to the browser so a just-set "busy" overlay actually paints before we
 // run a heavy, main-thread-blocking update.
