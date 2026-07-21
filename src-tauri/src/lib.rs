@@ -16,6 +16,11 @@ const MAX_FILTER_ID: u8 = 4;
 /// (e.g. "a" matches ~124k items) can't lock up the webview rendering the list.
 /// The frontend shows a "refine your search" hint when this many come back.
 const SEARCH_RESULT_LIMIT: usize = 200;
+/// Version of the bundled `items_database.sqlite`. BUMP THIS whenever shipping an
+/// updated catalog so existing installs re-seed from the new bundle. The per-user
+/// DB copy is stamped with this (SQLite `user_version`); on launch, a copy with a
+/// lower version is refreshed — its `custom_items` are preserved and replayed.
+const BUNDLED_CATALOG_VERSION: i64 = 1;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct LootItem {
@@ -305,11 +310,52 @@ fn query_all_tradeskill_items(conn: &Connection) -> Result<Vec<LootItem>, String
     Ok(out)
 }
 
+/// The `custom_items` table durably records user-added items separately from the
+/// shipped catalog, so they survive a catalog update (which replaces `eq_items`
+/// wholesale). Created in the per-user DB copy; the bundled resource never has it.
+fn ensure_custom_items_table(conn: &Connection) -> Result<(), String> {
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS custom_items (id TEXT PRIMARY KEY, name TEXT, icon TEXT)",
+        [],
+    )
+    .map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+/// The catalog schema version stamped on the per-user DB copy (SQLite's
+/// `user_version` header field). 0 means "never stamped" (pre-versioning).
+fn catalog_version(conn: &Connection) -> Result<i64, String> {
+    conn.query_row("PRAGMA user_version", [], |r| r.get(0))
+        .map_err(|e| e.to_string())
+}
+
+/// Stamp the per-user DB copy with a catalog version. PRAGMA can't be
+/// parameterized, so the (trusted, integer) value is formatted in.
+fn set_catalog_version(conn: &Connection, version: i64) -> Result<(), String> {
+    conn.execute(&format!("PRAGMA user_version = {version}"), [])
+        .map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+/// Every user-added item recorded in `custom_items`, as LootItems (for replay
+/// into a freshly-seeded catalog after an update).
+fn read_custom_items(conn: &Connection) -> Result<Vec<LootItem>, String> {
+    let mut stmt = conn
+        .prepare("SELECT id, icon, name FROM custom_items")
+        .map_err(|e| e.to_string())?;
+    let rows = stmt
+        .query_map([], row_to_loot_item)
+        .map_err(|e| e.to_string())?;
+    Ok(rows.flatten().collect())
+}
+
 /// Insert custom items into the catalog, enforcing unique item ids: an id that
 /// already exists (in the catalog or earlier in this batch) is skipped. Returns
-/// how many rows were actually inserted. Icons may be shared across items, so
-/// only the id is required to be unique.
+/// how many rows were actually inserted into `eq_items`. Icons may be shared
+/// across items, so only the id is required to be unique. Every newly-inserted
+/// item is also recorded in `custom_items` so it survives catalog updates.
 fn insert_custom_items(conn: &Connection, items: &[LootItem]) -> Result<usize, String> {
+    ensure_custom_items_table(conn)?;
     let mut inserted = 0usize;
     for item in items {
         // Guard the caret-delimited format even though these come from a file
@@ -330,6 +376,14 @@ fn insert_custom_items(conn: &Connection, items: &[LootItem]) -> Result<usize, S
                 params![item.item_id.to_string(), item.name, item.icon_id.to_string()],
             )
             .map_err(|e| e.to_string())?;
+        // Track only genuinely-new additions in the durable side table.
+        if n == 1 {
+            conn.execute(
+                "INSERT OR IGNORE INTO custom_items (id, name, icon) VALUES (?1, ?2, ?3)",
+                params![item.item_id.to_string(), item.name, item.icon_id.to_string()],
+            )
+            .map_err(|e| e.to_string())?;
+        }
         inserted += n;
     }
     Ok(inserted)
@@ -571,27 +625,50 @@ pub fn run() {
             let app_data_dir = app.path().app_data_dir().map_err(|e| e.to_string())?;
             fs::create_dir_all(&app_data_dir).map_err(|e| e.to_string())?;
             let db_path = app_data_dir.join("items_database.sqlite");
+            let resource_path = app
+                .path()
+                .resolve(
+                    "items_database.sqlite",
+                    tauri::path::BaseDirectory::Resource,
+                )
+                .map_err(|e| e.to_string())?;
 
-            if !db_path.exists() {
-                let resource_path = app
-                    .path()
-                    .resolve(
-                        "items_database.sqlite",
-                        tauri::path::BaseDirectory::Resource,
-                    )
-                    .map_err(|e| e.to_string())?;
-                fs::copy(resource_path, &db_path).map_err(|e| e.to_string())?;
+            let existed = db_path.exists();
+            if !existed {
+                fs::copy(&resource_path, &db_path).map_err(|e| e.to_string())?;
             }
 
             // Opened read-write so custom EQL items (not present in the seeded
             // catalog) can be inserted via `add_custom_items`. The bundled
             // resource itself is never touched — only the per-user copy in
             // app_data_dir.
-            let db = Connection::open_with_flags(
+            let mut db = Connection::open_with_flags(
                 &db_path,
                 OpenFlags::SQLITE_OPEN_READ_WRITE,
             )
             .expect("Failed to open SQLite database");
+            ensure_custom_items_table(&db).map_err(|e| e.to_string())?;
+
+            // Version-aware seeding: refresh the per-user copy when a newer
+            // catalog ships, preserving user-added items across the swap.
+            let installed = catalog_version(&db).unwrap_or(0);
+            if !existed || installed == 0 {
+                // Fresh copy, or a pre-versioning DB we adopt as current without
+                // reseeding (so existing custom items aren't disturbed).
+                let _ = set_catalog_version(&db, BUNDLED_CATALOG_VERSION);
+            } else if installed < BUNDLED_CATALOG_VERSION {
+                // Newer catalog: keep the user's custom items, replace the file
+                // with the fresh bundle, then replay them into the new catalog.
+                let preserved = read_custom_items(&db).unwrap_or_default();
+                drop(db); // release the file handle before overwriting
+                fs::copy(&resource_path, &db_path).map_err(|e| e.to_string())?;
+                db = Connection::open_with_flags(&db_path, OpenFlags::SQLITE_OPEN_READ_WRITE)
+                    .expect("Failed to reopen SQLite database after catalog update");
+                ensure_custom_items_table(&db).map_err(|e| e.to_string())?;
+                let _ = insert_custom_items(&db, &preserved);
+                let _ = set_catalog_version(&db, BUNDLED_CATALOG_VERSION);
+            }
+
             // Speed up id lookups (classify / unknown-item scans / dedupe on
             // insert). The seeded catalog ships without indexes.
             let _ = db.execute("CREATE INDEX IF NOT EXISTS idx_eq_items_id ON eq_items(id)", []);
@@ -955,5 +1032,52 @@ mod tests {
         assert!(insert_custom_items(&conn, &[item(8889, 1, 500, "Bad\nName")]).is_err());
         // Nothing was written.
         assert_eq!(query_present_ids(&conn, &[8888, 8889], false).unwrap(), Vec::<u32>::new());
+    }
+
+    // --- Catalog versioning / custom-item preservation --------------------
+
+    #[test]
+    fn catalog_version_round_trips() {
+        let conn = Connection::open_in_memory().unwrap();
+        assert_eq!(catalog_version(&conn).unwrap(), 0); // default
+        set_catalog_version(&conn, 3).unwrap();
+        assert_eq!(catalog_version(&conn).unwrap(), 3);
+    }
+
+    #[test]
+    fn insert_records_additions_in_custom_items() {
+        let conn = test_catalog(); // has eq_items only
+        insert_custom_items(&conn, &[item(7777, 1, 999, "Custom Widget")]).unwrap();
+
+        // Tracked in the durable side table (id, name, icon).
+        let tracked = read_custom_items(&conn).unwrap();
+        assert_eq!(tracked.len(), 1);
+        assert_eq!(tracked[0].item_id, 7777);
+        assert_eq!(tracked[0].icon_id, 999);
+        assert_eq!(tracked[0].name, "Custom Widget");
+
+        // Re-adding the same id doesn't create a duplicate track.
+        insert_custom_items(&conn, &[item(7777, 1, 999, "Custom Widget")]).unwrap();
+        assert_eq!(read_custom_items(&conn).unwrap().len(), 1);
+    }
+
+    #[test]
+    fn custom_items_survive_a_catalog_reseed() {
+        // Old per-user copy with a custom item recorded.
+        let old = test_catalog();
+        insert_custom_items(&old, &[item(7777, 1, 999, "Custom Widget")]).unwrap();
+        let preserved = read_custom_items(&old).unwrap();
+        assert_eq!(preserved.len(), 1);
+
+        // Simulate the swap: a brand-new catalog (fresh eq_items, no custom_items)
+        // that does NOT contain the custom id.
+        let fresh = test_catalog();
+        assert_eq!(query_present_ids(&fresh, &[7777], false).unwrap(), Vec::<u32>::new());
+
+        // Replay the preserved items into the fresh catalog.
+        let n = insert_custom_items(&fresh, &preserved).unwrap();
+        assert_eq!(n, 1);
+        assert_eq!(query_present_ids(&fresh, &[7777], false).unwrap(), vec![7777]);
+        assert_eq!(read_custom_items(&fresh).unwrap().len(), 1);
     }
 }
