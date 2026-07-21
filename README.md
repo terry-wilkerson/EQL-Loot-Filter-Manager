@@ -64,8 +64,20 @@ All frontend/backend communication goes through the typed functions in
 - `load_advloot_file` / `save_advloot_file` / `create_advloot_file` — read and
   write filter files. Every path is validated to stay inside the selected
   directory, and item names are rejected if they contain `^` or newlines.
-- `search_eq_items` — autocomplete over the bundled read-only SQLite catalog.
+- `search_eq_items` — autocomplete over the bundled SQLite catalog (capped at
+  200 matches).
+- `classify_tradeskill_ids` — of the loaded item ids, which are tradeskill items.
+- `list_tradeskill_items` — every depot-storable tradeskill item, for the bulk
+  "Add ALL Tradeskill Items" action (stackable trade goods only; excludes
+  no-trade, temporary, attunable, lore, heirloom, containers, weapons, armor and
+  jewelry).
+- `find_unknown_item_ids` — loaded item ids that aren't in the catalog (custom
+  EQL items).
+- `add_custom_items` — insert custom items into the catalog with unique item ids.
 - `load_settings` / `save_settings` — persist user preferences (see below).
+
+The item catalog is opened **read-write** so `add_custom_items` can add custom
+EQL items to the per-user copy; the bundled resource itself is never modified.
 
 ### Settings
 

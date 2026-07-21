@@ -25,8 +25,34 @@ export function saveAdvlootFile(
   return invoke<void>("save_advloot_file", { filePath, items });
 }
 
-export function searchEqItems(query: string): Promise<LootItem[]> {
-  return invoke<LootItem[]>("search_eq_items", { query });
+export function searchEqItems(
+  query: string,
+  tradeskillOnly = false,
+): Promise<LootItem[]> {
+  return invoke<LootItem[]>("search_eq_items", { query, tradeskillOnly });
+}
+
+// Given the loaded filter's item ids, return the subset that are tradeskill
+// items (per the bundled catalog's `tradeskills` flag).
+export function classifyTradeskillIds(ids: number[]): Promise<number[]> {
+  return invoke<number[]>("classify_tradeskill_ids", { ids });
+}
+
+// Every tradeskill item in the catalog, for the "add all tradeskill items" flow.
+export function listTradeskillItems(): Promise<LootItem[]> {
+  return invoke<LootItem[]>("list_tradeskill_items");
+}
+
+// Item ids present in the loaded filter but missing from the catalog (custom
+// EQL items that were never seeded).
+export function findUnknownItemIds(ids: number[]): Promise<number[]> {
+  return invoke<number[]>("find_unknown_item_ids", { ids });
+}
+
+// Insert custom items into the catalog. Item ids are kept unique (already-known
+// ids are skipped); resolves with the number of rows actually inserted.
+export function addCustomItems(items: LootItem[]): Promise<number> {
+  return invoke<number>("add_custom_items", { items });
 }
 
 export function advlootFileExists(filePath: string): Promise<boolean> {
