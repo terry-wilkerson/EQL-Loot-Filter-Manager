@@ -34,6 +34,30 @@ jobs:
           fi
           echo "OK: all .sqlite and public/icons PNG assets are stored via Git LFS."
 
+  # Catch version drift early: package.json and tauri.conf.json must agree on
+  # major.minor.patch (a 4th component or -prerelease suffix is ignored). The
+  # release workflow additionally checks these against the tag at publish time.
+  version-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: package.json and tauri.conf.json versions agree
+        run: |
+          norm() {
+            local v="${1%%-*}"
+            IFS='.' read -r a b c _ <<< "$v"
+            echo "${a:-0}.${b:-0}.${c:-0}"
+          }
+          pkg_ver="$(norm "$(jq -r .version package.json)")"
+          conf_ver="$(norm "$(jq -r .version src-tauri/tauri.conf.json)")"
+          echo "package.json=$pkg_ver  tauri.conf.json=$conf_ver"
+          if [ "$pkg_ver" != "$conf_ver" ]; then
+            echo "::error::package.json ($pkg_ver) and src-tauri/tauri.conf.json ($conf_ver) versions disagree"
+            echo "Update both files to the same version."
+            exit 1
+          fi
+          echo "Versions agree ($pkg_ver)."
+
   frontend:
     runs-on: ubuntu-latest
     steps:
