@@ -54,7 +54,17 @@ Releases are cut by tagging `main` with `app-v*`.
 
 - `main.rs` is a thin entry that calls `eql_loot_filter_manager_lib::run()`; all
   real code is in `lib.rs`. Don't re-add logic to `main.rs`.
-- The SQLite item catalog is opened **read-only** and shipped as a bundled
-  resource; it is copied into `app_data_dir` on first launch.
+- The SQLite item catalog is shipped as a bundled resource and copied into
+  `app_data_dir` on first launch. It is opened **read-write** so `add_custom_items`
+  can insert custom EQL items that aren't in the seeded catalog (the bundled
+  resource is never modified — only the per-user copy). An `idx_eq_items_id`
+  index is created on startup. Inserts enforce **unique item ids** (an id already
+  present is skipped); icons may be shared across items.
+- Catalog columns are **TEXT**, and several flags are **inverted** vs their
+  names: `nodrop='0'` = No-Trade, `norent='0'` = Temporary, lore = `loregroup <> '0'`.
+  Because `itemtype` is TEXT, `IN` lists must use string literals (`'0'`, not `0`)
+  or matches silently fail. The bulk "add all tradeskill items" action uses the
+  strict depot filter (`DEPOT_TRADESKILL_WHERE`); the main-page toggle and item
+  search use the broad `tradeskills='1'` definition.
 - `EQIcon` computes sprite-sheet offsets from `icon_id` (500 offset,
   column-major, 36 icons/sheet). Sheets live in the frontend `public/icons/`.

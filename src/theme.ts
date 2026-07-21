@@ -70,6 +70,10 @@ export function buildGlobalStyles(isDarkMode: boolean): string {
     ::-webkit-scrollbar-corner {
       background: transparent;
     }
+
+    @keyframes eql-spin {
+      to { transform: rotate(360deg); }
+    }
   `;
 }
 

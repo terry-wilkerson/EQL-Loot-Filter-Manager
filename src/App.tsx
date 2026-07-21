@@ -1,7 +1,11 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import {
+  addCustomItems,
   advlootFileExists,
+  classifyTradeskillIds,
   createAdvlootFile,
+  findUnknownItemIds,
+  listTradeskillItems,
   loadAdvlootFile,
   loadSettings,
   saveAdvlootFile,
@@ -32,7 +36,16 @@ import { ConfirmModal } from "./components/ConfirmModal";
 import { NewFileModal } from "./components/NewFileModal";
 import { SaveAsModal } from "./components/SaveAsModal";
 import { AddItemModal } from "./components/AddItemModal";
+import { UnknownItemsModal } from "./components/UnknownItemsModal";
+import { LoadingOverlay } from "./components/LoadingOverlay";
 import type { FilterFileInfo } from "./types";
+
+// Yield to the browser so a just-set "busy" overlay actually paints before we
+// run a heavy, main-thread-blocking update.
+const nextPaint = () =>
+  new Promise<void>((resolve) =>
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+  );
 
 interface ConfirmState {
   isOpen: boolean;
@@ -65,6 +78,18 @@ export default function App() {
   const [saveAsName, setSaveAsName] = useState("");
   const [confirmModal, setConfirmModal] = useState<ConfirmState>(CONFIRM_CLOSED);
   const [sort, setSort] = useState<SortState | null>(null);
+
+  // Which loaded item ids are tradeskill items (per the catalog), plus the
+  // toggle that restricts the table to them. Item ids not in the catalog are
+  // tracked separately so we can offer to add them (feature 3).
+  const [tradeskillIds, setTradeskillIds] = useState<Set<number>>(new Set());
+  const [unknownIds, setUnknownIds] = useState<number[]>([]);
+  const [showTradeskillOnly, setShowTradeskillOnly] = useState(false);
+  const [showUnknownModal, setShowUnknownModal] = useState(false);
+  // Bumped after inserting custom items so the classify/unknown scan re-runs.
+  const [dbVersion, setDbVersion] = useState(0);
+  // Non-null while a long operation is running; drives the blocking overlay.
+  const [busyMessage, setBusyMessage] = useState<string | null>(null);
 
   const theme = useMemo(() => buildGlassTheme(isDarkMode), [isDarkMode]);
   const globalStyles = useMemo(() => buildGlobalStyles(isDarkMode), [isDarkMode]);
@@ -242,6 +267,80 @@ export default function App() {
     setShowAddItemModal(false);
   };
 
+  // Merge many items into the list at once (used by "add all tradeskill
+  // items"). Existing rows are updated in place; new ids are prepended. Keyed
+  // on item_id so the list never grows a duplicate id. O(n+m): incoming is
+  // indexed by id so we avoid a per-row linear scan.
+  const handleAddMany = (incoming: LootItem[]) => {
+    if (incoming.length === 0) return;
+    setItems((prev) => {
+      const incomingById = new Map(incoming.map((i) => [i.item_id, i]));
+      const existingIds = new Set(prev.map((row) => row.item_id));
+      const merged = prev.map((row) => {
+        const update = incomingById.get(row.item_id);
+        return update
+          ? { ...row, filter_id: update.filter_id, name: update.name }
+          : row;
+      });
+      const additions = incoming
+        .filter((i) => !existingIds.has(i.item_id))
+        .map((i) => ({ ...i, uid: newUid() }));
+      return [...additions, ...merged];
+    });
+  };
+
+  const handleAddAllTradeskill = (filterId: number) => {
+    setConfirmModal({
+      isOpen: true,
+      title: "Add All Tradeskill Items",
+      message: `This adds every depot-storable tradeskill item (stackable trade goods, excluding no-trade, temporary, attunable, lore, heirloom, containers, weapons, armor and jewelry) to this filter with the action "${FILTER_MAP[filterId]}". Items already in the list are updated. Continue?`,
+      action: async () => {
+        closeConfirm();
+        setShowAddItemModal(false);
+        setBusyMessage("Adding all tradeskill items…");
+        await nextPaint(); // let the overlay show before the heavy work
+        try {
+          const list = await listTradeskillItems();
+          handleAddMany(list.map((i) => ({ ...i, filter_id: filterId })));
+          // Keep the overlay up until the big list has committed to the DOM.
+          await nextPaint();
+          showToast(`Added ${list.length} tradeskill items.`, "success");
+        } catch (err) {
+          showToast(`Failed to add tradeskill items: ${err}`, "error");
+        } finally {
+          setBusyMessage(null);
+        }
+      },
+    });
+  };
+
+  // Add the loaded filter's unknown (custom) items to the catalog.
+  const handleAddUnknownToDb = async () => {
+    const unknownSet = new Set(unknownIds);
+    // One row per unknown id (the first occurrence), stripped of uid.
+    const seen = new Set<number>();
+    const payload: LootItem[] = [];
+    for (const row of items) {
+      if (unknownSet.has(row.item_id) && !seen.has(row.item_id)) {
+        seen.add(row.item_id);
+        const { uid: _uid, ...rest } = row;
+        payload.push(rest);
+      }
+    }
+    setShowUnknownModal(false);
+    setBusyMessage("Adding items to the database…");
+    await nextPaint();
+    try {
+      const added = await addCustomItems(payload);
+      setDbVersion((v) => v + 1); // trigger a re-scan
+      showToast(`Added ${added} item(s) to the database.`, "success");
+    } catch (err) {
+      showToast(`Failed to add items to database: ${err}`, "error");
+    } finally {
+      setBusyMessage(null);
+    }
+  };
+
   const handleRemoveSingleItem = (uid: string) => {
     setItems((prev) => prev.filter((i) => i.uid !== uid));
   };
@@ -252,9 +351,53 @@ export default function App() {
     );
   };
 
+  // A stable key over just the distinct item ids, so the catalog scan below
+  // only re-runs when the id set changes (not on every filter-action edit).
+  const itemIdKey = useMemo(
+    () =>
+      Array.from(new Set(items.map((i) => i.item_id)))
+        .sort((a, b) => a - b)
+        .join(","),
+    [items],
+  );
+
+  // Whenever the loaded id set (or the catalog) changes, ask the backend which
+  // ids are tradeskill items and which are unknown (custom EQL items).
+  useEffect(() => {
+    const ids = itemIdKey === "" ? [] : itemIdKey.split(",").map(Number);
+    if (ids.length === 0) {
+      setTradeskillIds(new Set());
+      setUnknownIds([]);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const [ts, unknown] = await Promise.all([
+          classifyTradeskillIds(ids),
+          findUnknownItemIds(ids),
+        ]);
+        if (!cancelled) {
+          setTradeskillIds(new Set(ts));
+          setUnknownIds(unknown);
+        }
+      } catch (err) {
+        console.error("Catalog scan failed:", err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [itemIdKey, dbVersion]);
+
   const filteredItems = useMemo(
-    () => items.filter((item) => matchesSearch(item, search)),
-    [items, search],
+    () =>
+      items.filter(
+        (item) =>
+          matchesSearch(item, search) &&
+          (!showTradeskillOnly || tradeskillIds.has(item.item_id)),
+      ),
+    [items, search, showTradeskillOnly, tradeskillIds],
   );
 
   // Sorting is a display-only concern; the saved order stays as-is.
@@ -264,6 +407,22 @@ export default function App() {
   );
 
   const handleSort = (key: SortKey) => setSort((prev) => nextSort(prev, key));
+
+  // Toggling the tradeskill filter re-renders the whole table, which can stall
+  // for a moment on large lists. Show the busy overlay across the switch so the
+  // UI doesn't look frozen; skip it for small lists where it's instant.
+  const TRADESKILL_FILTER_BUSY_THRESHOLD = 400;
+  const handleToggleTradeskillOnly = async () => {
+    if (items.length < TRADESKILL_FILTER_BUSY_THRESHOLD) {
+      setShowTradeskillOnly((v) => !v);
+      return;
+    }
+    setBusyMessage("Filtering tradeskill items…");
+    await nextPaint(); // paint the overlay before the heavy re-render
+    setShowTradeskillOnly((v) => !v);
+    await nextPaint(); // hold it until the new list has committed
+    setBusyMessage(null);
+  };
 
   const requestBulkUpdate = (newFilterId: number) => {
     if (!newFilterId || filteredItems.length === 0) return;
@@ -490,6 +649,24 @@ export default function App() {
                 ))}
               </select>
 
+              <button
+                onClick={handleToggleTradeskillOnly}
+                title="Show only items that are tradeskill items"
+                style={{
+                  padding: "10px 16px",
+                  borderRadius: "10px",
+                  border: showTradeskillOnly ? "none" : theme.cardBorder,
+                  background: showTradeskillOnly
+                    ? theme.buttonPrimary
+                    : theme.buttonSecondary,
+                  color: showTradeskillOnly ? "#fff" : theme.textPrimary,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+              >
+                🔨 Tradeskill Only{showTradeskillOnly ? ` (${filteredItems.length})` : ""}
+              </button>
+
               {search && filteredItems.length > 0 && (
                 <button
                   onClick={handleBulkRemoveMatched}
@@ -568,6 +745,43 @@ export default function App() {
             </div>
           </div>
 
+          {unknownIds.length > 0 && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: "12px",
+                padding: "12px 16px",
+                marginBottom: "16px",
+                borderRadius: "12px",
+                background: "rgba(245, 158, 11, 0.12)",
+                border: "1px solid rgba(245, 158, 11, 0.4)",
+                flexShrink: 0,
+              }}
+            >
+              <span style={{ fontSize: "13px", color: theme.textPrimary }}>
+                ⚠️ {unknownIds.length} item(s) in this filter aren't in the item
+                database.
+              </span>
+              <button
+                onClick={() => setShowUnknownModal(true)}
+                style={{
+                  padding: "8px 14px",
+                  borderRadius: "8px",
+                  border: "none",
+                  background: theme.buttonPrimary,
+                  color: "#fff",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                Review &amp; Add to DB
+              </button>
+            </div>
+          )}
+
           <ItemTable
             theme={theme}
             rows={displayedItems}
@@ -604,6 +818,20 @@ export default function App() {
           theme={theme}
           onCancel={() => setShowAddItemModal(false)}
           onAdd={handleAddItem}
+          onAddAllTradeskill={handleAddAllTradeskill}
+        />
+      )}
+
+      {showUnknownModal && (
+        <UnknownItemsModal
+          theme={theme}
+          items={items.filter(
+            (row, idx, arr) =>
+              unknownIds.includes(row.item_id) &&
+              arr.findIndex((r) => r.item_id === row.item_id) === idx,
+          )}
+          onCancel={() => setShowUnknownModal(false)}
+          onAddAll={handleAddUnknownToDb}
         />
       )}
 
@@ -616,6 +844,8 @@ export default function App() {
           onCancel={closeConfirm}
         />
       )}
+
+      {busyMessage && <LoadingOverlay theme={theme} message={busyMessage} />}
     </div>
   );
 }

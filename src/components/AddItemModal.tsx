@@ -14,11 +14,23 @@ interface AddItemModalProps {
   theme: GlassTheme;
   onCancel: () => void;
   onAdd: (item: LootItem) => void;
+  // Add every tradeskill item in the catalog with the chosen filter action.
+  onAddAllTradeskill: (filterId: number) => void;
 }
 
 const SEARCH_DEBOUNCE_MS = 300;
+// "Add ALL Tradeskill Items" always files them under Always Store (filter id 2).
+const TRADESKILL_BULK_FILTER_ID = 2;
+// Mirrors SEARCH_RESULT_LIMIT in the Rust backend. When exactly this many
+// results come back, the list was capped and there are likely more matches.
+const SEARCH_RESULT_LIMIT = 200;
 
-export function AddItemModal({ theme, onCancel, onAdd }: AddItemModalProps) {
+export function AddItemModal({
+  theme,
+  onCancel,
+  onAdd,
+  onAddAllTradeskill,
+}: AddItemModalProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState<LootItem[]>([]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -32,13 +44,11 @@ export function AddItemModal({ theme, onCancel, onAdd }: AddItemModalProps) {
     if (searchTimeout.current) {
       clearTimeout(searchTimeout.current);
     }
-
     if (query.trim() === "") {
       setIsDropdownOpen(false);
       setResults([]);
       return;
     }
-
     searchTimeout.current = setTimeout(async () => {
       try {
         const found = await searchEqItems(query.trim());
@@ -160,6 +170,26 @@ export function AddItemModal({ theme, onCancel, onAdd }: AddItemModalProps) {
                     </div>
                   </div>
                 ))}
+
+                {results.length >= SEARCH_RESULT_LIMIT && (
+                  <div
+                    style={{
+                      padding: "8px 14px",
+                      fontSize: "12px",
+                      fontStyle: "italic",
+                      color: theme.textSecondary,
+                      textAlign: "center",
+                      position: "sticky",
+                      bottom: 0,
+                      background: theme.cardBg,
+                      backdropFilter: "blur(20px)",
+                      borderTop: theme.cardBorder,
+                    }}
+                  >
+                    Showing first {SEARCH_RESULT_LIMIT} matches — refine your
+                    search to narrow the list.
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -176,6 +206,38 @@ export function AddItemModal({ theme, onCancel, onAdd }: AddItemModalProps) {
               </option>
             ))}
           </select>
+
+          <div
+            style={{
+              borderTop: theme.cardBorder,
+              paddingTop: "14px",
+              marginTop: "4px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+            }}
+          >
+            <span style={{ fontSize: "12px", color: theme.textSecondary }}>
+              Bulk add every depot-storable tradeskill item (stackable trade
+              goods only) as “{FILTER_MAP[TRADESKILL_BULK_FILTER_ID]}”:
+            </span>
+            <button
+              type="button"
+              onClick={() => onAddAllTradeskill(TRADESKILL_BULK_FILTER_ID)}
+              style={{
+                width: "100%",
+                padding: "12px 14px",
+                borderRadius: "8px",
+                border: "none",
+                background: theme.buttonPrimary,
+                color: "#fff",
+                fontWeight: 600,
+                cursor: "pointer",
+              }}
+            >
+              🔨 Add ALL Tradeskill Items
+            </button>
+          </div>
 
           <div
             style={{
