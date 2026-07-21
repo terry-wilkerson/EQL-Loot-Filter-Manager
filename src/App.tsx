@@ -98,6 +98,26 @@ export default function App() {
   // Non-null while a long operation is running; drives the blocking overlay.
   const [busyMessage, setBusyMessage] = useState<string | null>(null);
 
+  // --- External-change (game-writes-the-file) reconciliation ---
+  // The version last loaded/saved, used as the merge base and to detect unsaved
+  // edits. Refs so the polling loop reads fresh values without re-subscribing.
+  const baselineRef = useRef<LootItem[]>([]);
+  const itemsRef = useRef<LootRow[]>([]);
+  const activePathRef = useRef("");
+  const lastMtimeRef = useRef<number | null>(null);
+  const savingRef = useRef(false);
+  const reconcilingRef = useRef(false);
+  // Set when an external change needs a user decision (we have unsaved edits).
+  const [reconcile, setReconcile] = useState<{
+    disk: LootItem[];
+    added: number;
+    conflicts: number;
+  } | null>(null);
+
+  // Strip the client-only uid to get the wire/baseline shape.
+  const stripUids = (rows: LootRow[]): LootItem[] =>
+    rows.map(({ uid: _uid, ...rest }) => rest);
+
   const theme = useMemo(() => buildGlassTheme(isDarkMode), [isDarkMode]);
   const globalStyles = useMemo(() => buildGlobalStyles(isDarkMode), [isDarkMode]);
 
@@ -169,8 +189,14 @@ export default function App() {
   const handleOpenFile = async (path: string) => {
     try {
       const loadedItems = await loadAdvlootFile(path);
+      baselineRef.current = loadedItems; // merge base + dirty reference
       setItems(loadedItems.map((i) => ({ ...i, uid: newUid() })));
       setActiveFilePath(path);
+      try {
+        lastMtimeRef.current = await advlootFileMtime(path);
+      } catch {
+        lastMtimeRef.current = null;
+      }
     } catch (err) {
       showToast(`Failed to load file: ${err}`, "error");
     }
@@ -194,13 +220,22 @@ export default function App() {
 
   const handleSaveFile = async () => {
     if (!activeFilePath) return;
+    savingRef.current = true; // suppress the watcher for our own write
     try {
       // Strip the client-only `uid` before sending to the backend.
-      const payload: LootItem[] = items.map(({ uid: _uid, ...rest }) => rest);
+      const payload: LootItem[] = stripUids(items);
       await saveAdvlootFile(activeFilePath, payload);
+      baselineRef.current = payload; // now the on-disk truth
+      try {
+        lastMtimeRef.current = await advlootFileMtime(activeFilePath);
+      } catch {
+        /* leave last mtime as-is */
+      }
       showToast("Loot filter saved successfully!", "success");
     } catch (err) {
       showToast(`Save failed: ${err}`, "error");
+    } finally {
+      savingRef.current = false;
     }
   };
 
@@ -211,15 +246,24 @@ export default function App() {
 
   // Write the current items to `newPath`, switch the editor to it, and refresh.
   const performSaveAs = async (newPath: string) => {
+    savingRef.current = true;
     try {
-      const payload: LootItem[] = items.map(({ uid: _uid, ...rest }) => rest);
+      const payload: LootItem[] = stripUids(items);
       await saveAdvlootFile(newPath, payload);
+      baselineRef.current = payload;
       setShowSaveAsModal(false);
       await scanDirectory(uiDirectory);
       setActiveFilePath(newPath);
+      try {
+        lastMtimeRef.current = await advlootFileMtime(newPath);
+      } catch {
+        lastMtimeRef.current = null;
+      }
       showToast("Saved as new file!", "success");
     } catch (err) {
       showToast(`Save As failed: ${err}`, "error");
+    } finally {
+      savingRef.current = false;
     }
   };
 
@@ -278,6 +322,121 @@ export default function App() {
   // items"). Existing rows are updated in place; new ids are prepended. Keyed
   // on item_id so the list never grows a duplicate id. O(n+m): incoming is
   // indexed by id so we avoid a per-row linear scan.
+  // Keep refs in sync so the polling loop reads current values.
+  useEffect(() => {
+    itemsRef.current = items;
+  }, [items]);
+  useEffect(() => {
+    activePathRef.current = activeFilePath;
+  }, [activeFilePath]);
+
+  // Apply a fresh disk version, replacing the in-app view (clean reload path).
+  const applyDiskVersion = (disk: LootItem[]) => {
+    baselineRef.current = disk;
+    setItems(disk.map((i) => ({ ...i, uid: newUid() })));
+  };
+
+  // React to the open file changing on disk (the game looting items, etc.).
+  const handleExternalChange = async () => {
+    const path = activePathRef.current;
+    if (!path) return;
+    let disk: LootItem[];
+    try {
+      disk = await loadAdvlootFile(path);
+    } catch {
+      showToast("The open filter file is no longer available.", "error");
+      reconcilingRef.current = false;
+      return;
+    }
+    try {
+      lastMtimeRef.current = await advlootFileMtime(path);
+    } catch {
+      /* keep prior */
+    }
+
+    const base = baselineRef.current;
+    const local = stripUids(itemsRef.current);
+
+    // No unsaved edits: just reload and tell the user what changed.
+    if (sameItems(local, base)) {
+      const baseIds = new Set(base.map((i) => i.item_id));
+      const added = disk.filter((i) => !baseIds.has(i.item_id)).length;
+      applyDiskVersion(disk);
+      showToast(
+        `Filter updated from the game — reloaded${added > 0 ? ` (+${added} new item(s))` : ""}.`,
+        "info",
+      );
+      reconcilingRef.current = false;
+      return;
+    }
+
+    // Unsaved edits present: preview the merge and let the user decide.
+    const { addedFromDisk, conflicts } = mergeFilters(base, local, disk);
+    setReconcile({ disk, added: addedFromDisk, conflicts });
+  };
+
+  // Poll the active file's mtime; react when it changes underneath us.
+  useEffect(() => {
+    if (!activeFilePath) return;
+    const timer = setInterval(async () => {
+      if (savingRef.current || reconcilingRef.current) return;
+      const path = activePathRef.current;
+      if (!path) return;
+      let mtime: number | null;
+      try {
+        mtime = await advlootFileMtime(path);
+      } catch {
+        return;
+      }
+      if (mtime == null) return;
+      if (lastMtimeRef.current == null) {
+        lastMtimeRef.current = mtime;
+        return;
+      }
+      if (mtime === lastMtimeRef.current) return;
+      reconcilingRef.current = true;
+      await handleExternalChange();
+    }, FILE_WATCH_INTERVAL_MS);
+    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeFilePath]);
+
+  // --- Reconcile modal resolutions ---
+  const handleMergeExternal = () => {
+    if (!reconcile) return;
+    const base = baselineRef.current;
+    const local = stripUids(itemsRef.current);
+    const { merged, addedFromDisk, conflicts } = mergeFilters(
+      base,
+      local,
+      reconcile.disk,
+    );
+    baselineRef.current = reconcile.disk; // disk is the on-disk truth now
+    setItems(merged.map((i) => ({ ...i, uid: newUid() })));
+    setReconcile(null);
+    reconcilingRef.current = false;
+    showToast(
+      `Merged game changes: +${addedFromDisk} new${conflicts > 0 ? `, ${conflicts} conflict(s) kept your version` : ""}. Save to persist.`,
+      conflicts > 0 ? "info" : "success",
+    );
+  };
+
+  const handleDiscardForExternal = () => {
+    if (!reconcile) return;
+    applyDiskVersion(reconcile.disk);
+    setReconcile(null);
+    reconcilingRef.current = false;
+    showToast("Reloaded from disk — your unsaved changes were discarded.", "info");
+  };
+
+  const handleKeepEditing = () => {
+    // lastMtime is already advanced, so we won't re-prompt for this change;
+    // the baseline stays put so the view is still marked as edited.
+    setReconcile(null);
+    reconcilingRef.current = false;
+    showToast("Kept your edits. Your next save will overwrite the game's changes.", "info");
+  };
+
   const handleAddMany = (incoming: LootItem[]) => {
     if (incoming.length === 0) return;
     setItems((prev) => {
@@ -849,6 +1008,18 @@ export default function App() {
           message={confirmModal.message}
           onConfirm={confirmModal.action}
           onCancel={closeConfirm}
+        />
+      )}
+
+      {reconcile && (
+        <ReconcileModal
+          theme={theme}
+          fileName={baseName(activeFilePath)}
+          added={reconcile.added}
+          conflicts={reconcile.conflicts}
+          onMerge={handleMergeExternal}
+          onDiscard={handleDiscardForExternal}
+          onKeep={handleKeepEditing}
         />
       )}
 
