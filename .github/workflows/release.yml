@@ -10,7 +10,44 @@ on:
   workflow_dispatch:
 
 jobs:
+  # Gate the (expensive) platform builds on the tag version matching the version
+  # declared in package.json and tauri.conf.json. Only major.minor.patch is
+  # compared: a 4th version component and any -prerelease suffix on the tag are
+  # ignored (e.g. app-v0.1.0.2 and app-v0.1.0-beta.1 both require 0.1.0).
+  version-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: verify package + tauri.conf versions match the tag
+        if: github.ref_type == 'tag'
+        run: |
+          norm() {
+            # major.minor.patch only: drop -prerelease, keep first 3 numbers.
+            local v="${1%%-*}"
+            IFS='.' read -r a b c _ <<< "$v"
+            echo "${a:-0}.${b:-0}.${c:-0}"
+          }
+          tag_ver="$(norm "${GITHUB_REF_NAME#app-v}")"
+          pkg_ver="$(norm "$(jq -r .version package.json)")"
+          conf_ver="$(norm "$(jq -r .version src-tauri/tauri.conf.json)")"
+          echo "tag=$tag_ver  package.json=$pkg_ver  tauri.conf.json=$conf_ver"
+          fail=0
+          if [ "$pkg_ver" != "$tag_ver" ]; then
+            echo "::error::package.json version ($pkg_ver) does not match tag ($tag_ver)"
+            fail=1
+          fi
+          if [ "$conf_ver" != "$tag_ver" ]; then
+            echo "::error::src-tauri/tauri.conf.json version ($conf_ver) does not match tag ($tag_ver)"
+            fail=1
+          fi
+          if [ "$fail" -ne 0 ]; then
+            echo "Bump the version in both files to match the tag, then re-tag."
+            exit 1
+          fi
+          echo "Versions match the tag ($tag_ver)."
+
   publish-tauri:
+    needs: version-guard
     permissions:
       contents: write
     strategy:
