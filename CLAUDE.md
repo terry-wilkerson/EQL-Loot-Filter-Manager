@@ -60,6 +60,15 @@ Releases are cut by tagging `main` with `app-v*`.
   resource is never modified — only the per-user copy). An `idx_eq_items_id`
   index is created on startup. Inserts enforce **unique item ids** (an id already
   present is skipped); icons may be shared across items.
+- **Shipping a new catalog:** replace `src-tauri/items_database.sqlite` AND bump
+  `BUNDLED_CATALOG_VERSION` in `lib.rs`. On launch the per-user copy is stamped
+  with that version (SQLite `user_version`); a copy with a lower version is
+  refreshed from the new bundle. User-added items live in a separate `custom_items`
+  table (written alongside `eq_items` by `insert_custom_items`) and are **preserved
+  and replayed** into the refreshed catalog, so updates never wipe custom items.
+  A pre-versioning copy (`user_version = 0`) is adopted as current without a
+  reseed. NOTE: custom items added before the `custom_items` table existed aren't
+  tracked and won't survive the first real catalog bump.
 - Catalog columns are **TEXT**, and several flags are **inverted** vs their
   names: `nodrop='0'` = No-Trade, `norent='0'` = Temporary, lore = `loregroup <> '0'`.
   Because `itemtype` is TEXT, `IN` lists must use string literals (`'0'`, not `0`)
