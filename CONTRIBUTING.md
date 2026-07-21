@@ -103,5 +103,12 @@ git push origin main --tags
 Pushing the `app-v*` tag triggers the `publish` workflow, which builds all
 platforms and creates a **draft** GitHub Release for you to review and publish.
 
+Before any platform builds start, a `version-guard` job checks that the tag's
+version matches `version` in both `package.json` and `src-tauri/tauri.conf.json`.
+Only `major.minor.patch` is compared — a 4th version component or a `-prerelease`
+suffix on the tag is ignored (so `app-v0.1.0`, `app-v0.1.0.2`, and
+`app-v0.1.0-beta.1` all require `0.1.0` in those files). If they don't match, the
+release fails fast before building anything.
+
 Hotfixes follow the same path as any change: branch (`fix/...`), PR, merge, then
 tag a new patch release.
