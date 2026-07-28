@@ -44,6 +44,7 @@ for (const path of Object.keys(files)) mtimes[path] = Date.now();
 let settings: AppSettings = {
   dark_mode: true,
   ui_directory: null,
+  skin: null,
 };
 
 // Artificial latency so loading overlays and debounced search actually render

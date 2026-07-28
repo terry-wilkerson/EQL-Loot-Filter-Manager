@@ -1,10 +1,10 @@
 import { EQIcon } from "./EQIcon";
 import { FILTER_MAP, type LootRow } from "../types";
-import { DANGER_ACCENT, DANGER_WASH, MONO_STACK, type GlassTheme } from "../theme";
+import { MONO_STACK, actionInk, actionWash, type AppTheme } from "../theme";
 import type { SortKey, SortState } from "../utils";
 
 interface ItemTableProps {
-  theme: GlassTheme;
+  theme: AppTheme;
   rows: LootRow[];
   sort: SortState | null;
   onSort: (key: SortKey) => void;
@@ -20,6 +20,8 @@ export function ItemTable({
   onChangeFilter,
   onRemove,
 }: ItemTableProps) {
+  const isDark = theme.isDark;
+
   // A clickable, sortable header cell. Shows ▲/▼ for the active column, and a
   // dimmed ↕ hint on the others.
   const SortableTh = ({
@@ -64,7 +66,7 @@ export function ItemTable({
       style={{
         flex: 1,
         overflowY: "auto",
-        borderRadius: "16px",
+        borderRadius: theme.radius.panel,
         border: theme.cardBorder,
       }}
     >
@@ -78,7 +80,7 @@ export function ItemTable({
         <thead style={{ position: "sticky", top: 0, zIndex: 10 }}>
           <tr
             style={{
-              background: theme.inputBg,
+              background: theme.tableHeadBg,
               borderBottom: theme.cardBorder,
             }}
           >
@@ -115,6 +117,11 @@ export function ItemTable({
                   {item.name}
                 </td>
                 <td style={{ padding: "12px 20px" }}>
+                  {/* The action is the only field on a row that carries
+                      meaning, so it wears the colour rather than sitting in a
+                      grey box identical to the two hundred boxes above it.
+                      The label still names the action — the hue is a second
+                      channel, never the only one. */}
                   <select
                     value={item.filter_id}
                     onChange={(e) =>
@@ -122,15 +129,26 @@ export function ItemTable({
                     }
                     style={{
                       padding: "8px 12px",
-                      borderRadius: "8px",
-                      border: theme.cardBorder,
-                      background: theme.inputBg,
-                      color: theme.textPrimary,
-                      fontWeight: 500,
+                      borderRadius: theme.radius.field,
+                      border: `1px solid ${actionWash(item.filter_id, isDark ? 0.45 : 0.35)}`,
+                      background: actionWash(item.filter_id, isDark ? 0.16 : 0.12),
+                      color: actionInk(item.filter_id, isDark),
+                      fontWeight: 600,
+                      cursor: "pointer",
                     }}
                   >
                     {Object.entries(FILTER_MAP).map(([id, label]) => (
-                      <option key={id} value={id}>
+                      <option
+                        key={id}
+                        value={id}
+                        // The tint belongs to the closed control. Options
+                        // inherit the select's fill by default, which would
+                        // drag a translucent wash into an opaque native popup.
+                        style={{
+                          background: theme.isDark ? "#151a22" : "#ffffff",
+                          color: theme.textPrimary,
+                        }}
+                      >
                         {label}
                       </option>
                     ))}
@@ -141,10 +159,12 @@ export function ItemTable({
                     onClick={() => onRemove(item.uid)}
                     style={{
                       padding: "6px 12px",
-                      borderRadius: "6px",
+                      borderRadius: theme.radius.control,
                       border: "none",
-                      background: DANGER_WASH,
-                      color: DANGER_ACCENT,
+                      background: theme.isDark
+                        ? "rgba(239, 68, 68, 0.15)"
+                        : "rgba(185, 28, 28, 0.1)",
+                      color: theme.dangerInk,
                       fontWeight: 600,
                       cursor: "pointer",
                     }}

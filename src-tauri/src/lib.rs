@@ -47,6 +47,13 @@ pub struct ScanResult {
 pub struct AppSettings {
     pub dark_mode: bool,
     pub ui_directory: Option<String>,
+    /// Which visual skin the interface wears. `#[serde(default)]` so a
+    /// settings.json written before skins existed still deserializes — without
+    /// it, every upgrading user silently loses their saved directory too.
+    /// Validation lives on the frontend, which owns the list of skin ids; an
+    /// unrecognized value falls back to the default there.
+    #[serde(default)]
+    pub skin: Option<String>,
 }
 
 impl Default for AppSettings {
@@ -54,6 +61,7 @@ impl Default for AppSettings {
         Self {
             dark_mode: true,
             ui_directory: None,
+            skin: None,
         }
     }
 }
@@ -760,6 +768,20 @@ mod tests {
         let s = AppSettings::default();
         assert!(s.dark_mode);
         assert!(s.ui_directory.is_none());
+        assert!(s.skin.is_none());
+    }
+
+    /// A settings.json written before the `skin` field existed must still load,
+    /// carrying its other values intact. Without `#[serde(default)]` this
+    /// deserialization fails and `load_settings` silently discards the user's
+    /// saved UI directory.
+    #[test]
+    fn settings_without_skin_field_still_deserialize() {
+        let json = r#"{"dark_mode": false, "ui_directory": "C:/EQ/uifiles"}"#;
+        let s: AppSettings = serde_json::from_str(json).expect("legacy settings should load");
+        assert!(!s.dark_mode);
+        assert_eq!(s.ui_directory.as_deref(), Some("C:/EQ/uifiles"));
+        assert!(s.skin.is_none());
     }
 
     #[test]

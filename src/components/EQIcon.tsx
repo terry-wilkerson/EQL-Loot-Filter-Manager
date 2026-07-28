@@ -14,9 +14,9 @@ export const EQIcon: React.FC<EQIconProps> = ({ iconId }) => {
         style={{
           width: "40px",
           height: "40px",
-          borderRadius: "6px",
-          backgroundColor: "rgba(0,0,0,0.2)",
-          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "var(--icon-tile-radius, 6px)",
+          backgroundColor: "var(--icon-tile-empty, rgba(0,0,0,0.2))",
+          border: "var(--icon-tile-border, 1px solid rgba(255,255,255,0.1))",
         }}
         title="No Icon"
       />
@@ -46,10 +46,10 @@ export const EQIcon: React.FC<EQIconProps> = ({ iconId }) => {
         style={{
           width: "40px",
           height: "40px",
-          borderRadius: "6px",
+          borderRadius: "var(--icon-tile-radius, 6px)",
           backgroundColor: "rgba(239, 68, 68, 0.15)",
-          border: "1px solid rgba(239, 68, 68, 0.3)",
-          color: "#ef4444",
+          border: "1px solid rgba(239, 68, 68, 0.35)",
+          color: "var(--ink-danger, #ef4444)",
           fontSize: "11px",
           fontFamily: MONO_STACK,
           display: "flex",
@@ -69,11 +69,11 @@ export const EQIcon: React.FC<EQIconProps> = ({ iconId }) => {
       style={{
         width: "40px",
         height: "40px",
-        borderRadius: "6px",
-        border: "1px solid rgba(255, 255, 255, 0.15)",
+        borderRadius: "var(--icon-tile-radius, 6px)",
+        border: "var(--icon-tile-border, 1px solid rgba(255, 255, 255, 0.15))",
         overflow: "hidden",
         display: "inline-block",
-        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.2)",
+        boxShadow: "var(--icon-tile-shadow, 0 2px 8px rgba(0, 0, 0, 0.2))",
       }}
     >
       <img

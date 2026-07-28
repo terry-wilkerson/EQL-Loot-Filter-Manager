@@ -1,9 +1,9 @@
 import { EQIcon } from "./EQIcon";
 import type { LootRow } from "../types";
-import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type AppTheme } from "../theme";
 
 interface UnknownItemsModalProps {
-  theme: GlassTheme;
+  theme: AppTheme;
   // The loaded rows whose item ids are not in the catalog.
   items: LootRow[];
   onCancel: () => void;
@@ -19,10 +19,10 @@ export function UnknownItemsModal({
   onAddAll,
 }: UnknownItemsModalProps) {
   return (
-    <div style={modalOverlayStyle}>
+    <div style={modalOverlayStyle(theme)}>
       <div
         style={{
-          ...modalCardStyle,
+          ...modalCardStyle(theme),
           maxWidth: "480px",
           background: theme.cardBg,
           border: theme.cardBorder,
@@ -45,7 +45,7 @@ export function UnknownItemsModal({
             flex: 1,
             overflowY: "auto",
             border: theme.cardBorder,
-            borderRadius: "10px",
+            borderRadius: theme.radius.action,
             padding: "6px",
             marginBottom: "16px",
           }}
@@ -87,7 +87,7 @@ export function UnknownItemsModal({
             onClick={onCancel}
             style={{
               padding: "10px 16px",
-              borderRadius: "8px",
+              borderRadius: theme.radius.field,
               border: "none",
               background: theme.buttonSecondary,
               color: theme.textPrimary,
@@ -101,7 +101,7 @@ export function UnknownItemsModal({
             onClick={onAddAll}
             style={{
               padding: "10px 16px",
-              borderRadius: "8px",
+              borderRadius: theme.radius.field,
               border: "none",
               background: theme.buttonPrimary,
               color: ON_ACCENT,

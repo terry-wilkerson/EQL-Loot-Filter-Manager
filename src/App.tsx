@@ -31,10 +31,29 @@ import {
   type SortKey,
   type SortState,
 } from "./utils";
-import { ON_ACCENT, buildGlassTheme, buildGlobalStyles, SUCCESS_GRADIENT } from "./theme";
+import {
+  ON_ACCENT,
+  buildTheme,
+  buildGlobalStyles,
+  DEFAULT_SKIN,
+  SKIN_LIST,
+  resolveSkin,
+  type SkinId,
+} from "./theme";
 import { useToast } from "./components/Toast";
 import { Dashboard } from "./components/Dashboard";
 import { ItemTable } from "./components/ItemTable";
+import {
+  IconHammer,
+  IconMoon,
+  IconPlus,
+  IconSave,
+  IconSearch,
+  IconSun,
+  IconSwap,
+  IconTrash,
+  IconWarning,
+} from "./components/Icon";
 import { ConfirmModal } from "./components/ConfirmModal";
 import { NewFileModal } from "./components/NewFileModal";
 import { SaveAsModal } from "./components/SaveAsModal";
@@ -72,6 +91,9 @@ export default function App() {
   const { showToast } = useToast();
 
   const [isDarkMode, setIsDarkMode] = useState(true);
+  // Which material world the app is wearing. Persisted alongside the light
+  // level; both are the same kind of preference and neither touches a filter.
+  const [skin, setSkin] = useState<SkinId>(DEFAULT_SKIN);
   const [uiDirectory, setUiDirectory] = useState("");
   const [detectedFiles, setDetectedFiles] = useState<FilterFileInfo[]>([]);
   const [activeFilePath, setActiveFilePath] = useState("");
@@ -118,10 +140,10 @@ export default function App() {
   const stripUids = (rows: LootRow[]): LootItem[] =>
     rows.map(({ uid: _uid, ...rest }) => rest);
 
-  const theme = useMemo(() => buildGlassTheme(isDarkMode), [isDarkMode]);
+  const theme = useMemo(() => buildTheme(skin, isDarkMode), [skin, isDarkMode]);
   const globalStyles = useMemo(
-    () => buildGlobalStyles(theme, isDarkMode),
-    [theme, isDarkMode],
+    () => buildGlobalStyles(theme),
+    [theme],
   );
 
   // Guards the persistence effect so we don't overwrite settings.json with
@@ -137,6 +159,10 @@ export default function App() {
       try {
         const settings = await loadSettings();
         setIsDarkMode(settings.dark_mode);
+        // A settings.json from before skins existed has no value here, and a
+        // hand-edited one may name a skin that no longer ships; both resolve to
+        // the default rather than rendering an undefined theme.
+        setSkin(resolveSkin(settings.skin));
 
         let dir = settings.ui_directory;
         // One-time migration from the old localStorage key.
@@ -160,14 +186,15 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Persist settings whenever the user changes theme or directory.
+  // Persist settings whenever the user changes skin, light level or directory.
   useEffect(() => {
     if (!hydrated.current) return;
     saveSettings({
       dark_mode: isDarkMode,
       ui_directory: uiDirectory || null,
+      skin,
     }).catch((err) => console.error("Failed to save settings:", err));
-  }, [isDarkMode, uiDirectory]);
+  }, [isDarkMode, uiDirectory, skin]);
 
   const scanDirectory = async (dirPath: string) => {
     try {
@@ -663,10 +690,10 @@ export default function App() {
           alignItems: "center",
           padding: "16px 24px",
           background: theme.cardBg,
-          backdropFilter: "blur(16px)",
-          borderRadius: "16px",
+          backdropFilter: theme.blur.chrome,
+          borderRadius: theme.radius.panel,
           border: theme.cardBorder,
-          boxShadow: "0 8px 32px 0 rgba(0, 0, 0, 0.2)",
+          boxShadow: theme.elevation.chrome,
           marginBottom: "24px",
           flexShrink: 0,
         }}
@@ -676,7 +703,7 @@ export default function App() {
             style={{
               width: "36px",
               height: "36px",
-              borderRadius: "10px",
+              borderRadius: theme.radius.action,
               background: theme.buttonPrimary,
               display: "flex",
               alignItems: "center",
@@ -708,11 +735,17 @@ export default function App() {
         </div>
 
         <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-          <button
-            onClick={() => setIsDarkMode(!isDarkMode)}
+          {/* Skin picker. Sits beside the light-level toggle because they are
+              the same kind of decision — what the app is made of, and how
+              bright the room is — and neither one touches the manifest. */}
+          <select
+            value={skin}
+            onChange={(e) => setSkin(e.target.value as SkinId)}
+            aria-label="Interface skin"
+            title={SKIN_LIST.find((s) => s.id === skin)?.note}
             style={{
-              padding: "8px 14px",
-              borderRadius: "10px",
+              padding: "8px 12px",
+              borderRadius: theme.radius.action,
               border: theme.cardBorder,
               background: theme.buttonSecondary,
               color: theme.textPrimary,
@@ -720,7 +753,30 @@ export default function App() {
               fontWeight: 600,
             }}
           >
-            {isDarkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+            {SKIN_LIST.map((s) => (
+              <option key={s.id} value={s.id} title={s.note}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+
+          <button
+            onClick={() => setIsDarkMode(!isDarkMode)}
+            style={{
+              padding: "8px 14px",
+              borderRadius: theme.radius.action,
+              border: theme.cardBorder,
+              background: theme.buttonSecondary,
+              color: theme.textPrimary,
+              cursor: "pointer",
+              fontWeight: 600,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            {isDarkMode ? <IconSun /> : <IconMoon />}
+            {isDarkMode ? "Light Mode" : "Dark Mode"}
           </button>
 
           {activeFilePath && (
@@ -728,15 +784,19 @@ export default function App() {
               onClick={() => setActiveFilePath("")}
               style={{
                 padding: "8px 14px",
-                borderRadius: "10px",
+                borderRadius: theme.radius.action,
                 border: theme.cardBorder,
                 background: theme.buttonSecondary,
                 color: theme.textPrimary,
                 cursor: "pointer",
                 fontWeight: 600,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
               }}
             >
-              📁 Switch File
+              <IconSwap />
+              Switch File
             </button>
           )}
         </div>
@@ -759,10 +819,10 @@ export default function App() {
             flex: 1,
             padding: "24px",
             background: theme.cardBg,
-            backdropFilter: "blur(20px)",
-            borderRadius: "24px",
+            backdropFilter: theme.blur.work,
+            borderRadius: theme.radius.workspace,
             border: theme.cardBorder,
-            boxShadow: "0 12px 40px rgba(0,0,0,0.25)",
+            boxShadow: theme.elevation.work,
             overflow: "hidden",
           }}
         >
@@ -778,20 +838,32 @@ export default function App() {
             }}
           >
             <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", flex: 1 }}>
-              <input
-                type="text"
-                placeholder="🔍 Search item name or ID..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                style={{
-                  padding: "10px 16px",
-                  borderRadius: "10px",
-                  border: theme.cardBorder,
-                  background: theme.inputBg,
-                  color: theme.textPrimary,
-                  minWidth: "240px",
-                }}
-              />
+              <div style={{ position: "relative", display: "flex" }}>
+                <IconSearch
+                  style={{
+                    position: "absolute",
+                    left: "12px",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: theme.textSecondary,
+                    pointerEvents: "none",
+                  }}
+                />
+                <input
+                  type="text"
+                  placeholder="Search item name or ID…"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  style={{
+                    padding: "10px 16px 10px 36px",
+                    borderRadius: theme.radius.action,
+                    border: theme.cardBorder,
+                    background: theme.inputBg,
+                    color: theme.textPrimary,
+                    minWidth: "240px",
+                  }}
+                />
+              </div>
 
               <select
                 onChange={(e) => {
@@ -801,14 +873,14 @@ export default function App() {
                 defaultValue=""
                 style={{
                   padding: "10px 16px",
-                  borderRadius: "10px",
+                  borderRadius: theme.radius.action,
                   border: theme.cardBorder,
                   background: theme.inputBg,
                   color: theme.textPrimary,
                 }}
               >
                 <option value="" disabled>
-                  ⚡ Bulk Set Matched To...
+                  Bulk Set Matched To…
                 </option>
                 {Object.entries(FILTER_MAP).map(([id, label]) => (
                   <option key={id} value={id}>
@@ -822,7 +894,7 @@ export default function App() {
                 title="Show only items that are tradeskill items"
                 style={{
                   padding: "10px 16px",
-                  borderRadius: "10px",
+                  borderRadius: theme.radius.action,
                   border: showTradeskillOnly ? "none" : theme.cardBorder,
                   background: showTradeskillOnly
                     ? theme.buttonPrimary
@@ -830,9 +902,13 @@ export default function App() {
                   color: showTradeskillOnly ? ON_ACCENT : theme.textPrimary,
                   fontWeight: 600,
                   cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
                 }}
               >
-                🔨 Tradeskill Only{showTradeskillOnly ? ` (${filteredItems.length})` : ""}
+                <IconHammer />
+                Tradeskill Only{showTradeskillOnly ? ` (${filteredItems.length})` : ""}
               </button>
 
               {search && filteredItems.length > 0 && (
@@ -840,15 +916,19 @@ export default function App() {
                   onClick={handleBulkRemoveMatched}
                   style={{
                     padding: "10px 16px",
-                    borderRadius: "10px",
+                    borderRadius: theme.radius.action,
                     border: "none",
                     background: theme.buttonDanger,
                     color: ON_ACCENT,
                     fontWeight: 600,
                     cursor: "pointer",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
                   }}
                 >
-                  🗑️ Bulk Remove Matched ({filteredItems.length})
+                  <IconTrash />
+                  Bulk Remove Matched ({filteredItems.length})
                 </button>
               )}
             </div>
@@ -858,35 +938,43 @@ export default function App() {
                 onClick={() => setShowAddItemModal(true)}
                 style={{
                   padding: "10px 18px",
-                  borderRadius: "10px",
+                  borderRadius: theme.radius.action,
                   border: "none",
-                  background: SUCCESS_GRADIENT,
+                  background: theme.buttonSuccess,
                   color: ON_ACCENT,
                   fontWeight: 600,
                   cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
                 }}
               >
-                + Add Item
+                <IconPlus />
+                Add Item
               </button>
               <button
                 onClick={handleSaveFile}
                 style={{
                   padding: "10px 18px",
-                  borderRadius: "10px",
+                  borderRadius: theme.radius.action,
                   border: "none",
                   background: theme.buttonPrimary,
                   color: ON_ACCENT,
                   fontWeight: 600,
                   cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
                 }}
               >
-                💾 Save Changes
+                <IconSave />
+                Save Changes
               </button>
               <button
                 onClick={openSaveAs}
                 style={{
                   padding: "10px 18px",
-                  borderRadius: "10px",
+                  borderRadius: theme.radius.action,
                   border: theme.cardBorder,
                   background: theme.buttonSecondary,
                   color: theme.textPrimary,
@@ -900,10 +988,10 @@ export default function App() {
                 onClick={handleClearAll}
                 style={{
                   padding: "10px 18px",
-                  borderRadius: "10px",
+                  borderRadius: theme.radius.action,
                   border: theme.cardBorder,
                   background: theme.buttonSecondary,
-                  color: "#ef4444",
+                  color: theme.dangerInk,
                   fontWeight: 600,
                   cursor: "pointer",
                 }}
@@ -922,21 +1010,30 @@ export default function App() {
                 gap: "12px",
                 padding: "12px 16px",
                 marginBottom: "16px",
-                borderRadius: "12px",
-                background: "rgba(245, 158, 11, 0.12)",
-                border: "1px solid rgba(245, 158, 11, 0.4)",
+                borderRadius: theme.radius.chip,
+                background: theme.warnBg,
+                border: theme.warnBorder,
                 flexShrink: 0,
               }}
             >
-              <span style={{ fontSize: "13px", color: theme.textPrimary }}>
-                ⚠️ {unknownIds.length} item(s) in this filter aren't in the item
+              <span
+                style={{
+                  fontSize: "13px",
+                  color: theme.textPrimary,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "8px",
+                }}
+              >
+                <IconWarning style={{ color: theme.warnInk }} />
+                {unknownIds.length} item(s) in this filter aren't in the item
                 database.
               </span>
               <button
                 onClick={() => setShowUnknownModal(true)}
                 style={{
                   padding: "8px 14px",
-                  borderRadius: "8px",
+                  borderRadius: theme.radius.field,
                   border: "none",
                   background: theme.buttonPrimary,
                   color: ON_ACCENT,

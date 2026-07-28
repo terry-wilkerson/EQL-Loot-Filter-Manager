@@ -40,6 +40,10 @@ export interface ScanResult {
 export interface AppSettings {
   dark_mode: boolean;
   ui_directory: string | null;
+  // The visual skin id. Nullable because a settings.json written before skins
+  // existed has no such field; the frontend validates it and falls back to the
+  // default when the value is missing or unrecognized.
+  skin: string | null;
 }
 
 // Stable per-row id generator with a fallback for older webviews.

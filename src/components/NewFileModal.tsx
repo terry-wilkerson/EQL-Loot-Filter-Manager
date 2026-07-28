@@ -1,7 +1,7 @@
-import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type AppTheme } from "../theme";
 
 interface NewFileModalProps {
-  theme: GlassTheme;
+  theme: AppTheme;
   fileName: string;
   onFileNameChange: (value: string) => void;
   onCancel: () => void;
@@ -16,10 +16,10 @@ export function NewFileModal({
   onCreate,
 }: NewFileModalProps) {
   return (
-    <div style={modalOverlayStyle}>
+    <div style={modalOverlayStyle(theme)}>
       <div
         style={{
-          ...modalCardStyle,
+          ...modalCardStyle(theme),
           background: theme.cardBg,
           border: theme.cardBorder,
         }}
@@ -33,7 +33,7 @@ export function NewFileModal({
           style={{
             width: "100%",
             padding: "12px",
-            borderRadius: "10px",
+            borderRadius: theme.radius.action,
             border: theme.cardBorder,
             background: theme.inputBg,
             color: theme.textPrimary,
@@ -46,7 +46,7 @@ export function NewFileModal({
             onClick={onCancel}
             style={{
               padding: "10px 16px",
-              borderRadius: "8px",
+              borderRadius: theme.radius.field,
               border: "none",
               background: theme.buttonSecondary,
               color: theme.textPrimary,
@@ -59,7 +59,7 @@ export function NewFileModal({
             onClick={onCreate}
             style={{
               padding: "10px 16px",
-              borderRadius: "8px",
+              borderRadius: theme.radius.field,
               border: "none",
               background: theme.buttonPrimary,
               color: ON_ACCENT,

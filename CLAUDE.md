@@ -27,14 +27,32 @@ frontend in `src/`. See `README.md` for the full layout and file format.
   `lib.rs` (backend) so it can be unit-tested. Prefer extracting over inlining.
 - **Styling is inline style objects, with one exception.** Anything a style
   object cannot express — `@font-face`, the document type reset,
-  `:focus-visible`, `:hover`, `:disabled`, scrollbars, keyframes — belongs in
-  `buildGlobalStyles(theme, isDarkMode)` in `src/theme.ts`, which is injected as
+  `:focus-visible`, `:hover`, `:disabled`, zebra rows, scrollbars, keyframes —
+  belongs in `buildGlobalStyles(theme)` in `src/theme.ts`, which is injected as
   a `<style>` tag and re-runs per theme. Do not add a static `.css` file; it
   could not react to the theme.
-- **Colours come from `theme.ts` tokens**, not literals: `ACCENT_INDIGO`,
-  `ON_ACCENT`, `SUCCESS_ACCENT`, `DANGER_ACCENT`, `SUCCESS_GRADIENT`, and
-  `overlay(isDarkMode, alpha)` for chrome tints. `DESIGN.md` is the authority
-  for what each one means.
+- **The whole visual system is `buildTheme(skin, isDark)` in `theme.ts`.** Two
+  axes: the *skin* (`ledger` — the committed world — plus `glass`, `console`,
+  `solid`) and the light level. Both persist to `settings.json`. Every colour,
+  radius, shadow and blur a component renders must come off the returned
+  `AppTheme`: `theme.cardBg`, `theme.radius.<role>`, `theme.elevation.<step>`,
+  `theme.blur.<step>`, `theme.dangerInk`, `overlay(isDark, alpha)` for chrome
+  tints. **A hardcoded colour or radius in a component is a bug** — it will be
+  wrong in three of the four skins. `DESIGN.md` is the authority on meaning.
+- **Radii are named by role, not size**: `control` · `field` · `action` · `chip`
+  · `panel` · `modal` · `workspace`. Pick the role, never a pixel value.
+- **Surfaces that render outside `<App/>` read `:root` custom properties**, not
+  props. `buildGlobalStyles` publishes `--toast-*`, `--ink-*` and `--icon-tile-*`
+  for exactly this. `Toast` (mounted above `<App/>`) and `EQIcon` (once per row,
+  in three surfaces) both use that bridge; follow it rather than threading the
+  theme down.
+- **Interface icons are inline SVG in `src/components/Icon.tsx`**, stroked in
+  `currentColor` on a 24-unit box at 1.5 weight and marked `aria-hidden`
+  (every one sits beside a text label). No emoji in the chrome, no icon font,
+  no icon package, no `<img>`.
+- **The action channel is skin-independent.** `actionInk`/`actionWash` in
+  `theme.ts` bind the four loot actions to fixed hues, because a row's action is
+  data, not chrome. Do not make them vary by skin.
 
 ## Invariants — don't regress these
 

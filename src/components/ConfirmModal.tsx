@@ -1,7 +1,7 @@
-import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type AppTheme } from "../theme";
 
 interface ConfirmModalProps {
-  theme: GlassTheme;
+  theme: AppTheme;
   title: string;
   message: string;
   onConfirm: () => void;
@@ -16,15 +16,15 @@ export function ConfirmModal({
   onCancel,
 }: ConfirmModalProps) {
   return (
-    <div style={modalOverlayStyle}>
+    <div style={modalOverlayStyle(theme)}>
       <div
         style={{
-          ...modalCardStyle,
+          ...modalCardStyle(theme),
           background: theme.cardBg,
           border: theme.cardBorder,
         }}
       >
-        <h3 style={{ margin: "0 0 8px 0", color: "#ef4444" }}>{title}</h3>
+        <h3 style={{ margin: "0 0 8px 0", color: theme.dangerInk }}>{title}</h3>
         <p style={{ color: theme.textSecondary, marginBottom: "20px" }}>
           {message}
         </p>
@@ -33,7 +33,7 @@ export function ConfirmModal({
             onClick={onCancel}
             style={{
               padding: "10px 16px",
-              borderRadius: "8px",
+              borderRadius: theme.radius.field,
               border: "none",
               background: theme.buttonSecondary,
               color: theme.textPrimary,
@@ -46,7 +46,7 @@ export function ConfirmModal({
             onClick={onConfirm}
             style={{
               padding: "10px 16px",
-              borderRadius: "8px",
+              borderRadius: theme.radius.field,
               border: "none",
               background: theme.buttonDanger,
               color: ON_ACCENT,

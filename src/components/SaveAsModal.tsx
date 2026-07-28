@@ -1,7 +1,7 @@
-import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type AppTheme } from "../theme";
 
 interface SaveAsModalProps {
-  theme: GlassTheme;
+  theme: AppTheme;
   fileName: string;
   onFileNameChange: (value: string) => void;
   onCancel: () => void;
@@ -16,10 +16,10 @@ export function SaveAsModal({
   onConfirm,
 }: SaveAsModalProps) {
   return (
-    <div style={modalOverlayStyle}>
+    <div style={modalOverlayStyle(theme)}>
       <div
         style={{
-          ...modalCardStyle,
+          ...modalCardStyle(theme),
           background: theme.cardBg,
           border: theme.cardBorder,
         }}
@@ -37,7 +37,7 @@ export function SaveAsModal({
           style={{
             width: "100%",
             padding: "12px",
-            borderRadius: "10px",
+            borderRadius: theme.radius.action,
             border: theme.cardBorder,
             background: theme.inputBg,
             color: theme.textPrimary,
@@ -50,7 +50,7 @@ export function SaveAsModal({
             onClick={onCancel}
             style={{
               padding: "10px 16px",
-              borderRadius: "8px",
+              borderRadius: theme.radius.field,
               border: "none",
               background: theme.buttonSecondary,
               color: theme.textPrimary,
@@ -63,7 +63,7 @@ export function SaveAsModal({
             onClick={onConfirm}
             style={{
               padding: "10px 16px",
-              borderRadius: "8px",
+              borderRadius: theme.radius.field,
               border: "none",
               background: theme.buttonPrimary,
               color: ON_ACCENT,

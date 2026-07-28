@@ -8,8 +8,6 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { ACCENT_INDIGO, SUCCESS_ACCENT, DANGER_ACCENT } from "../theme";
-
 type ToastKind = "success" | "error" | "info";
 
 interface Toast {
@@ -24,10 +22,13 @@ interface ToastContextValue {
 
 const ToastContext = createContext<ToastContextValue | null>(null);
 
+// The provider sits above <App/>, so it cannot take the theme as a prop. It
+// reads the custom properties `buildGlobalStyles` publishes on :root instead,
+// which means the stack follows a skin change with no plumbing.
 const KIND_ACCENT: Record<ToastKind, string> = {
-  success: SUCCESS_ACCENT,
-  error: DANGER_ACCENT,
-  info: ACCENT_INDIGO,
+  success: "var(--ink-success, #10b981)",
+  error: "var(--ink-danger, #ef4444)",
+  info: "var(--ink-accent, #6366f1)",
 };
 
 const AUTO_DISMISS_MS = 4000;
@@ -69,13 +70,13 @@ export function ToastProvider({ children }: { children: ReactNode }) {
             role="status"
             style={{
               padding: "12px 16px",
-              borderRadius: "12px",
-              background: "rgba(15, 23, 42, 0.92)",
-              color: "#f8fafc",
-              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: "var(--toast-radius, 12px)",
+              background: "var(--toast-bg, rgba(15, 23, 42, 0.92))",
+              color: "var(--toast-text, #f8fafc)",
+              border: "var(--toast-border, 1px solid rgba(255,255,255,0.12))",
               borderLeft: `4px solid ${KIND_ACCENT[toast.kind]}`,
-              boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
-              backdropFilter: "blur(12px)",
+              boxShadow: "var(--toast-shadow, 0 10px 30px rgba(0,0,0,0.4))",
+              backdropFilter: "var(--toast-blur, blur(12px))",
               cursor: "pointer",
               fontSize: "14px",
               fontWeight: 500,

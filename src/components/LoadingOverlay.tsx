@@ -1,7 +1,7 @@
-import { ACCENT_INDIGO, modalOverlayStyle, type GlassTheme } from "../theme";
+import { modalOverlayStyle, type AppTheme } from "../theme";
 
 interface LoadingOverlayProps {
-  theme: GlassTheme;
+  theme: AppTheme;
   message: string;
 }
 
@@ -9,7 +9,7 @@ interface LoadingOverlayProps {
 // adding the tradeskill catalog) so the app doesn't look frozen.
 export function LoadingOverlay({ theme, message }: LoadingOverlayProps) {
   return (
-    <div style={{ ...modalOverlayStyle, zIndex: 3000 }}>
+    <div style={{ ...modalOverlayStyle(theme), zIndex: 3000 }}>
       <div
         style={{
           display: "flex",
@@ -17,11 +17,11 @@ export function LoadingOverlay({ theme, message }: LoadingOverlayProps) {
           alignItems: "center",
           gap: "18px",
           padding: "32px 40px",
-          borderRadius: "20px",
+          borderRadius: theme.radius.modal,
           background: theme.cardBg,
           border: theme.cardBorder,
-          boxShadow: "0 20px 50px rgba(0, 0, 0, 0.4)",
-          backdropFilter: "blur(20px)",
+          boxShadow: theme.elevation.overlay,
+          backdropFilter: theme.blur.overlay,
         }}
       >
         <div
@@ -29,8 +29,8 @@ export function LoadingOverlay({ theme, message }: LoadingOverlayProps) {
             width: "42px",
             height: "42px",
             borderRadius: "50%",
-            border: "4px solid rgba(148, 163, 184, 0.25)",
-            borderTopColor: ACCENT_INDIGO,
+            border: `4px solid ${theme.isDark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.1)"}`,
+            borderTopColor: theme.accent,
             animation: "eql-spin 0.8s linear infinite",
           }}
         />
