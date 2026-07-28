@@ -12,6 +12,12 @@ frontend in `src/`. See `README.md` for the full layout and file format.
 
 - **All IPC goes through `src/api.ts`.** Never call `invoke(...)` directly from a
   component. Add a typed wrapper in `api.ts` and import it.
+- **`api.ts` also owns the no-Tauri fallback.** When there is no IPC bridge
+  (`npm run dev` opened in a plain browser) and the build is a dev build, every
+  wrapper routes to the in-memory fixture backend in `src/dev/` instead. Adding
+  a command means adding *both* the `invoke` call and its `mockBackend.ts`
+  counterpart — a command with no fallback silently breaks browser-only UI work.
+  See "Browser-only UI development" below.
 - **Shared types live in `src/types.ts`** and mirror the Rust structs. If you
   change a Rust `#[derive(Serialize)]` struct that crosses the boundary, update
   the matching TS interface (field names are snake_case on both sides).
@@ -49,6 +55,30 @@ Releases are cut by tagging `main` with `app-v*`.
 - Backend: `cd src-tauri && cargo check` and `cargo test`.
 - There is no automated end-to-end test; manual `npm run tauri dev` covers the
   UI flows (select dir → open/create file → add/edit items → save).
+
+## Browser-only UI development
+
+`npm run dev` alone (no Tauri shell) now serves a working app at
+`localhost:1420` against fixture data, so UI work can happen in a normal browser
+with hot reload and devtools. `npm run tauri dev` is unaffected — the real
+bridge is present, so the real commands run.
+
+- `src/dev/fixtures.ts` — the fake catalog (~1,200 depot items plus curated
+  gear), three `LF_*.ini` files, and three deliberately-unknown item ids so the
+  custom-item flow is reachable.
+- `src/dev/mockBackend.ts` — the in-memory command surface. It mirrors backend
+  *rules*, not just shapes: path confinement, `LF_*.ini` naming, caret/newline
+  rejection, the 200-result search cap, unique-id custom inserts. Keep it that
+  way, so a UI change that would break against Rust breaks here too.
+- Console controls on `window.__eqlMock`: `simulateGameWrite()` (exercises the
+  file watcher and reconcile flow), `simulateDelete()`, `reset()`, and
+  `latencyMs` (defaults to 90ms so loading states actually render).
+- Both modules are behind `import.meta.env.DEV` and a dynamic import, so
+  production builds drop them entirely. Verify with
+  `npm run build && grep -r "__eqlMock" dist/` — it must find nothing.
+
+Fixture settings are in memory only and reset on reload. That is deliberate:
+persisting them would mean `localStorage`, which the real app does not use.
 
 ## Gotchas
 

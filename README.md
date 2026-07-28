@@ -96,6 +96,22 @@ npm install
 npm run tauri dev      # run the app with hot reload
 ```
 
+### UI work without the Tauri shell
+
+```bash
+npm run dev            # frontend only, at http://localhost:1420
+```
+
+Opened in a normal browser there is no Tauri IPC bridge, so the app serves
+**fixture data** instead (`src/dev/`): a stand-in EverQuest directory, three
+filter files, and a catalog of about 1,200 items. Useful for fast UI iteration
+with devtools and hot reload; no Rust toolchain needed.
+
+`window.__eqlMock` exposes controls from the console — `simulateGameWrite()`
+(makes the file watcher fire, as if the game had looted something),
+`simulateDelete()`, `reset()`, and `latencyMs`. The fallback is dev-only and is
+stripped from production builds.
+
 ## Build
 
 ```bash
