@@ -1,4 +1,4 @@
-import { modalOverlayStyle, type GlassTheme } from "../theme";
+import { ACCENT_INDIGO, modalOverlayStyle, type GlassTheme } from "../theme";
 
 interface LoadingOverlayProps {
   theme: GlassTheme;
@@ -30,7 +30,7 @@ export function LoadingOverlay({ theme, message }: LoadingOverlayProps) {
             height: "42px",
             borderRadius: "50%",
             border: "4px solid rgba(148, 163, 184, 0.25)",
-            borderTopColor: "#6366f1",
+            borderTopColor: ACCENT_INDIGO,
             animation: "eql-spin 0.8s linear infinite",
           }}
         />

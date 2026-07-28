@@ -1,4 +1,4 @@
-import { SUCCESS_GRADIENT, type GlassTheme } from "../theme";
+import { ON_ACCENT, SUCCESS_GRADIENT, type GlassTheme } from "../theme";
 import type { FilterFileInfo } from "../types";
 
 interface DashboardProps {
@@ -61,14 +61,17 @@ export function Dashboard({
           type="text"
           readOnly
           value={uiDirectory || "No directory selected..."}
+          // Read-only: a dashed border and a transparent fill so it reads as
+          // a display of the current selection, not a field to type into.
           style={{
             flex: 1,
             padding: "12px 16px",
             borderRadius: "12px",
-            border: theme.cardBorder,
-            background: theme.inputBg,
-            color: theme.textPrimary,
+            border: `1px dashed ${theme.textSecondary}`,
+            background: "transparent",
+            color: uiDirectory ? theme.textPrimary : theme.textSecondary,
             fontSize: "14px",
+            cursor: "default",
           }}
         />
         <button
@@ -78,7 +81,7 @@ export function Dashboard({
             borderRadius: "12px",
             border: "none",
             background: theme.buttonPrimary,
-            color: "#fff",
+            color: ON_ACCENT,
             fontWeight: 600,
             cursor: "pointer",
           }}
@@ -107,7 +110,7 @@ export function Dashboard({
               borderRadius: "10px",
               border: "none",
               background: SUCCESS_GRADIENT,
-              color: "#fff",
+              color: ON_ACCENT,
               fontWeight: 600,
               cursor: "pointer",
             }}
@@ -148,7 +151,7 @@ export function Dashboard({
                   borderRadius: "8px",
                   border: "none",
                   background: theme.buttonPrimary,
-                  color: "#fff",
+                  color: ON_ACCENT,
                   cursor: "pointer",
                   fontWeight: 600,
                 }}

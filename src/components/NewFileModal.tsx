@@ -1,4 +1,4 @@
-import { modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
 
 interface NewFileModalProps {
   theme: GlassTheme;
@@ -62,7 +62,7 @@ export function NewFileModal({
               borderRadius: "8px",
               border: "none",
               background: theme.buttonPrimary,
-              color: "#fff",
+              color: ON_ACCENT,
               cursor: "pointer",
               fontWeight: 600,
             }}

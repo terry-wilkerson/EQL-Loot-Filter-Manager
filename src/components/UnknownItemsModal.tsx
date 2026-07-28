@@ -1,6 +1,6 @@
 import { EQIcon } from "./EQIcon";
 import type { LootRow } from "../types";
-import { modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
 
 interface UnknownItemsModalProps {
   theme: GlassTheme;
@@ -104,7 +104,7 @@ export function UnknownItemsModal({
               borderRadius: "8px",
               border: "none",
               background: theme.buttonPrimary,
-              color: "#fff",
+              color: ON_ACCENT,
               fontWeight: 600,
               cursor: "pointer",
             }}

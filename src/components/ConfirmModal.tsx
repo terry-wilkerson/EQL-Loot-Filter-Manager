@@ -1,4 +1,4 @@
-import { modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
 
 interface ConfirmModalProps {
   theme: GlassTheme;
@@ -49,7 +49,7 @@ export function ConfirmModal({
               borderRadius: "8px",
               border: "none",
               background: theme.buttonDanger,
-              color: "#fff",
+              color: ON_ACCENT,
               cursor: "pointer",
               fontWeight: 600,
             }}

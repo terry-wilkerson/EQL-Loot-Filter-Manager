@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { MONO_STACK } from "../theme";
 
 interface EQIconProps {
   iconId: number;
@@ -49,8 +50,8 @@ export const EQIcon: React.FC<EQIconProps> = ({ iconId }) => {
           backgroundColor: "rgba(239, 68, 68, 0.15)",
           border: "1px solid rgba(239, 68, 68, 0.3)",
           color: "#ef4444",
-          fontSize: "10px",
-          fontFamily: "monospace",
+          fontSize: "11px",
+          fontFamily: MONO_STACK,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",

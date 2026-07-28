@@ -25,6 +25,16 @@ frontend in `src/`. See `README.md` for the full layout and file format.
   Presentational pieces are components under `src/components/`.
 - **Pure logic goes in `src/utils.ts`** (frontend) or free functions in
   `lib.rs` (backend) so it can be unit-tested. Prefer extracting over inlining.
+- **Styling is inline style objects, with one exception.** Anything a style
+  object cannot express — `@font-face`, the document type reset,
+  `:focus-visible`, `:hover`, `:disabled`, scrollbars, keyframes — belongs in
+  `buildGlobalStyles(theme, isDarkMode)` in `src/theme.ts`, which is injected as
+  a `<style>` tag and re-runs per theme. Do not add a static `.css` file; it
+  could not react to the theme.
+- **Colours come from `theme.ts` tokens**, not literals: `ACCENT_INDIGO`,
+  `ON_ACCENT`, `SUCCESS_ACCENT`, `DANGER_ACCENT`, `SUCCESS_GRADIENT`, and
+  `overlay(isDarkMode, alpha)` for chrome tints. `DESIGN.md` is the authority
+  for what each one means.
 
 ## Invariants — don't regress these
 
@@ -107,3 +117,14 @@ persisting them would mean `localStorage`, which the real app does not use.
   search use the broad `tradeskills='1'` definition.
 - `EQIcon` computes sprite-sheet offsets from `icon_id` (500 offset,
   column-major, 36 icons/sheet). Sheets live in the frontend `public/icons/`.
+- **The type system is self-hosted IBM Plex.** `public/fonts/` holds
+  `plex-sans-variable-latin.woff2` (variable 100–700) and
+  `plex-mono-400-latin.woff2`, copied out of the
+  `@fontsource-variable/ibm-plex-sans` and `@fontsource/ibm-plex-mono`
+  devDependencies — those packages are provenance only and are never imported at
+  runtime. To update, bump the devDependency and re-copy
+  `files/ibm-plex-sans-latin-wght-normal.woff2` and
+  `files/ibm-plex-mono-latin-400-normal.woff2`. Both `@font-face` blocks are
+  declared twice on purpose: in `theme.ts` for the app, and in `index.html`'s
+  static block so the request starts before the JS bundle parses. Never a CDN,
+  and never add a subset or weight the app does not actually use.

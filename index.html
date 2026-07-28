@@ -6,14 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EverQuest Legends Loot Manager</title>
     <!--
-      Base reset applied statically (not via React) so the dark background and
-      "no window scrollbar" rules are in effect from the very first paint. In
-      production the bundled index.html would otherwise show the webview's
-      default white background and a window-level scrollbar until React mounts
-      and injects its styles. The default is dark (the app's default theme);
-      React overrides the background per-theme after it mounts.
+      Base reset applied statically (not via React) so the dark background, the
+      "no window scrollbar" rule and the interface font are in effect from the
+      very first paint. In production the bundled index.html would otherwise
+      show the webview's default white background, a window-level scrollbar and
+      Times New Roman until React mounts and injects its styles. The default is
+      dark (the app's default theme); React overrides the background per-theme
+      after it mounts. The @font-face is declared here as well as in theme.ts so
+      the request starts before the JS bundle parses.
     -->
     <style>
+      @font-face {
+        font-family: "IBM Plex Sans";
+        font-style: normal;
+        font-weight: 100 700;
+        font-display: swap;
+        src: url("/fonts/plex-sans-variable-latin.woff2")
+          format("woff2-variations");
+      }
+      @font-face {
+        font-family: "IBM Plex Mono";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("/fonts/plex-mono-400-latin.woff2") format("woff2");
+      }
+
       html,
       body,
       #root {
@@ -23,6 +41,8 @@
         height: 100%;
         overflow: hidden;
         background-color: #0f172a;
+        font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI",
+          sans-serif;
       }
     </style>
   </head>

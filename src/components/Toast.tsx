@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { ACCENT_INDIGO, SUCCESS_ACCENT, DANGER_ACCENT } from "../theme";
 
 type ToastKind = "success" | "error" | "info";
 
@@ -24,9 +25,9 @@ interface ToastContextValue {
 const ToastContext = createContext<ToastContextValue | null>(null);
 
 const KIND_ACCENT: Record<ToastKind, string> = {
-  success: "#10b981",
-  error: "#ef4444",
-  info: "#6366f1",
+  success: SUCCESS_ACCENT,
+  error: DANGER_ACCENT,
+  info: ACCENT_INDIGO,
 };
 
 const AUTO_DISMISS_MS = 4000;

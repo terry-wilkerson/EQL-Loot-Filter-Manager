@@ -31,7 +31,7 @@ import {
   type SortKey,
   type SortState,
 } from "./utils";
-import { buildGlassTheme, buildGlobalStyles, SUCCESS_GRADIENT } from "./theme";
+import { ON_ACCENT, buildGlassTheme, buildGlobalStyles, SUCCESS_GRADIENT } from "./theme";
 import { useToast } from "./components/Toast";
 import { Dashboard } from "./components/Dashboard";
 import { ItemTable } from "./components/ItemTable";
@@ -119,7 +119,10 @@ export default function App() {
     rows.map(({ uid: _uid, ...rest }) => rest);
 
   const theme = useMemo(() => buildGlassTheme(isDarkMode), [isDarkMode]);
-  const globalStyles = useMemo(() => buildGlobalStyles(isDarkMode), [isDarkMode]);
+  const globalStyles = useMemo(
+    () => buildGlobalStyles(theme, isDarkMode),
+    [theme, isDarkMode],
+  );
 
   // Guards the persistence effect so we don't overwrite settings.json with
   // default state before the saved settings have loaded.
@@ -645,7 +648,6 @@ export default function App() {
         flexDirection: "column",
         background: theme.bg,
         color: theme.textPrimary,
-        fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
         padding: "24px",
         boxSizing: "border-box",
         transition: "all 0.3s ease",
@@ -680,8 +682,8 @@ export default function App() {
               alignItems: "center",
               justifyContent: "center",
               fontWeight: "bold",
-              color: "#fff",
-              fontSize: "18px",
+              color: ON_ACCENT,
+              fontSize: "20px",
             }}
           >
             EQ
@@ -825,7 +827,7 @@ export default function App() {
                   background: showTradeskillOnly
                     ? theme.buttonPrimary
                     : theme.buttonSecondary,
-                  color: showTradeskillOnly ? "#fff" : theme.textPrimary,
+                  color: showTradeskillOnly ? ON_ACCENT : theme.textPrimary,
                   fontWeight: 600,
                   cursor: "pointer",
                 }}
@@ -841,7 +843,7 @@ export default function App() {
                     borderRadius: "10px",
                     border: "none",
                     background: theme.buttonDanger,
-                    color: "#fff",
+                    color: ON_ACCENT,
                     fontWeight: 600,
                     cursor: "pointer",
                   }}
@@ -859,7 +861,7 @@ export default function App() {
                   borderRadius: "10px",
                   border: "none",
                   background: SUCCESS_GRADIENT,
-                  color: "#fff",
+                  color: ON_ACCENT,
                   fontWeight: 600,
                   cursor: "pointer",
                 }}
@@ -873,7 +875,7 @@ export default function App() {
                   borderRadius: "10px",
                   border: "none",
                   background: theme.buttonPrimary,
-                  color: "#fff",
+                  color: ON_ACCENT,
                   fontWeight: 600,
                   cursor: "pointer",
                 }}
@@ -937,7 +939,7 @@ export default function App() {
                   borderRadius: "8px",
                   border: "none",
                   background: theme.buttonPrimary,
-                  color: "#fff",
+                  color: ON_ACCENT,
                   fontWeight: 600,
                   cursor: "pointer",
                   whiteSpace: "nowrap",

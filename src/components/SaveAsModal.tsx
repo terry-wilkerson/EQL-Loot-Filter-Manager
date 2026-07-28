@@ -1,4 +1,4 @@
-import { modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
 
 interface SaveAsModalProps {
   theme: GlassTheme;
@@ -66,7 +66,7 @@ export function SaveAsModal({
               borderRadius: "8px",
               border: "none",
               background: theme.buttonPrimary,
-              color: "#fff",
+              color: ON_ACCENT,
               cursor: "pointer",
               fontWeight: 600,
             }}

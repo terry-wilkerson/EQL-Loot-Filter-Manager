@@ -2,7 +2,14 @@ import { useRef, useState } from "react";
 import { EQIcon } from "./EQIcon";
 import { searchEqItems } from "../api";
 import { FILTER_MAP, type LootItem } from "../types";
-import { inputStyle, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import {
+  ON_ACCENT,
+  SUCCESS_GRADIENT,
+  inputStyle,
+  modalCardStyle,
+  modalOverlayStyle,
+  type GlassTheme,
+} from "../theme";
 
 interface SelectedItem {
   item_id: number;
@@ -135,21 +142,15 @@ export function AddItemModal({
                       setIsDropdownOpen(false);
                       setSearchQuery("");
                     }}
+                    className="eql-search-row"
                     style={{
                       padding: "10px 14px",
-                      borderBottom: "1px solid rgba(255,255,255,0.05)",
+                      borderBottom: theme.cardBorder,
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       gap: "10px",
-                      transition: "background 0.2s",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.background = "rgba(255,255,255,0.1)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "transparent")
-                    }
                   >
                     <div
                       style={{
@@ -232,7 +233,7 @@ export function AddItemModal({
                 borderRadius: "8px",
                 border: "none",
                 background: theme.buttonPrimary,
-                color: "#fff",
+                color: ON_ACCENT,
                 fontWeight: 600,
                 cursor: "pointer",
               }}
@@ -270,10 +271,8 @@ export function AddItemModal({
                 padding: "10px 16px",
                 borderRadius: "8px",
                 border: "none",
-                background: selected
-                  ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
-                  : theme.buttonSecondary,
-                color: selected ? "#fff" : theme.textSecondary,
+                background: selected ? SUCCESS_GRADIENT : theme.buttonSecondary,
+                color: selected ? ON_ACCENT : theme.textSecondary,
                 cursor: selected ? "pointer" : "not-allowed",
                 fontWeight: 600,
               }}

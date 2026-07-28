@@ -1,4 +1,4 @@
-import { modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
 
 interface ReconcileModalProps {
   theme: GlassTheme;
@@ -66,7 +66,7 @@ export function ReconcileModal({
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <button type="button" onClick={onMerge} style={btn(theme.buttonPrimary, "#fff")}>
+          <button type="button" onClick={onMerge} style={btn(theme.buttonPrimary, ON_ACCENT)}>
             🔀 Merge game changes into mine {added > 0 ? `(+${added})` : ""}
           </button>
           <button

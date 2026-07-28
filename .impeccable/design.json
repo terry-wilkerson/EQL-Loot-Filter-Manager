@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-28T13:17:46.164Z",
+  "generatedAt": "2026-07-28T13:52:47.576Z",
   "title": "Design System: EQL Loot",
   "extensions": {
     "colorMeta": {
@@ -114,6 +114,54 @@
           "oklch(70% 0.158 70.1)",
           "oklch(82% 0.160 70.1)",
           "oklch(95% 0.146 70.1)"
+        ]
+      },
+      "on-accent": {
+        "role": "neutral",
+        "displayName": "On Accent",
+        "canonical": "oklch(100% 0 89.9)",
+        "hex": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.000 89.9)",
+          "oklch(26% 0.000 89.9)",
+          "oklch(37% 0.000 89.9)",
+          "oklch(48% 0.000 89.9)",
+          "oklch(59% 0.000 89.9)",
+          "oklch(70% 0.000 89.9)",
+          "oklch(82% 0.000 89.9)",
+          "oklch(95% 0.000 89.9)"
+        ]
+      },
+      "scroll-gutter-dark": {
+        "role": "neutral",
+        "displayName": "Scroll Gutter Dark",
+        "canonical": "oklch(22.5% 0.041 266.6)",
+        "hex": "#131b2f",
+        "tonalRamp": [
+          "oklch(15% 0.039 266.6)",
+          "oklch(26% 0.040 266.6)",
+          "oklch(37% 0.037 266.6)",
+          "oklch(48% 0.034 266.6)",
+          "oklch(59% 0.032 266.6)",
+          "oklch(70% 0.029 266.6)",
+          "oklch(82% 0.026 266.6)",
+          "oklch(95% 0.022 266.6)"
+        ]
+      },
+      "scroll-gutter-light": {
+        "role": "neutral",
+        "displayName": "Scroll Gutter Light",
+        "canonical": "oklch(93.8% 0.016 274.8)",
+        "hex": "#e7eaf6",
+        "tonalRamp": [
+          "oklch(15% 0.008 274.8)",
+          "oklch(26% 0.009 274.8)",
+          "oklch(37% 0.010 274.8)",
+          "oklch(48% 0.011 274.8)",
+          "oklch(59% 0.013 274.8)",
+          "oklch(70% 0.014 274.8)",
+          "oklch(82% 0.015 274.8)",
+          "oklch(95% 0.016 274.8)"
         ]
       },
       "ink-slate": {
@@ -312,11 +360,19 @@
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Every button, select and input. Interactive text is always heavier than prose."
+        "purpose": "Every button, select and input, pinned to 14px by the global reset. Interactive text is always heavier than prose."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Advisory text beside the work — the unknown-items banner, the bulk-add explainer."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "Metadata that names state without competing with it — \"Editing: LF_Terrilyn_Vox.ini\"."
       },
       "mono": {
         "displayName": "Mono",
-        "purpose": "Item ids only, prefixed #. Never for language."
+        "purpose": "IBM Plex Mono. Item ids prefixed #, and the missing-icon badge. Never for language."
       }
     },
     "shadows": [
@@ -381,8 +437,13 @@
       },
       {
         "name": "row-state",
-        "value": "background 0.2s",
-        "purpose": "Table row and dropdown row background changes."
+        "value": "background 0.2s ease",
+        "purpose": "Table row and search-result row hover tint."
+      },
+      {
+        "name": "control-state",
+        "value": "filter 0.15s ease",
+        "purpose": "Button hover (brightness 1.08) and active (0.94)."
       },
       {
         "name": "spinner",
@@ -393,6 +454,40 @@
         "name": "toast-life",
         "value": "4000ms",
         "purpose": "Toast auto-dismiss duration."
+      }
+    ],
+    "overlays": [
+      {
+        "name": "overlay-03",
+        "value": "rgba(255, 255, 255, 0.03)",
+        "purpose": "Table row hover. Inverted to black at the same alpha in light mode."
+      },
+      {
+        "name": "overlay-10",
+        "value": "rgba(255, 255, 255, 0.1)",
+        "purpose": "Hairline borders and search-result row hover."
+      },
+      {
+        "name": "overlay-20",
+        "value": "rgba(255, 255, 255, 0.2)",
+        "purpose": "Scrollbar thumb."
+      },
+      {
+        "name": "overlay-30",
+        "value": "rgba(255, 255, 255, 0.3)",
+        "purpose": "Scrollbar thumb hover."
+      }
+    ],
+    "fonts": [
+      {
+        "name": "IBM Plex Sans",
+        "value": "public/fonts/plex-sans-variable-latin.woff2",
+        "purpose": "Interface face. Latin subset, variable 100-700, 45KB. Self-hosted; never a CDN."
+      },
+      {
+        "name": "IBM Plex Mono",
+        "value": "public/fonts/plex-mono-400-latin.woff2",
+        "purpose": "Item ids and the missing-icon badge. Latin subset, weight 400 only, 14KB."
       }
     ],
     "breakpoints": [
@@ -408,9 +503,9 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Commits an action — Save Changes, Open Filter, Browse Folder. One per surface. Hover and focus rules are prescribed by DESIGN.md and not yet in source.",
+      "description": "Commits an action — Save Changes, Open Filter, Browse Folder. One per surface. Hover, active and focus are applied globally from buildGlobalStyles.",
       "html": "<button class=\"ds-btn-primary\">💾 Save Changes</button>",
-      "css": ".ds-btn-primary { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 600; color: #fff; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border: none; border-radius: 10px; padding: 10px 18px; cursor: pointer; transition: filter 0.2s, transform 0.2s; } .ds-btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; } .ds-btn-primary:active { transform: translateY(0); }"
+      "css": ".ds-btn-primary { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; color: #fff; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border: none; border-radius: 10px; padding: 10px 18px; cursor: pointer; transition: filter 0.2s, transform 0.2s; } .ds-btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; } .ds-btn-primary:active { transform: translateY(0); }"
     },
     {
       "name": "Create Button",
@@ -418,7 +513,7 @@
       "refersTo": "button-success",
       "description": "Reserved for actions that bring a new row or file into existence — Add Item, Create New Filter File. Never used for save confirmation.",
       "html": "<button class=\"ds-btn-create\">+ Add Item</button>",
-      "css": ".ds-btn-create { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 600; color: #fff; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; border-radius: 10px; padding: 10px 18px; cursor: pointer; transition: filter 0.2s, transform 0.2s; } .ds-btn-create:hover { filter: brightness(1.08); transform: translateY(-1px); } .ds-btn-create:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
+      "css": ".ds-btn-create { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; color: #fff; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; border-radius: 10px; padding: 10px 18px; cursor: pointer; transition: filter 0.2s, transform 0.2s; } .ds-btn-create:hover { filter: brightness(1.08); transform: translateY(-1px); } .ds-btn-create:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
     },
     {
       "name": "Secondary Button",
@@ -426,7 +521,7 @@
       "refersTo": "button-secondary",
       "description": "Navigation and toggles — Save As…, Switch File, theme toggle, inactive Tradeskill Only. Translucent fill plus the inverted hairline border.",
       "html": "<button class=\"ds-btn-secondary\">📁 Switch File</button>",
-      "css": ".ds-btn-secondary { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 600; color: #f8fafc; background: rgba(51, 65, 85, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px 18px; cursor: pointer; transition: background 0.2s; } .ds-btn-secondary:hover { background: rgba(51, 65, 85, 0.85); } .ds-btn-secondary:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
+      "css": ".ds-btn-secondary { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; color: #f8fafc; background: rgba(51, 65, 85, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px 18px; cursor: pointer; transition: background 0.2s; } .ds-btn-secondary:hover { background: rgba(51, 65, 85, 0.85); } .ds-btn-secondary:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
     },
     {
       "name": "Row Remove Button",
@@ -434,15 +529,15 @@
       "refersTo": "button-danger-soft",
       "description": "Per-row destruction at 15% intensity, so a 200-row table does not read as 200 alarms. The full Struck Red gradient is reserved for bulk removal.",
       "html": "<button class=\"ds-btn-remove\">Remove</button>",
-      "css": ".ds-btn-remove { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 600; color: #ef4444; background: rgba(239, 68, 68, 0.15); border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; transition: background 0.2s; } .ds-btn-remove:hover { background: rgba(239, 68, 68, 0.28); } .ds-btn-remove:focus-visible { outline: 2px solid #ef4444; outline-offset: 2px; }"
+      "css": ".ds-btn-remove { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; color: #ef4444; background: rgba(239, 68, 68, 0.15); border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; transition: background 0.2s; } .ds-btn-remove:hover { background: rgba(239, 68, 68, 0.28); } .ds-btn-remove:focus-visible { outline: 2px solid #ef4444; outline-offset: 2px; }"
     },
     {
       "name": "Search Input",
       "kind": "input",
       "refersTo": "input-text",
-      "description": "Toolbar and modal text entry. box-sizing: border-box so a full-width field never overflows its card. The focus ring is prescribed, not yet implemented.",
+      "description": "Toolbar and modal text entry. box-sizing: border-box so a full-width field never overflows its card. Pinned to the 14px Label step by the global control reset.",
       "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"🔍 Search item name or ID...\" />",
-      "css": ".ds-input { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 400; color: #f8fafc; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px 16px; min-width: 240px; box-sizing: border-box; } .ds-input::placeholder { color: #94a3b8; } .ds-input:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; border-color: #6366f1; }"
+      "css": ".ds-input { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 400; color: #f8fafc; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px 16px; min-width: 240px; box-sizing: border-box; } .ds-input::placeholder { color: #94a3b8; } .ds-input:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; border-color: #6366f1; }"
     },
     {
       "name": "Action Select",
@@ -450,7 +545,7 @@
       "refersTo": "select-action",
       "description": "The per-row loot action chooser — the single most-used control in the product. Four options, mapped to the on-disk filter ids 1-4.",
       "html": "<select class=\"ds-select\"><option>Always Store</option><option selected>Always Loot</option><option>Always Merge</option><option>Always Sell</option></select>",
-      "css": ".ds-select { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 500; color: #f8fafc; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 8px 12px; cursor: pointer; } .ds-select:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
+      "css": ".ds-select { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 500; color: #f8fafc; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 8px 12px; cursor: pointer; } .ds-select:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
     },
     {
       "name": "Workspace Card",
@@ -458,7 +553,7 @@
       "refersTo": "card-workspace",
       "description": "The glass surface every working region sits on. Translucent slate over the app gradient, 20px backdrop blur, elevation step 2, inverted hairline border.",
       "html": "<div class=\"ds-card\"><h2 class=\"ds-card-title\">EverQuest UI Directory</h2><p class=\"ds-card-sub\">Select your EverQuest folder to auto-detect character loot files.</p></div>",
-      "css": ".ds-card { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25); padding: 24px; } .ds-card-title { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 22px; font-weight: 700; color: #f8fafc; margin: 0 0 8px 0; } .ds-card-sub { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 400; color: #94a3b8; margin: 0; }"
+      "css": ".ds-card { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25); padding: 24px; } .ds-card-title { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 22px; font-weight: 700; color: #f8fafc; margin: 0 0 8px 0; } .ds-card-sub { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 400; color: #94a3b8; margin: 0; }"
     },
     {
       "name": "Warning Banner",
@@ -466,7 +561,7 @@
       "refersTo": "banner-warning",
       "description": "Margin Amber's only job: advisory, never blocking. A 12% fill inside a 40% border, with the resolving action on the right.",
       "html": "<div class=\"ds-banner\"><span class=\"ds-banner-text\">⚠️ 3 item(s) in this filter aren't in the item database.</span><button class=\"ds-banner-action\">Review &amp; Add to DB</button></div>",
-      "css": ".ds-banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 12px; padding: 12px 16px; } .ds-banner-text { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 13px; color: #f8fafc; } .ds-banner-action { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 600; color: #fff; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; } .ds-banner-action:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
+      "css": ".ds-banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 12px; padding: 12px 16px; } .ds-banner-text { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 13px; color: #f8fafc; } .ds-banner-action { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; color: #fff; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; } .ds-banner-action:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
     },
     {
       "name": "Toast",
@@ -474,15 +569,15 @@
       "refersTo": "toast",
       "description": "Bottom-right stack. The 4px left border carries the status accent — green success, red error, indigo info. A signature move; reuse it rather than swapping in icons.",
       "html": "<div class=\"ds-toast ds-toast--success\" role=\"status\">Loot filter saved successfully!</div>",
-      "css": ".ds-toast { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 500; color: #f8fafc; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); padding: 12px 16px; max-width: 360px; cursor: pointer; } .ds-toast--success { border-left: 4px solid #10b981; } .ds-toast--error { border-left: 4px solid #ef4444; } .ds-toast--info { border-left: 4px solid #6366f1; }"
+      "css": ".ds-toast { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 500; color: #f8fafc; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); padding: 12px 16px; max-width: 360px; cursor: pointer; } .ds-toast--success { border-left: 4px solid #10b981; } .ds-toast--error { border-left: 4px solid #ef4444; } .ds-toast--info { border-left: 4px solid #6366f1; }"
     },
     {
       "name": "Item Row",
       "kind": "custom",
       "refersTo": "table",
-      "description": "The signature component. Icon tile, mono id, 600-weight name, action select, right-aligned remove. Row hover is prescribed here but dead in source (theme.tableRowHover is declared and never used).",
+      "description": "The signature component. Icon tile, mono id, 600-weight name, action select, right-aligned remove. Rows tint with the 0.03 neutral overlay on hover.",
       "html": "<table class=\"ds-table\"><tbody><tr class=\"ds-row\"><td class=\"ds-cell ds-cell--icon\"><span class=\"ds-icon\"></span></td><td class=\"ds-cell ds-cell--id\">#1042</td><td class=\"ds-cell ds-cell--name\">Fine Steel Dagger</td><td class=\"ds-cell\"><select class=\"ds-select\"><option>Always Loot</option></select></td><td class=\"ds-cell ds-cell--actions\"><button class=\"ds-btn-remove\">Remove</button></td></tr></tbody></table>",
-      "css": ".ds-table { width: 100%; border-collapse: collapse; text-align: left; } .ds-row { border-bottom: 1px solid rgba(255, 255, 255, 0.1); transition: background 0.2s; } .ds-row:hover { background: rgba(255, 255, 255, 0.03); } .ds-cell { font-family: Inter, system-ui, -apple-system, sans-serif; font-size: 16px; color: #f8fafc; padding: 12px 20px; } .ds-cell--icon { width: 60px; } .ds-icon { display: inline-block; width: 40px; height: 40px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); background: linear-gradient(135deg, #334155, #1e293b); } .ds-cell--id { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; color: #94a3b8; } .ds-cell--name { font-weight: 600; } .ds-cell--actions { text-align: right; }"
+      "css": ".ds-table { width: 100%; border-collapse: collapse; text-align: left; } .ds-row { border-bottom: 1px solid rgba(255, 255, 255, 0.1); transition: background 0.2s; } .ds-row:hover { background: rgba(255, 255, 255, 0.03); } .ds-cell { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 16px; color: #f8fafc; padding: 12px 20px; } .ds-cell--icon { width: 60px; } .ds-icon { display: inline-block; width: 40px; height: 40px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); background: linear-gradient(135deg, #334155, #1e293b); } .ds-cell--id { font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: #94a3b8; } .ds-cell--name { font-weight: 600; } .ds-cell--actions { text-align: right; }"
     }
   ],
   "narrative": {
@@ -534,6 +629,21 @@
         "body": "Every translucent surface sits on the app gradient, never on another translucent surface. Stacked glass turns the blur to mud and the border contrast to nothing."
       },
       {
+        "name": "The Neutral Overlay Rule",
+        "section": "colors",
+        "body": "Chrome tints are alpha overlays, never palette colours. Reach for overlay(isDarkMode, alpha) and one of the four steps (0.03 row hover, 0.10 hairline, 0.20 scrollbar thumb, 0.30 thumb hover) rather than introducing a slate that only works in one theme."
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "section": "typography",
+        "body": "Anything that puts numbers in a column — the item table, the search results — sets font-variant-numeric: tabular-nums. Digits that change width as rows scroll are a defect, not a detail."
+      },
+      {
+        "name": "The Dark-Bloom Rule",
+        "section": "typography",
+        "body": "Light type on dark glass blooms and closes its counters, so dark mode carries letter-spacing: 0.012em at the document root and light mode carries none. Compensation belongs to the theme, not to individual components."
+      },
+      {
         "name": "The Radius-Tracks-Size Rule",
         "section": "shapes",
         "body": "Pick a radius from the surface's footprint, not its component name. A 40px-tall control takes 8–10px; a full-height card takes 24px. Two nested surfaces never share a radius."
@@ -545,9 +655,9 @@
       "Do scale the corner radius to the surface footprint (6px control → 24px workspace card), and never give nested surfaces the same radius.",
       "Do keep every new surface translucent over the app gradient, with a backdrop-filter blur and the inverted hairline border.",
       "Do ship dark and light together. Every value in this file has a light-mode counterpart in buildGlassTheme; a one-theme feature is an unfinished feature.",
-      "Do add button, input, select, textarea { font: inherit; } to the global style block, and self-host Inter under public/fonts/ with @font-face.",
-      "Do add a visible :focus-visible ring in Manifest Indigo to every control. Nothing in the app has one today.",
-      "Do wire theme.tableRowHover to an actual row hover, or delete the token.",
+      "Do put anything inline styles cannot express — @font-face, the type reset, :focus-visible, :hover, :disabled, scrollbars — in buildGlobalStyles. It is theme-aware; a static stylesheet is not.",
+      "Do keep button, input, select, textarea { font: inherit; font-size: 14px; } in place. It is the only thing stopping the webview serving Arial at 13.33px.",
+      "Do give every new control the shared focus ring by using a real <button>, <input> or <select>. The global rule covers them; a clickable <div> gets nothing.",
       "Do treat emoji glyphs as part of the voice — 🔨 for tradeskill, 💾 for save, ⚡ for bulk. They are load-bearing, not filler."
     ],
     "donts": [

@@ -1,6 +1,6 @@
 import { EQIcon } from "./EQIcon";
 import { FILTER_MAP, type LootRow } from "../types";
-import type { GlassTheme } from "../theme";
+import { DANGER_ACCENT, DANGER_WASH, MONO_STACK, type GlassTheme } from "../theme";
 import type { SortKey, SortState } from "../utils";
 
 interface ItemTableProps {
@@ -105,7 +105,7 @@ export function ItemTable({
                 <td
                   style={{
                     padding: "12px 20px",
-                    fontFamily: "monospace",
+                    fontFamily: MONO_STACK,
                     color: theme.textSecondary,
                   }}
                 >
@@ -143,8 +143,8 @@ export function ItemTable({
                       padding: "6px 12px",
                       borderRadius: "6px",
                       border: "none",
-                      background: "rgba(239, 68, 68, 0.15)",
-                      color: "#ef4444",
+                      background: DANGER_WASH,
+                      color: DANGER_ACCENT,
                       fontWeight: 600,
                       cursor: "pointer",
                     }}

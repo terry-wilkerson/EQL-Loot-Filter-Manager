@@ -1,6 +1,6 @@
 ---
 name: EQL Loot
-description: A glass workbench for EverQuest Legends loot filters — quartermaster's logistics under a lit indigo surface.
+description: A glass workbench for EverQuest Legends loot filters — quartermaster's logistics in Plex, under a lit indigo surface.
 colors:
   manifest-indigo: "#6366f1"
   manifest-indigo-deep: "#4f46e5"
@@ -9,7 +9,14 @@ colors:
   struck-red: "#ef4444"
   struck-red-deep: "#dc2626"
   margin-amber: "#f59e0b"
+  on-accent: "#ffffff"
   ink-slate: "#0f172a"
+  scroll-gutter-dark: "#131b2f"
+  scroll-gutter-light: "#e7eaf6"
+  overlay-03: "rgba(255, 255, 255, 0.03)"
+  overlay-10: "rgba(255, 255, 255, 0.1)"
+  overlay-20: "rgba(255, 255, 255, 0.2)"
+  overlay-30: "rgba(255, 255, 255, 0.3)"
   vellum-indigo: "#1e1b4b"
   shadow-slate: "#090d16"
   surface-slate: "#1e293b"
@@ -22,37 +29,49 @@ colors:
   wash-slate: "#f1f5f9"
 typography:
   display:
-    fontFamily: "Inter, system-ui, -apple-system, sans-serif"
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "22px"
     fontWeight: 700
     lineHeight: 1.3
     letterSpacing: "normal"
   headline:
-    fontFamily: "Inter, system-ui, -apple-system, sans-serif"
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "20px"
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "-0.5px"
   title:
-    fontFamily: "Inter, system-ui, -apple-system, sans-serif"
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "16px"
     fontWeight: 700
     lineHeight: 1.4
     letterSpacing: "normal"
   body:
-    fontFamily: "Inter, system-ui, -apple-system, sans-serif"
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: "normal"
+  caption:
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: 1.4
+    letterSpacing: "normal"
+  micro:
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
+    fontSize: "12px"
+    fontWeight: 400
+    lineHeight: 1.4
+    letterSpacing: "normal"
   label:
-    fontFamily: "Inter, system-ui, -apple-system, sans-serif"
+    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "14px"
     fontWeight: 600
     lineHeight: 1.2
     letterSpacing: "normal"
   mono:
-    fontFamily: "ui-monospace, SFMono-Regular, Consolas, monospace"
+    fontFamily: "IBM Plex Mono, ui-monospace, SFMono-Regular, Consolas, monospace"
     fontSize: "13px"
     fontWeight: 400
     lineHeight: 1.4
@@ -75,13 +94,13 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.manifest-indigo}"
-    textColor: "#ffffff"
+    textColor: "{colors.on-accent}"
     typography: "{typography.label}"
     rounded: "{rounded.lg}"
     padding: "10px 18px"
   button-success:
     backgroundColor: "{colors.ledger-green}"
-    textColor: "#ffffff"
+    textColor: "{colors.on-accent}"
     typography: "{typography.label}"
     rounded: "{rounded.lg}"
     padding: "10px 18px"
@@ -218,8 +237,26 @@ meaning: indigo commits, green creates, red destroys, amber warns.
   saturated fill.
 - **Wash Indigo / Wash Violet / Wash Slate** (#e0e7ff, #f3e8ff, #f1f5f9): The
   light theme's three-stop ground, mirroring the dark gradient's hue path.
+- **On Accent** (#ffffff): The label colour on any saturated fill. Pure white
+  rather than Slate Paper — on a gradient the two are indistinguishable, and one
+  token beats two near-identical whites drifting apart.
+- **Scroll Gutter** (#131b2f dark / #e7eaf6 light): The 4px inset ring that
+  gives the scrollbar thumb its track. Chrome, not surface.
+
+### Neutral Overlays
+
+Chrome that is not content does not take a palette colour. Row hover, hairline
+borders and scrollbar thumbs are alpha overlays — white over dark glass, black
+over light — at four steps: **0.03** (row hover), **0.10** (hairlines, search
+row hover), **0.20** (scrollbar thumb), **0.30** (thumb hover). The frontmatter
+records the dark-mode value; `overlay()` in `theme.ts` inverts it for light.
 
 ### Named Rules
+
+**The Neutral Overlay Rule.** Chrome tints are alpha overlays, never palette
+colours. Reach for `overlay(isDarkMode, alpha)` and one of the four steps rather
+than introducing a slate that only works in one theme.
+
 
 **The One Meaning Rule.** Each saturated ink carries exactly one verb: indigo
 commits, green creates, red destroys, amber warns. A new feature does not get to
@@ -233,22 +270,30 @@ danger colour down a table is a defect, not emphasis.
 
 ## Typography
 
-**Display / Body Font:** Inter (falling back to `system-ui`, `-apple-system`,
-`sans-serif`)
-**Mono Font:** `ui-monospace`, `SFMono-Regular`, `Consolas`, monospace — item
-ids only
+**Display / Body Font:** IBM Plex Sans (falling back to `system-ui`,
+`-apple-system`, `Segoe UI`, `sans-serif`)
+**Mono Font:** IBM Plex Mono — item ids and the missing-icon badge only
 
-**Character:** One neutral grotesque doing all the work, differentiated by
-weight rather than family. Headings are 700 and tight; body is 400; anything
-interactive is 600. The single monospace exception exists because an item id is
-a machine value the eye scans for digits, not a word it reads.
+**Character:** Engineered rather than neutral. Plex was drawn for a technology
+company's documentation and interfaces, and it reads as *equipment*: squared
+terminals, a flat-topped `a`, a distinctive `g`, generous apertures that hold up
+at 13px down a long column. It suits a quartermaster's manifest in a way a
+default UI grotesque does not — present enough to have a voice, disciplined
+enough to disappear behind two hundred item names.
 
-> **Implementation gap.** `Inter` is declared in the font stack but no font files
-> are bundled and no `@font-face` is declared, so the app currently renders in
-> `system-ui`. The decision recorded here is to *ship* Inter — self-hosted under
-> `public/fonts/` with an `@font-face` block, never a Google Fonts CDN link,
-> because the app has no network dependency and must not acquire one. Until
-> those files land, this section describes intent, not observed truth.
+The mono is the same superfamily, which is the point: the second family is a
+*role*, not a second voice. An item id is a machine value the eye scans for
+digits, and Plex Mono's unmistakable `0`, `1` and `l` matter when a user is
+checking an id against a wiki mid-session.
+
+Both faces ship with the app: `public/fonts/plex-sans-variable-latin.woff2`
+(variable, 100–700, 45KB) and `public/fonts/plex-mono-400-latin.woff2` (14KB).
+Only the latin subset and the weights actually used are shipped. Both are
+declared via `@font-face` in `theme.ts` *and* in the static block in
+`index.html`, so the request starts before the JS bundle parses. Never a CDN —
+the app has no network dependency and must not acquire one. The
+`@fontsource-variable/ibm-plex-sans` and `@fontsource/ibm-plex-mono` packages
+are devDependencies kept only as the provenance of those two files.
 
 ### Hierarchy
 
@@ -262,15 +307,32 @@ a machine value the eye scans for digits, not a word it reads.
   name is the row's identity and must win against the id beside it.
 - **Label** (600, 14px, 1.2): Every button, select and input. Interactive text is
   always heavier than the prose around it.
+- **Caption** (400, 13px, 1.4): Advisory text that sits beside the work — the
+  unknown-items banner, the bulk-add explainer.
+- **Micro** (400, 12px, 1.4): Metadata lines that name state without competing
+  with it — "Editing: LF_Terrilyn_Vox.ini", inline hints.
 - **Mono** (400, 13px): Item ids, prefixed `#`, in Faded Slate. Never used for
   anything a human reads as language.
 
+One size sits off this ramp on purpose: **11px** is the glyph-only step, used
+for the sort indicator (▲ ▼ ↕) and the missing-icon fallback badge. It is never
+used for text a user reads as a sentence.
+
 ### Named Rules
 
-**The Inherit Rule.** Form controls must declare `font: inherit`. Without it the
-browser serves Arial at 13.33px inside an interface set in Inter at 16px, and
-the mismatch is visible on every button in the app. Any global stylesheet this
-project grows starts with `button, input, select, textarea { font: inherit; }`.
+**The Inherit Rule.** Form controls must declare `font: inherit` and an explicit
+`font-size: 14px`. Without the first the webview serves Arial at 13.33px inside
+a 16px interface; without the second they inherit body's 16px and read oversized
+in a 1400×600 window. Both live in `buildGlobalStyles`.
+
+**The Tabular Figures Rule.** Anything that puts numbers in a column — the item
+table, the search results — sets `font-variant-numeric: tabular-nums`. Digits
+that change width as rows scroll are a defect, not a detail.
+
+**The Dark-Bloom Rule.** Light type on dark glass blooms and closes its
+counters, so dark mode carries `letter-spacing: 0.012em` at the document root
+and light mode carries none. Compensation belongs to the theme, not to
+individual components.
 
 **The Weight-Not-Family Rule.** Hierarchy is built from weight and size within a
 single family. Do not introduce a second display face, a serif, or a condensed
@@ -374,10 +436,14 @@ its component name. A 40px-tall control takes 8–10px; a full-height card takes
   with red text and 6px radius for per-row Remove. Clear Entire List is the odd
   one — a secondary fill with red text, because it is destructive but not
   immediate.
-- **Hover / Focus:** *Not implemented.* No `:hover`, `:focus`, or
-  `:focus-visible` treatment exists anywhere in the app, and `border: none` on
-  gradient buttons weakens the browser's default focus ring. This is the single
-  largest craft gap in the system; see Do's and Don'ts.
+- **Hover:** `filter: brightness(1.08)` over 0.15s; `0.94` on `:active`. Filter
+  rather than a background swap, so one rule serves gradient and translucent
+  fills alike and nothing shifts position in a dense table.
+- **Focus:** A 2px Manifest Indigo ring at `outline-offset: 2px`. The offset is
+  the point — the ring lands on the card behind the control, so it never sits
+  indigo-on-indigo against a primary button.
+- **Disabled:** 45% opacity and `cursor: not-allowed`, applied globally to
+  buttons, selects and inputs.
 
 ### Cards / Containers
 
@@ -394,11 +460,10 @@ its component name. A 40px-tall control takes 8–10px; a full-height card takes
 - **Style:** Surface Slate fill at 80%, theme hairline border, 8–10px radius,
   `10px 16px` padding, primary text colour. `box-sizing: border-box` so a
   full-width field never overflows its card.
-- **Focus:** *Not implemented.* Required: a visible focus ring in Manifest
-  Indigo that does not rely on the UA default.
-- **Read-only:** The directory field on the Dashboard uses the same fill as an
-  editable input, which is a legibility problem worth resolving rather than
-  copying.
+- **Focus:** The shared 2px Manifest Indigo ring, offset 2px.
+- **Read-only:** A dashed hairline in Faded Slate over a transparent fill, with
+  `cursor: default`. A read-only field must never wear the same solid fill as an
+  editable one — the Dashboard's directory display is the reference.
 
 ### Table
 
@@ -408,9 +473,8 @@ separators; 12–14px vertical padding by 20px horizontal. Columns run Icon (60p
 Remove (right-aligned). Sortable headers show ▲/▼ when active and a 35%-opacity
 ↕ when not — a good, quiet affordance worth keeping.
 
-Row hover is **declared but dead**: `theme.tableRowHover` is defined in
-`theme.ts` and referenced nowhere, while rows carry `transition: background 0.2s`
-with nothing to transition to. Wiring it up is the intended behaviour.
+Rows tint on hover with the 0.03 neutral overlay over 0.2s — row tracking that
+matters once a filter runs to hundreds of items.
 
 ### Toasts
 
@@ -420,8 +484,9 @@ success, Struck Red for error, Manifest Indigo for info. Auto-dismiss at 4s,
 click to dismiss early. The left-border-as-status-stripe is a signature move and
 should be reused rather than replaced by icons.
 
-Toasts currently render outside the app's font scope and inherit the document
-default (Times New Roman). Any typography fix must cover the toast layer.
+The toast stack renders outside the app's root `<div>`, which is why the type
+stack is declared on `html, body, #root` rather than on that div. Anything
+mounted as a sibling of the app inherits the interface font by construction.
 
 ### Item Icon
 
@@ -444,11 +509,14 @@ generic iconography for these.
   `backdrop-filter` blur and the inverted hairline border.
 - **Do** ship dark and light together. Every value in this file has a light-mode
   counterpart in `buildGlassTheme`; a one-theme feature is an unfinished feature.
-- **Do** add `button, input, select, textarea { font: inherit; }` to the global
-  style block, and self-host Inter under `public/fonts/` with `@font-face`.
-- **Do** add a visible `:focus-visible` ring in Manifest Indigo to every control.
-  Nothing in the app has one today.
-- **Do** wire `theme.tableRowHover` to an actual row hover, or delete the token.
+- **Do** put anything inline styles cannot express — `@font-face`, the type
+  reset, `:focus-visible`, `:hover`, `:disabled`, scrollbars — in
+  `buildGlobalStyles`. It is theme-aware; a static stylesheet is not.
+- **Do** keep `button, input, select, textarea { font: inherit; font-size: 14px; }`
+  in place. It is the only thing stopping the webview serving Arial at 13.33px.
+- **Do** give every new control the shared focus ring by using a real `<button>`,
+  `<input>` or `<select>`. The global rule covers them; a clickable `<div>` gets
+  nothing.
 - **Do** treat emoji glyphs as part of the voice — 🔨 for tradeskill, 💾 for save,
   ⚡ for bulk. They are load-bearing, not filler.
 
