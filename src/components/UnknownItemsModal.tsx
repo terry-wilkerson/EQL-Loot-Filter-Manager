@@ -73,7 +73,7 @@ export function UnknownItemsModal({
                 <span style={{ fontWeight: 600, fontSize: "14px" }}>
                   {item.name}
                 </span>
-                <span style={{ fontSize: "12px", color: theme.textSecondary }}>
+                <span style={{ fontSize: "13px", color: theme.textSecondary }}>
                   ID: #{item.item_id}
                 </span>
               </div>

@@ -1,89 +1,95 @@
 ---
 name: EQL Loot
-description: A glass workbench for EverQuest Legends loot filters — quartermaster's logistics in Plex, under a lit indigo surface.
+description: A quartermaster's stock book — opaque paper ruled with hairlines, stamped ink accents, and a manifest you can scan by colour.
 colors:
-  manifest-indigo: "#6366f1"
-  manifest-indigo-deep: "#4f46e5"
-  ledger-green: "#10b981"
-  ledger-green-deep: "#059669"
-  struck-red: "#ef4444"
-  struck-red-deep: "#dc2626"
-  margin-amber: "#f59e0b"
-  on-accent: "#ffffff"
-  ink-slate: "#0f172a"
-  scroll-gutter-dark: "#131b2f"
-  scroll-gutter-light: "#e7eaf6"
-  overlay-03: "rgba(255, 255, 255, 0.03)"
-  overlay-10: "rgba(255, 255, 255, 0.1)"
-  overlay-20: "rgba(255, 255, 255, 0.2)"
-  overlay-30: "rgba(255, 255, 255, 0.3)"
-  vellum-indigo: "#1e1b4b"
-  shadow-slate: "#090d16"
-  surface-slate: "#1e293b"
-  raised-slate: "#334155"
-  faded-slate: "#94a3b8"
-  faded-slate-deep: "#64748b"
-  slate-paper: "#f8fafc"
-  wash-indigo: "#e0e7ff"
-  wash-violet: "#f3e8ff"
-  wash-slate: "#f1f5f9"
+  paper-ground: "#efece3"
+  paper-card: "#fffdf8"
+  paper-field: "#faf7ef"
+  paper-head: "#f0ebdf"
+  paper-raised: "#e8e2d5"
+  paper-rule: "#ddd6c7"
+  night-ground: "#14130f"
+  night-card: "#1c1b17"
+  night-field: "#232019"
+  night-raised: "#2b2822"
+  night-rule: "#35322a"
+  ink-primary: "#1c1917"
+  ink-secondary: "#57534e"
+  ink-primary-night: "#f5f0e6"
+  ink-secondary-night: "#a8a29e"
+  stamp-blue: "#1d4ed8"
+  stamp-blue-night: "#60a5fa"
+  stamp-green: "#15803d"
+  stamp-red: "#b91c1c"
+  stamp-amber: "#a16207"
+  stamp-amber-night: "#fbbf24"
+  glass-ground-night: "#0f172a"
+  glass-ground-night-mid: "#1e1b4b"
+  glass-ground-night-deep: "#090d16"
+  glass-ground-day: "#e0e7ff"
+  glass-ground-day-mid: "#f3e8ff"
+  glass-ground-day-end: "#f1f5f9"
+  console-ground-night: "#080b10"
+  console-ground-day: "#dfe4ea"
+  console-edge-night: "#1e2b3d"
+  console-edge-day: "#b6c2d1"
+  solid-ground-night: "#0b0d12"
+  solid-ground-day: "#f6f7f9"
+  action-store: "#10b981"
+  action-loot: "#6366f1"
+  action-merge: "#f59e0b"
+  action-sell: "#ef4444"
 typography:
   display:
-    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
+    fontFamily: "'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "22px"
     fontWeight: 700
     lineHeight: 1.3
     letterSpacing: "normal"
   headline:
-    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
+    fontFamily: "'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "20px"
     fontWeight: 700
     lineHeight: 1.2
     letterSpacing: "-0.5px"
   title:
-    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
+    fontFamily: "'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "16px"
     fontWeight: 700
     lineHeight: 1.4
     letterSpacing: "normal"
   body:
-    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
+    fontFamily: "'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: "normal"
-  caption:
-    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
-    fontSize: "13px"
-    fontWeight: 400
-    lineHeight: 1.4
-    letterSpacing: "normal"
-  micro:
-    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
-    fontSize: "12px"
-    fontWeight: 400
-    lineHeight: 1.4
-    letterSpacing: "normal"
   label:
-    fontFamily: "IBM Plex Sans, system-ui, -apple-system, 'Segoe UI', sans-serif"
+    fontFamily: "'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif"
     fontSize: "14px"
     fontWeight: 600
     lineHeight: 1.2
     letterSpacing: "normal"
+  caption:
+    fontFamily: "'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif"
+    fontSize: "13px"
+    fontWeight: 400
+    lineHeight: 1.4
+    letterSpacing: "normal"
   mono:
-    fontFamily: "IBM Plex Mono, ui-monospace, SFMono-Regular, Consolas, monospace"
+    fontFamily: "'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace"
     fontSize: "13px"
     fontWeight: 400
     lineHeight: 1.4
     letterSpacing: "normal"
 rounded:
-  sm: "6px"
-  md: "8px"
-  lg: "10px"
-  xl: "12px"
-  2xl: "16px"
-  3xl: "20px"
-  4xl: "24px"
+  control: "2px"
+  field: "2px"
+  action: "3px"
+  chip: "3px"
+  panel: "4px"
+  modal: "6px"
+  workspace: "6px"
 spacing:
   xs: "8px"
   sm: "12px"
@@ -93,60 +99,72 @@ spacing:
   2xl: "40px"
 components:
   button-primary:
-    backgroundColor: "{colors.manifest-indigo}"
-    textColor: "{colors.on-accent}"
+    backgroundColor: "{colors.stamp-blue}"
+    textColor: "#ffffff"
     typography: "{typography.label}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.action}"
     padding: "10px 18px"
-  button-success:
-    backgroundColor: "{colors.ledger-green}"
-    textColor: "{colors.on-accent}"
+  button-create:
+    backgroundColor: "{colors.stamp-green}"
+    textColor: "#ffffff"
     typography: "{typography.label}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.action}"
+    padding: "10px 18px"
+  button-destroy:
+    backgroundColor: "{colors.stamp-red}"
+    textColor: "#ffffff"
+    typography: "{typography.label}"
+    rounded: "{rounded.action}"
     padding: "10px 18px"
   button-secondary:
-    backgroundColor: "{colors.raised-slate}"
-    textColor: "{colors.slate-paper}"
+    backgroundColor: "{colors.paper-raised}"
+    textColor: "{colors.ink-primary}"
     typography: "{typography.label}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.action}"
     padding: "10px 18px"
-  button-danger-soft:
-    backgroundColor: "rgba(239, 68, 68, 0.15)"
-    textColor: "{colors.struck-red}"
+  button-remove-row:
+    backgroundColor: "rgba(185, 28, 28, 0.1)"
+    textColor: "{colors.stamp-red}"
     typography: "{typography.label}"
-    rounded: "{rounded.sm}"
+    rounded: "{rounded.control}"
     padding: "6px 12px"
   input-text:
-    backgroundColor: "{colors.surface-slate}"
-    textColor: "{colors.slate-paper}"
+    backgroundColor: "{colors.paper-field}"
+    textColor: "{colors.ink-primary}"
     typography: "{typography.label}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.field}"
     padding: "10px 16px"
   select-action:
-    backgroundColor: "{colors.surface-slate}"
-    textColor: "{colors.slate-paper}"
+    backgroundColor: "rgba(16, 185, 129, 0.12)"
+    textColor: "#047857"
     typography: "{typography.label}"
-    rounded: "{rounded.md}"
+    rounded: "{rounded.field}"
     padding: "8px 12px"
   card-workspace:
-    backgroundColor: "{colors.ink-slate}"
-    textColor: "{colors.slate-paper}"
-    rounded: "{rounded.4xl}"
+    backgroundColor: "{colors.paper-card}"
+    textColor: "{colors.ink-primary}"
+    rounded: "{rounded.workspace}"
     padding: "24px"
   card-header:
-    backgroundColor: "{colors.ink-slate}"
-    textColor: "{colors.slate-paper}"
-    rounded: "{rounded.2xl}"
+    backgroundColor: "{colors.paper-card}"
+    textColor: "{colors.ink-primary}"
+    rounded: "{rounded.panel}"
     padding: "16px 24px"
+  table-head:
+    backgroundColor: "{colors.paper-head}"
+    textColor: "{colors.ink-primary}"
+    typography: "{typography.title}"
+    rounded: "0px"
+    padding: "14px 20px"
   banner-warning:
-    backgroundColor: "rgba(245, 158, 11, 0.12)"
-    textColor: "{colors.slate-paper}"
-    rounded: "{rounded.xl}"
+    backgroundColor: "rgba(161, 98, 7, 0.1)"
+    textColor: "{colors.ink-primary}"
+    rounded: "{rounded.chip}"
     padding: "12px 16px"
   toast:
-    backgroundColor: "rgba(15, 23, 42, 0.92)"
-    textColor: "{colors.slate-paper}"
-    rounded: "{rounded.xl}"
+    backgroundColor: "{colors.ink-primary}"
+    textColor: "{colors.ink-primary-night}"
+    rounded: "{rounded.chip}"
     padding: "12px 16px"
 ---
 
@@ -154,147 +172,173 @@ components:
 
 ## Overview
 
-**Creative North Star: "The Quartermaster's Manifest"**
+**Creative North Star: "The Quartermaster's Stock Book"**
 
-EQL Loot is a supply officer's ledger, not a dashboard. Its centre of gravity is
-a dense sortable table where every row is an item id, a name, and one of four
-decisive actions — loot it, store it, merge it, sell it. Everything else on
-screen exists to get the quartermaster to that table faster and to keep the
-manifest correct while the game rewrites it underneath. The glass, the gradient
-and the blur are the room the ledger sits in; they are packaging, and packaging
-never outranks the rows.
+EQL Loot is a supply officer's ledger, and now it looks like one. The centre of
+gravity is a dense sortable table where every row is an item id, a name, and one
+of four decisive actions — loot it, store it, merge it, sell it. Everything else
+on screen exists to get the quartermaster to that table faster and to keep the
+manifest correct while the game rewrites it underneath.
 
-The material is a translucent indigo night. Surfaces are `rgba` slate at 65%
-opacity over a three-stop gradient that runs deep navy → violet-black → near
-black, with every card carrying a `backdrop-filter` blur. That atmosphere is
-constant and unranked. The elevation *scale* on top of it is not: three shadow
-weights separate the header, the workspace and the modal layer, and that
-ordering is a hierarchy future work must respect. The material is atmospheric;
-the elevation scale is structural. Both are true at once, and that tension is
-the system's defining rule.
+The material is **paper, not glass**. Surfaces are opaque: warm cream stock by
+day, ink-dark board by night. Nothing is translucent, nothing is blurred, and
+almost nothing is lifted. Ranking is carried by **rule weight and fill**, the way
+a printed form ranks — a heading band is a different tint of the same paper, not
+a card floating above it. Corners are 2–4px: present enough that the eye reads a
+made object rather than a raw box, small enough that no surface reads as soft.
 
-Controls are tactile and game-adjacent. Anything that commits an action wears a
-saturated 135° gradient — indigo to add or save, green to create, red to
-destroy. Anything that merely navigates stays a quiet translucent slate. Radii
-are generous and scale with the surface they wrap, so the whole interface reads
-soft-cornered rather than engineered. The emoji glyphs on toolbar buttons
-(🔨 💾 🗑️ ⚡) are deliberate: this tool lives beside a fantasy MMO and is allowed
-to sound like it. What it must never become is enterprise-dashboard grey.
+Accents are **stamped**, not lit. A committing control is one flat saturated
+fill — a rubber stamp pressed onto the page — with no gradient, no glow and no
+shadow. Three stamps exist and each carries a single verb: blue commits, green
+creates, red destroys. Amber annotates but never fills a control.
+
+The one place colour is allowed to spread across the page is the **action
+channel**: each row's loot action wears a tinted wash so a two-hundred-row
+manifest can be scanned by colour instead of read line by line. That channel is
+data, not chrome — it means the same thing in every skin, for the same reason the
+game's own item art does.
 
 **Key Characteristics:**
 
-- Translucent slate surfaces at 65% opacity over an indigo→violet→black gradient
-- A constant `backdrop-filter` blur (8–20px) as ambient material
-- Three structural elevation steps: header, workspace, modal
-- Saturated 135° gradients reserved strictly for committing actions
-- Radii that scale with surface size (6px control → 24px workspace)
-- Full dark/light parity; neither theme is the afterthought
-- Emoji glyphs as functional iconography, not decoration
-- A dark-grounded nib-and-check mark that never sits on a light or saturated fill
+- Opaque paper surfaces; no translucency and no `backdrop-filter` anywhere
+- Hairline rules as the primary ranking device; one real shadow, on the modal layer
+- 2–4px corners across the whole product
+- Flat stamped accents — no gradients on any control
+- Zebra-banded table rows for horizontal tracking across five columns
+- A four-hue action channel that survives a change of skin
+- Full day/night parity; neither light level is the afterthought
+
+## The skin system
+
+Ledger is the committed world and what a cold install wears. Three alternates
+ship alongside it and are selectable from the header: **Glass** (the previous
+translucent indigo world, kept as a reference), **Console** (a cold near-black
+instrument readout), and **Solid** (an opaque contemporary desktop app). The
+choice persists to `settings.json` beside the light level.
+
+The rules below describe **Ledger**. The *contract* they sit on — role-named
+radii, three elevation steps, one action channel, day/night parity — is shared by
+all four, and any new skin must satisfy it. Everything visual resolves through
+`buildTheme(skin, isDark)` in `src/theme.ts`; a component that hardcodes a
+colour, a radius or a shadow has broken the system, because it will be wrong in
+three of the four worlds.
 
 ## Colors
 
-Tailwind's slate spine carrying four saturated inks, each one bound to a single
-meaning: indigo commits, green creates, red destroys, amber warns.
+Warm neutral stock carrying three stamped inks. The paper is warm on purpose — a
+true grey ground would read as an enterprise dashboard, which is the thing this
+world exists to not be.
 
 ### Primary
 
-- **Manifest Indigo** (#6366f1 → #4f46e5): The house colour. Appears as a 135°
-  gradient on the primary action of any surface — Save Changes, Open Filter,
-  Browse Folder, Review & Add to DB — as the checkmark in the app mark, and as
-  the loading spinner's leading arc. Also the active state of the Tradeskill
-  Only toggle. It is the only colour allowed to mean "this is the thing to
-  press".
+- **Stamp Blue** (#1d4ed8): The house mark. The flat fill on the primary action
+  of any surface — Save Changes, Open Filter, Browse Folder, Review & Add to DB —
+  the "EQ" logo tile, and the active Tradeskill Only state. The only colour
+  allowed to mean "this is the thing to press". Its lighter step (#60a5fa) is
+  used as ink, never as a fill: focus rings and the loading spinner's leading arc
+  at night.
 
 ### Secondary
 
-- **Ledger Green** (#10b981 → #059669): Reserved for *creation* specifically,
-  not success in general — Add Item and Create New Filter File. A save
-  confirmation is indigo; a new row is green. The distinction is intentional and
-  worth preserving.
+- **Stamp Green** (#15803d): Reserved for *creation* specifically, not success in
+  general — Add Item and Create New Filter File. A save confirmation is blue; a
+  new row is green. The distinction is intentional.
 
 ### Tertiary
 
-- **Struck Red** (#ef4444 → #dc2626): Destruction, at two intensities. The full
-  gradient carries bulk removal; a 15% wash of the same hue with red text
-  carries the per-row Remove, so a table of two hundred rows never reads as two
-  hundred alarms.
-- **Margin Amber** (#f59e0b): Exactly one job — the unknown-items banner, as a
-  12% fill inside a 40% border. Advisory, never blocking.
+- **Stamp Red** (#b91c1c): Destruction, at two intensities. The flat fill carries
+  bulk removal; a 10% wash of the same hue with red text carries the per-row
+  Remove, so a table of two hundred rows never reads as two hundred alarms.
+- **Stamp Amber** (#a16207 day / #fbbf24 night): Annotation only. The
+  unknown-items banner and the reconcile conflict count. It never fills a
+  control.
 
 ### Neutral
 
-- **Ink Slate** (#0f172a): The dark theme's ground and the light theme's primary
-  text. The system's darkest structural value.
-- **Vellum Indigo** (#1e1b4b): The midpoint of the dark background gradient —
-  the violet cast that keeps the app from reading as flat navy.
-- **Shadow Slate** (#090d16): The dark gradient's terminal stop, darker than the
-  ground so the corner falls away.
-- **Surface Slate** (#1e293b at 80%): Input and table-header fills.
-- **Raised Slate** (#334155 at 60%): Secondary button fills.
-- **Faded Slate** (#94a3b8) / **Faded Slate Deep** (#64748b): Secondary text,
-  dark and light theme respectively. Also the item-id column.
-- **Slate Paper** (#f8fafc): Dark-theme primary text and every label on a
-  saturated fill.
-- **Wash Indigo / Wash Violet / Wash Slate** (#e0e7ff, #f3e8ff, #f1f5f9): The
-  light theme's three-stop ground, mirroring the dark gradient's hue path.
-- **On Accent** (#ffffff): The label colour on any saturated fill. Pure white
-  rather than Slate Paper — on a gradient the two are indistinguishable, and one
-  token beats two near-identical whites drifting apart.
-- **Scroll Gutter** (#131b2f dark / #e7eaf6 light): The 4px inset ring that
-  gives the scrollbar thumb its track. Chrome, not surface.
+- **Paper Ground** (#efece3) / **Night Ground** (#14130f): The window behind
+  everything.
+- **Paper Card** (#fffdf8) / **Night Card** (#1c1b17): Header, workspace,
+  dashboard, modal. The sheet you work on.
+- **Paper Field** (#faf7ef) / **Night Field** (#232019): Inputs and selects, and
+  at night the table's heading band too.
+- **Paper Head** (#f0ebdf): The table's sticky heading band by day — a tint of
+  the paper, not a floating bar.
+- **Paper Raised** (#e8e2d5) / **Night Raised** (#2b2822): Secondary buttons.
+- **Paper Rule** (#ddd6c7) / **Night Rule** (#35322a): Every hairline in the
+  product — card borders, row separators, the icon tile edge.
+- **Ink** (#1c1917 / #57534e by day, #f5f0e6 / #a8a29e by night): Primary and
+  secondary text.
 
-### Neutral Overlays
+### The action channel
 
-Chrome that is not content does not take a palette colour. Row hover, hairline
-borders and scrollbar thumbs are alpha overlays — white over dark glass, black
-over light — at four steps: **0.03** (row hover), **0.10** (hairlines, search
-row hover), **0.20** (scrollbar thumb), **0.30** (thumb hover). The frontmatter
-records the dark-mode value; `overlay()` in `theme.ts` inverts it for light.
+Four hues, one per loot action, fixed across every skin:
+
+| Action | Hue | Reasoning |
+|---|---|---|
+| Always Store | #10b981 green | it enters your holdings |
+| Always Loot | #6366f1 indigo | you take it |
+| Always Merge | #f59e0b amber | it folds into an existing stack |
+| Always Sell | #ef4444 red | it leaves your inventory |
+
+Sell drawing the loudest ink is intentional: it is the misfiling you would most
+regret. Each is rendered as a ~12–16% wash with a hairline of the same hue and a
+theme-stepped text ink (#047857 / #4338ca / #b45309 / #b91c1c by day, lightened
+by night) so 14px labels clear 4.5:1 on both grounds.
+
+### Skin grounds
+
+The palette above is the **ledger** skin — the default, and the one the rest of
+this document describes. The other three skins keep the action channel and the
+stamp inks but bring their own ground and card colours:
+
+| Skin | Night ground | Day ground |
+|---|---|---|
+| glass | a three-stop gradient, #0f172a → #1e1b4b → #090d16 | #e0e7ff → #f3e8ff → #f1f5f9 |
+| console | #080b10, edged #1e2b3d | #dfe4ea, edged #b6c2d1 |
+| solid | #0b0d12 | #f6f7f9 |
+
+These are grounds, not tokens to reach for: a component picks up its surface
+from the theme object, never by naming one of these hexes. They are recorded
+here so the full set of colours the product can render is documented in one
+place.
 
 ### Named Rules
 
-**The Neutral Overlay Rule.** Chrome tints are alpha overlays, never palette
-colours. Reach for `overlay(isDarkMode, alpha)` and one of the four steps rather
-than introducing a slate that only works in one theme.
+**The One Verb Rule.** Each stamp carries exactly one verb: blue commits, green
+creates, red destroys, amber annotates. A new feature does not get to borrow
+green because it looks friendly. If a new verb appears, it earns a new stamp or
+it reuses the one whose meaning it actually shares.
 
+**The Two-Intensity Rule.** A destructive action at row scale uses the 10% wash
+with red text. Only an action that destroys *many* rows at once earns the flat
+fill. Repetition of a full-strength danger colour down a table is a defect, not
+emphasis.
 
-**The One Meaning Rule.** Each saturated ink carries exactly one verb: indigo
-commits, green creates, red destroys, amber warns. A new feature does not get to
-borrow green because it looks friendly. If a new verb appears, it earns a new
-ink or it reuses the one whose meaning it actually shares.
+**The Channel Separation Rule.** Chrome and data never share an intensity. A
+control that commits wears a full-strength flat fill; the action channel never
+rises above a wash with a hairline. This is what lets the action hues overlap the
+stamp hues without either being mistaken for the other.
 
-**The Two-Intensity Rule.** A destructive action at row scale uses the 15% wash
-(`rgba(239, 68, 68, 0.15)` fill, `#ef4444` text). Only an action that destroys
-*many* rows at once earns the full gradient. Repetition of a full-strength
-danger colour down a table is a defect, not emphasis.
+**The Warm Neutral Rule.** The greys are warm (stone, not slate) in both light
+levels. A neutral-grey ground turns this world into a generic admin panel, which
+is the specific failure this design replaced.
 
 ## Typography
 
-**Display / Body Font:** IBM Plex Sans (falling back to `system-ui`,
-`-apple-system`, `Segoe UI`, `sans-serif`)
-**Mono Font:** IBM Plex Mono — item ids and the missing-icon badge only
+**Display / Body Font:** IBM Plex Sans, self-hosted (variable, 100–700)
+**Mono Font:** IBM Plex Mono 400, self-hosted — item ids only
 
-**Character:** Engineered rather than neutral. Plex was drawn for a technology
-company's documentation and interfaces, and it reads as *equipment*: squared
-terminals, a flat-topped `a`, a distinctive `g`, generous apertures that hold up
-at 13px down a long column. It suits a quartermaster's manifest in a way a
-default UI grotesque does not — present enough to have a voice, disciplined
-enough to disappear behind two hundred item names.
+Both faces live in `public/fonts/`, copied out of the `@fontsource`
+devDependencies and declared with `@font-face` twice on purpose: in `theme.ts`
+for the app, and in `index.html` so the request starts before the JS bundle
+parses. **Never a CDN** — the app has no network dependency and must not acquire
+one.
 
-The mono is the same superfamily, which is the point: the second family is a
-*role*, not a second voice. An item id is a machine value the eye scans for
-digits, and Plex Mono's unmistakable `0`, `1` and `l` matter when a user is
-checking an id against a wiki mid-session.
-
-Both faces ship with the app: `public/fonts/plex-sans-variable-latin.woff2`
-(variable, 100–700, 45KB) and `public/fonts/plex-mono-400-latin.woff2` (14KB).
-Only the latin subset and the weights actually used are shipped. Both are
-declared via `@font-face` in `theme.ts` *and* in the static block in
-`index.html`, so the request starts before the JS bundle parses. Never a CDN —
-the app has no network dependency and must not acquire one. The
-`@fontsource-variable/ibm-plex-sans` and `@fontsource/ibm-plex-mono` packages
-are devDependencies kept only as the provenance of those two files.
+**Character:** Plex is the right face for a stock book: a working grotesque with
+a technical, slightly institutional fit and a mono cut from the same superfamily,
+so the second family is a role rather than a second voice. Hierarchy is built
+from weight and size within it. Item ids are a machine value the eye scans for
+digits, not a word it reads, so they get the mono cut and tabular figures.
 
 ### Hierarchy
 
@@ -302,18 +346,14 @@ are devDependencies kept only as the provenance of those two files.
   "EverQuest UI Directory". The largest type in the product.
 - **Headline** (700, 20px, 1.2, −0.5px): The app title in the header bar. The
   only place negative tracking is used.
-- **Title** (700, 16px, 1.4): Sub-headings, modal titles, and table column
-  headers.
+- **Title** (700, 16px, 1.4): Sub-headings, modal titles, table column headers.
 - **Body** (400, 16px, 1.5): Default text. Item names lift to 600 because the
   name is the row's identity and must win against the id beside it.
 - **Label** (600, 14px, 1.2): Every button, select and input. Interactive text is
   always heavier than the prose around it.
-- **Caption** (400, 13px, 1.4): Advisory text that sits beside the work — the
-  unknown-items banner, the bulk-add explainer.
-- **Micro** (400, 12px, 1.4): Metadata lines that name state without competing
-  with it — "Editing: LF_Terrilyn_Vox.ini", inline hints.
-- **Mono** (400, 13px): Item ids, prefixed `#`, in Faded Slate. Never used for
-  anything a human reads as language.
+- **Caption** (400, 13px): The banner line, the "Editing: …" file name, the
+  spinner message.
+- **Mono** (400, 13px): Item ids, prefixed `#`, in secondary ink.
 
 One size sits off this ramp on purpose: **11px** is the glyph-only step, used
 for the sort indicator (▲ ▼ ↕) and the missing-icon fallback badge. It is never
@@ -321,41 +361,39 @@ used for text a user reads as a sentence.
 
 ### Named Rules
 
-**The Inherit Rule.** Form controls must declare `font: inherit` and an explicit
-`font-size: 14px`. Without the first the webview serves Arial at 13.33px inside
-a 16px interface; without the second they inherit body's 16px and read oversized
-in a 1400×600 window. Both live in `buildGlobalStyles`.
+**The Inherit Rule.** Form controls declare `font: inherit` plus an explicit
+14px. Without it the webview serves Arial at 13.33px inside an interface set in
+Plex, and the mismatch is visible on every button.
 
-**The Tabular Figures Rule.** Anything that puts numbers in a column — the item
-table, the search results — sets `font-variant-numeric: tabular-nums`. Digits
-that change width as rows scroll are a defect, not a detail.
+**The Tabular Figures Rule.** Anything the eye compares down a column — item ids,
+counts — sets `font-variant-numeric: tabular-nums`. Without it the digits jitter
+as rows scroll.
 
-**The Dark-Bloom Rule.** Light type on dark glass blooms and closes its
-counters, so dark mode carries `letter-spacing: 0.012em` at the document root
-and light mode carries none. Compensation belongs to the theme, not to
-individual components.
+**The Weight-Not-Family Rule.** Hierarchy is built from weight and size within
+Plex. Do not introduce a third family, a serif, or a condensed cut to signal
+importance.
 
-**The Weight-Not-Family Rule.** Hierarchy is built from weight and size within a
-single family. Do not introduce a second display face, a serif, or a condensed
-cut to signal importance.
+**The Night Tracking Rule.** Light text on a dark ground blooms and closes
+counters, so the night level adds `letter-spacing: 0.012em` at the document
+level. The day level needs none.
 
 ## Layout
 
 A fixed-height application shell, never a scrolling page. The root is
 `height: 100vh` with `overflow: hidden` on `html`, `body` and `#root`; only the
-table body and the file list scroll, inside their own rounded containers. This
+table body and the file list scroll, inside their own bordered containers. This
 is deliberate — the window sits beside a running game and must never grow a
 window-level scrollbar.
 
 The shell is a 24px-padded column: a header bar, 24px of air, then a single
-workspace card that takes the remaining height. The Dashboard state centres a
-800px-max card instead; the editing state lets the workspace card run full
-width. Default window is 1400×600, and the toolbar is `flex-wrap`, so the
-control row reflows to two lines rather than clipping when the user drags the
-window narrow. Small-window survivability is a product constraint, not a nicety.
+workspace card that takes the remaining height. The Dashboard state centres an
+800px-max card instead; the editing state lets the workspace card run full width.
+Default window is 1400×600, and the toolbar is `flex-wrap`, so the control row
+reflows to two lines rather than clipping when the user drags the window narrow.
+Small-window survivability is a product constraint, not a nicety.
 
 Spacing runs on an 8px-ish rhythm — 8 / 12 / 16 / 24 / 32 / 40 for gaps and
-container padding — but control padding is currently hand-tuned in 2px steps
+container padding. Control padding is currently hand-tuned in 2px steps
 (6/12, 8/12, 8/14, 10/14, 10/16, 10/18, 12/16, 12/20, 14/20). Treat the coarse
 scale as normative and the fine variance as drift to converge, not a pattern to
 extend.
@@ -363,206 +401,222 @@ extend.
 ### Named Rules
 
 **The No Outer Scrollbar Rule.** The application shell never scrolls. New
-full-height regions get their own `overflow-y: auto` container with a radius and
-a border; they do not extend the page.
+full-height regions get their own `overflow-y: auto` container with a border;
+they do not extend the page.
 
 ## Elevation & Depth
 
-This system is both atmospheric and structural, and separating the two is the
-whole discipline. Every card carries a `backdrop-filter` blur over a
-semi-transparent fill — that is ambient material, applied uniformly, and carries
-no meaning. On top of it sit exactly three shadow weights, and those *do* rank:
-the header floats least, the workspace sits above it, and modals and the loading
-overlay sit above everything behind a dimmed, blurred scrim. Depth is how the
-user knows what is currently in charge.
+Ledger ranks by **rule weight and fill**, not by lift. The contract still names
+three elevation steps and no fourth, but Ledger spends only the third:
 
-### Shadow Vocabulary
+- **Chrome** (`none`): The header bar. It is separated from the ground by its
+  paper tint and its hairline, the way a printed form's heading band is.
+- **Work** (`none`): The workspace card and the Dashboard card. Same reasoning.
+- **Overlay** (`0 24px 48px rgba(0, 0, 0, 0.45)`): Modal cards and the loading
+  panel, paired with a plain unblurred scrim. This is the one place physical
+  separation is the whole point, so it gets a real shadow with a real offset.
 
-- **Ambient header** (`box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2)`): The header
-  bar. Lightest step; present so the bar detaches from the gradient.
-- **Workspace** (`box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25)`): The main content
-  card and the Dashboard card. The working surface.
-- **Overlay** (`box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4)`): Modal cards and the
-  loading panel, always paired with the `rgba(0, 0, 0, 0.6)` + `blur(8px)` scrim.
-
-Blur strengths track the same order: 8px on the modal scrim, 12px on toasts,
-16px on the header, 20px on workspace and loading cards.
+There is no `backdrop-filter` anywhere in this skin.
 
 ### Named Rules
 
 **The Three Steps Rule.** There are three elevation steps and no fourth. A new
 surface picks the step matching its role — chrome, work, or interruption — and
-inherits that exact shadow value. Inventing an intermediate weight flattens the
-ranking for everything else.
+inherits that exact token. A skin may render a step as `none`; it may not add a
+fourth.
 
-**The Glass-Needs-Ground Rule.** Every translucent surface sits on the app
-gradient, never on another translucent surface. Stacked glass turns the blur to
-mud and the border contrast to nothing.
+**The No Halo Rule.** A shadow carries an offset and a soft blur, or it does not
+exist. A zero-offset coloured glow is decoration and has no place here.
 
 ## Shapes
 
-Soft-cornered throughout, with radius scaled to surface size rather than fixed
-per component type: 6px on a row-level Remove button, 8px on inputs and selects,
-10px on toolbar buttons and the logo tile, 12px on toasts, banners and file
-rows, 16px on the header bar and the table container, 20px on modal and loading
-cards, 24px on the main workspace card. The effect is that the eye reads scale
-from the corner before it reads it from the box.
+Square-ish throughout, with radius scaled to the surface's role rather than fixed
+per component type: 2px on row-level controls and fields, 3px on toolbar buttons
+and chips, 4px on the header and table container, 6px on modals and the
+workspace card. The steps sit close together on purpose — the eye should read
+"made object" and then stop thinking about the corners.
 
-Borders are a single hairline, and in dark mode they are *light*:
-`1px solid rgba(255, 255, 255, 0.1)` against dark glass, inverting to
-`rgba(255, 255, 255, 0.8)` in light mode. The border is a highlight catching the
-top of the glass, not an outline containing a box. Gradient fills carry no
-border at all — the saturation is the edge.
+Borders are a single hairline in the paper rule colour, identical in both light
+levels rather than inverted. The border is the ruling on a form, not a highlight
+catching the edge of glass. Stamped fills carry no border at all — the saturation
+is the edge.
 
 ### Named Rules
 
-**The Radius-Tracks-Size Rule.** Pick a radius from the surface's footprint, not
-its component name. A 40px-tall control takes 8–10px; a full-height card takes
-24px. Two nested surfaces never share a radius.
+**The Radius-Tracks-Role Rule.** Pick a radius from the role token
+(`control` / `field` / `action` / `chip` / `panel` / `modal` / `workspace`), not
+from a pixel value and not from the component's name. Two nested surfaces never
+share a step.
 
 ## Components
 
 ### Buttons
 
-- **Shape:** Softly rounded, 10px on toolbar scale, 6px at row scale. No border
-  on gradient fills; hairline border on translucent fills.
-- **Primary:** Manifest Indigo 135° gradient, white 600-weight label,
-  `10px 18px`. One per surface.
-- **Create:** Ledger Green 135° gradient, same geometry. Only for actions that
-  bring a new row or file into existence.
-- **Secondary:** Raised Slate at 60% with the theme's hairline border and primary
-  text colour. Carries Save As…, Switch File, theme toggle, and the inactive
+- **Shape:** 3px at toolbar scale, 2px at row scale. No border on stamped fills;
+  hairline border on paper fills.
+- **Primary:** Stamp Blue flat fill, white 600-weight label, `10px 18px`. One per
+  surface.
+- **Create:** Stamp Green flat fill, same geometry. Only for actions that bring a
+  new row or file into existence.
+- **Secondary:** Paper Raised with the hairline border and primary ink. Carries
+  Save As…, Switch File, the light toggle, the skin picker, and the inactive
   Tradeskill Only state.
-- **Destructive:** Full Struck Red gradient for bulk operations; the 15% wash
-  with red text and 6px radius for per-row Remove. Clear Entire List is the odd
-  one — a secondary fill with red text, because it is destructive but not
-  immediate.
-- **Hover:** `filter: brightness(1.08)` over 0.15s; `0.94` on `:active`. Filter
-  rather than a background swap, so one rule serves gradient and translucent
-  fills alike and nothing shifts position in a dense table.
-- **Focus:** A 2px Manifest Indigo ring at `outline-offset: 2px`. The offset is
-  the point — the ring lands on the card behind the control, so it never sits
-  indigo-on-indigo against a primary button.
-- **Disabled:** 45% opacity and `cursor: not-allowed`, applied globally to
-  buttons, selects and inputs.
+- **Destructive:** Stamp Red flat fill for bulk operations; the 10% wash with red
+  text and a 2px radius for per-row Remove. Clear Entire List is the odd one — a
+  secondary fill with red ink, because it is destructive but not immediate.
+- **Hover:** `filter: brightness()` — 1.06 by day, 1.12 by night, since a
+  brightness lift reads weaker on a dark ground. Active drops to 0.94.
+- **Focus:** A 2px Stamp Blue `:focus-visible` ring at `outline-offset: 2px`, so
+  on a stamped fill it lands on the paper behind rather than on the colour it is
+  marking.
 
 ### Cards / Containers
 
-- **Corner Style:** 24px workspace, 20px modal, 16px header and table container.
-- **Background:** `rgba(15, 23, 42, 0.65)` dark, `rgba(255, 255, 255, 0.65)`
-  light, always with `backdrop-filter: blur(16–20px)`.
-- **Shadow Strategy:** One of the three steps in Elevation & Depth. Never a
-  custom value.
-- **Border:** The inverted hairline described in Shapes.
+- **Corner Style:** 6px workspace and modal, 4px header and table container.
+- **Background:** Opaque Paper Card / Night Card. Never translucent.
+- **Shadow Strategy:** One of the three named steps. Never a custom value.
+- **Border:** The paper rule hairline.
 - **Internal Padding:** 24px workspace, 24px modal, `16px 24px` header.
 
 ### Inputs / Fields
 
-- **Style:** Surface Slate fill at 80%, theme hairline border, 8–10px radius,
-  `10px 16px` padding, primary text colour. `box-sizing: border-box` so a
-  full-width field never overflows its card.
-- **Focus:** The shared 2px Manifest Indigo ring, offset 2px.
-- **Read-only:** A dashed hairline in Faded Slate over a transparent fill, with
-  `cursor: default`. A read-only field must never wear the same solid fill as an
-  editable one — the Dashboard's directory display is the reference.
+- **Style:** Paper Field fill, hairline border, 2px radius, `10px 14–16px`
+  padding, primary ink. `box-sizing: border-box` so a full-width field never
+  overflows its card.
+- **Read-only:** The directory field on the Dashboard uses a transparent fill and
+  a *dashed* rule, so it reads as a display of the current selection rather than
+  a field to type into.
 
 ### Table
 
-The signature component. A sticky header row on Surface Slate; hairline row
-separators; 12–14px vertical padding by 20px horizontal. Columns run Icon (60px)
-· Item ID (mono, Faded Slate) · Item Name (600 weight) · Action (a select) ·
-Remove (right-aligned). Sortable headers show ▲/▼ when active and a 35%-opacity
-↕ when not — a good, quiet affordance worth keeping.
+The signature component. A sticky heading band on Paper Head; hairline row
+separators; 12–14px vertical by 20px horizontal padding. Columns run Icon (60px)
+· Item ID (mono, secondary ink) · Item Name (600 weight) · Action · Remove
+(right-aligned). Sortable headers show ▲/▼ when active and a 35%-opacity ↕ when
+not.
 
-Rows tint on hover with the 0.03 neutral overlay over 0.2s — row tracking that
-matters once a filter runs to hundreds of items.
+Two devices differentiate rows, and they do different jobs:
+
+- **Zebra banding** (`tableRowStripe`, a ~2.5% neutral overlay on even rows)
+  solves *horizontal tracking* — carrying a line across five columns without
+  slipping.
+- **The action wash** on the select solves *meaning* — which of four things this
+  row does.
+
+Row hover (`tableRowHover`) is declared after the band at equal specificity, so a
+pointed-at row still reads on a banded row. The label always names the action;
+the hue is a second channel, never the only one.
 
 ### Toasts
 
-Bottom-right stack, 360px max, 12px radius, near-opaque Ink Slate at 92% with a
-12px blur and a **4px left border** carrying the kind accent — Ledger Green for
-success, Struck Red for error, Manifest Indigo for info. Auto-dismiss at 4s,
-click to dismiss early. The left-border-as-status-stripe is a signature move and
-should be reused rather than replaced by icons.
+Bottom-right stack, 360px max, 3px radius, near-black ink ground with the paper
+ink as text, and a **4px left border** carrying the kind accent — green success,
+red error, blue info. Auto-dismiss at 4s, click to dismiss early. The stack
+renders above `<App/>` in the React tree and so cannot read the theme by prop; it
+reads the `--toast-*` and `--ink-*` custom properties `buildGlobalStyles`
+publishes on `:root`. That bridge is the pattern for any future surface outside
+the app root.
 
-The toast stack renders outside the app's root `<div>`, which is why the type
-stack is declared on `html, body, #root` rather than on that div. Anything
-mounted as a sibling of the app inherits the interface font by construction.
+### Interface Icons
+
+Inline SVG on a 24-unit box, 1.5 stroke, round caps and joins, no fill, rendered
+at 16px beside the 14px Label step. Every icon strokes in `currentColor`, so it
+inherits the exact ink of the control it sits in and is automatically right in
+both light levels and all four skins. The stroke weight sits just under the
+600-weight label beside it, so an icon reads as punctuation rather than as a
+second voice.
+
+Icons are decorative and marked `aria-hidden`: each one sits beside a text label
+that already names the action, and announcing both would only stutter. A control
+whose icon is its only label does not exist in this product.
+
+The set lives in `src/components/Icon.tsx`. Adding one means adding it there, in
+the house geometry — never an icon font, never a package, never an `<img>`.
+
+**Emoji are not iconography here.** They were the previous world's chrome glyphs
+and are gone: a full-colour bitmap drawn from the platform's own palette cannot
+follow a skin or a light level, renders as a glossy sticker against warm paper,
+and is a different picture on every OS. Where markup is impossible — an
+`<option>` label, an input placeholder — the glyph is dropped rather than kept as
+the last emoji in the product.
 
 ### Item Icon
 
 A 40px sprite-sheet cell — `icon_id` resolved to a column-major offset within a
-36-icon sheet — inside a 6px-radius tile with a hairline border and a soft drop
-shadow. Missing artwork falls back to a red-tinted tile showing `?{id}?`. Per
-PRODUCT.md the game's own icon art is an identity commitment: never substitute
-generic iconography for these.
+36-icon sheet — inside a 2px-radius tile with the paper rule hairline and no
+shadow. Missing artwork falls back to a red-washed tile showing `?{id}?`. Like
+the toast stack, `EQIcon` reads `--icon-tile-*` custom properties rather than
+taking the theme as a prop, because it renders once per row across hundreds of
+rows in three different surfaces.
+
+Per PRODUCT.md the game's own icon art is an identity commitment: never
+substitute generic iconography for these, and never let a skin restyle them
+beyond their tile.
 
 ### App Mark
 
-A fountain-pen nib in Slate Paper with a single Manifest Indigo checkmark
-sweeping out from its tip — *recorded, and decided*. It is the north star
-compressed into two shapes: the nib is the manifest, the check is the loot
-action. No lettering, no enclosure beyond the tile it sits in.
+A fountain-pen nib in near-white with a single indigo checkmark sweeping from
+its tip — *recorded, and decided*. Two shapes carrying the north star: the nib
+is the manifest, the check is the loot action. No lettering.
 
-- **Ground:** a soft radial from Vellum Indigo at the centre out to Ink Slate,
-  the same hue path as the app's own dark background. The mark is always
-  dark-grounded, in both themes and on every OS surface.
-- **Ink:** the check carries the 135° Manifest Indigo gradient
-  (`#6366f1` → `#4f46e5`) — the identical gradient every committing control
-  wears, so the mark is built from the system rather than merely matching it.
-- **Fill:** the artwork occupies 80% of its square with even padding. Below
-  that it reads as a small thing lost in a dark tile at 32px.
-- **In the header:** rendered at 36px with a 10px radius and the theme hairline
-  border, decorative (`alt=""`) because the product name sits beside it.
-- **Sources:** `brand/icon-source-2048.png` is the master that
-  `npx tauri icon` consumes; `brand/icon-mark-transparent-2048.png` is the knocked-out
-  variant for light surfaces; `src/assets/mark-144.png` is what the header imports.
+**The mark does not wear the skin.** It is one fixed piece of artwork on its own
+dark indigo ground, identical under `ledger`, `glass`, `console` and `solid`,
+and identical in light and dark. That is deliberate rather than an oversight:
+the same file is the Windows taskbar icon and the macOS dock icon, where no skin
+exists, and a mark that changed identity with a preference would stop being a
+mark. It is also why it never sits directly on a light or saturated surface —
+its check would vanish against a blue button fill and its nib against paper. It
+brings its own ground everywhere it appears.
+
+- **In the header:** rendered at 36px with `theme.radius.action` and the theme
+  hairline, decorative (`alt=""`) because the product name sits beside it.
+- **Fill:** the artwork occupies 80% of its square. Below that it reads as a
+  small thing lost in a dark tile at 32px.
+- **Sources:** `brand/icon-source-2048.png` is the master that `npx tauri icon`
+  consumes; `brand/icon-mark-transparent-2048.png` is the knocked-out variant;
+  `src/assets/mark-144.png` is what the header imports.
   `tools/build-icon.py` regenerates all three from the original artwork.
 
-**The Dark-Ground Rule.** The mark never sits directly on a light surface or on
-a saturated fill. Its indigo check would vanish against the indigo button
-gradient, and its paper nib would vanish against the light theme's wash. It
-brings its own ground everywhere it appears.
+**The Skinless Mark Rule.** The app mark, and only the app mark, is exempt from
+the skin system. Nothing else in the interface may opt out.
 
 ## Do's and Don'ts
 
 ### Do:
 
-- **Do** reserve saturated gradients for actions that commit something. Indigo
-  commits, Ledger Green creates, Struck Red destroys, Margin Amber warns.
-- **Do** pick a shadow from the three named steps and inherit its exact value.
-- **Do** scale the corner radius to the surface footprint (6px control → 24px
-  workspace card), and never give nested surfaces the same radius.
-- **Do** keep every new surface translucent over the app gradient, with a
-  `backdrop-filter` blur and the inverted hairline border.
-- **Do** ship dark and light together. Every value in this file has a light-mode
-  counterpart in `buildGlassTheme`; a one-theme feature is an unfinished feature.
-- **Do** put anything inline styles cannot express — `@font-face`, the type
-  reset, `:focus-visible`, `:hover`, `:disabled`, scrollbars — in
-  `buildGlobalStyles`. It is theme-aware; a static stylesheet is not.
-- **Do** keep `button, input, select, textarea { font: inherit; font-size: 14px; }`
-  in place. It is the only thing stopping the webview serving Arial at 13.33px.
-- **Do** give every new control the shared focus ring by using a real `<button>`,
-  `<input>` or `<select>`. The global rule covers them; a clickable `<div>` gets
-  nothing.
-- **Do** treat emoji glyphs as part of the voice — 🔨 for tradeskill, 💾 for save,
-  ⚡ for bulk. They are load-bearing, not filler.
+- **Do** read every colour, radius, shadow and blur from the theme object. A
+  literal in a component is wrong in three of the four skins.
+- **Do** reserve stamped fills for actions that commit something. Blue commits,
+  green creates, red destroys, amber annotates.
+- **Do** pick a radius from its role token and an elevation from one of the three
+  named steps.
+- **Do** keep surfaces opaque in this skin. Paper does not transmit light.
+- **Do** ship day and night together. Every token in `theme.ts` has both; a
+  one-level feature is an unfinished feature.
+- **Do** encode meaning twice. The action hue is always accompanied by its label.
+- **Do** keep the action channel identical across skins — it is data, not chrome.
+- **Do** give any surface that renders outside `<App/>` a `:root` custom property
+  bridge rather than threading the theme through props.
+- **Do** add new interface icons to `src/components/Icon.tsx` in the house
+  geometry — 24-unit box, 1.5 stroke, `currentColor`, `aria-hidden`.
 
 ### Don't:
 
-- **Don't** drift toward enterprise-dashboard grey: flat corporate chrome,
-  hairline-boxed panels, and no atmosphere. The glass and the colour are the
-  point of this product's surface.
-- **Don't** stack a translucent surface on another translucent surface.
+- **Don't** reskin, recolour, or knock out the app mark, and don't place it on a
+  light or saturated ground — it carries its own palette and ground.
+
+- **Don't** reintroduce translucency, `backdrop-filter`, or a gradient into this
+  skin. Those belong to Glass, which still ships and is one dropdown away.
+- **Don't** drift toward neutral-grey enterprise chrome. The warmth of the stock
+  is what keeps this a stock book rather than an admin panel.
 - **Don't** invent a fourth elevation weight or a one-off `box-shadow`.
-- **Don't** repeat a full-strength danger gradient down a table; that is what the
-  15% wash exists for.
-- **Don't** introduce a second type family, a serif, or a condensed cut. Weight
-  and size carry the hierarchy.
+- **Don't** repeat a full-strength danger fill down a table; that is what the 10%
+  wash exists for.
+- **Don't** introduce a third type family, a serif, or a condensed cut.
 - **Don't** load fonts, icons, or styles from a CDN. The app ships everything it
   renders.
 - **Don't** let the application shell scroll. New full-height regions scroll
   inside their own bordered container.
+- **Don't** use an emoji as an interface glyph. It cannot follow a skin or a
+  light level, and every platform draws a different picture for it.
 - **Don't** add a colour whose meaning duplicates one already in the palette.
-- **Don't** place the app mark on a light or saturated ground, and don't
-  recolour it — it carries the palette already.

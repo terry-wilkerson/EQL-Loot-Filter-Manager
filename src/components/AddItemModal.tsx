@@ -166,7 +166,7 @@ export function AddItemModal({
                         {result.name}
                       </span>
                       <span
-                        style={{ fontSize: "12px", color: theme.textSecondary }}
+                        style={{ fontSize: "13px", color: theme.textSecondary }}
                       >
                         ID: #{result.item_id}
                       </span>
@@ -178,7 +178,7 @@ export function AddItemModal({
                   <div
                     style={{
                       padding: "8px 14px",
-                      fontSize: "12px",
+                      fontSize: "13px",
                       fontStyle: "italic",
                       color: theme.textSecondary,
                       textAlign: "center",
@@ -220,7 +220,7 @@ export function AddItemModal({
               gap: "8px",
             }}
           >
-            <span style={{ fontSize: "12px", color: theme.textSecondary }}>
+            <span style={{ fontSize: "13px", color: theme.textSecondary }}>
               Bulk add every depot-storable tradeskill item (stackable trade
               goods only) as “{FILTER_MAP[TRADESKILL_BULK_FILTER_ID]}”:
             </span>
