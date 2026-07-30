@@ -2,7 +2,14 @@ import { useRef, useState } from "react";
 import { EQIcon } from "./EQIcon";
 import { searchEqItems } from "../api";
 import { FILTER_MAP, type LootItem } from "../types";
-import { inputStyle, modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { IconHammer } from "./Icon";
+import {
+  ON_ACCENT,
+  inputStyle,
+  modalCardStyle,
+  modalOverlayStyle,
+  type AppTheme,
+} from "../theme";
 
 interface SelectedItem {
   item_id: number;
@@ -11,7 +18,7 @@ interface SelectedItem {
 }
 
 interface AddItemModalProps {
-  theme: GlassTheme;
+  theme: AppTheme;
   onCancel: () => void;
   onAdd: (item: LootItem) => void;
   // Add every tradeskill item in the catalog with the chosen filter action.
@@ -75,10 +82,10 @@ export function AddItemModal({
   };
 
   return (
-    <div style={modalOverlayStyle}>
+    <div style={modalOverlayStyle(theme)}>
       <div
         style={{
-          ...modalCardStyle,
+          ...modalCardStyle(theme),
           background: theme.cardBg,
           border: theme.cardBorder,
           overflow: "visible",
@@ -93,7 +100,7 @@ export function AddItemModal({
           <div style={{ position: "relative" }}>
             <input
               type="text"
-              placeholder="🔍 Search by Item Name or ID..."
+              placeholder="Search by Item Name or ID…"
               value={
                 selected ? `${selected.name} (#${selected.item_id})` : searchQuery
               }
@@ -114,10 +121,10 @@ export function AddItemModal({
                   right: 0,
                   marginTop: "4px",
                   background: theme.cardBg,
-                  backdropFilter: "blur(20px)",
+                  backdropFilter: theme.blur.overlay,
                   border: theme.cardBorder,
-                  borderRadius: "8px",
-                  boxShadow: "0 10px 25px rgba(0,0,0,0.5)",
+                  borderRadius: theme.radius.field,
+                  boxShadow: theme.elevation.overlay,
                   maxHeight: "200px",
                   overflowY: "auto",
                   zIndex: 2000,
@@ -135,21 +142,15 @@ export function AddItemModal({
                       setIsDropdownOpen(false);
                       setSearchQuery("");
                     }}
+                    className="eql-search-row"
                     style={{
                       padding: "10px 14px",
-                      borderBottom: "1px solid rgba(255,255,255,0.05)",
+                      borderBottom: theme.cardBorder,
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
                       gap: "10px",
-                      transition: "background 0.2s",
                     }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.background = "rgba(255,255,255,0.1)")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = "transparent")
-                    }
                   >
                     <div
                       style={{
@@ -165,7 +166,7 @@ export function AddItemModal({
                         {result.name}
                       </span>
                       <span
-                        style={{ fontSize: "12px", color: theme.textSecondary }}
+                        style={{ fontSize: "13px", color: theme.textSecondary }}
                       >
                         ID: #{result.item_id}
                       </span>
@@ -177,14 +178,14 @@ export function AddItemModal({
                   <div
                     style={{
                       padding: "8px 14px",
-                      fontSize: "12px",
+                      fontSize: "13px",
                       fontStyle: "italic",
                       color: theme.textSecondary,
                       textAlign: "center",
                       position: "sticky",
                       bottom: 0,
                       background: theme.cardBg,
-                      backdropFilter: "blur(20px)",
+                      backdropFilter: theme.blur.overlay,
                       borderTop: theme.cardBorder,
                     }}
                   >
@@ -219,7 +220,7 @@ export function AddItemModal({
               gap: "8px",
             }}
           >
-            <span style={{ fontSize: "12px", color: theme.textSecondary }}>
+            <span style={{ fontSize: "13px", color: theme.textSecondary }}>
               Bulk add every depot-storable tradeskill item (stackable trade
               goods only) as “{FILTER_MAP[TRADESKILL_BULK_FILTER_ID]}”:
             </span>
@@ -229,15 +230,20 @@ export function AddItemModal({
               style={{
                 width: "100%",
                 padding: "12px 14px",
-                borderRadius: "8px",
+                borderRadius: theme.radius.field,
                 border: "none",
                 background: theme.buttonPrimary,
-                color: "#fff",
+                color: ON_ACCENT,
                 fontWeight: 600,
                 cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
               }}
             >
-              🔨 Add ALL Tradeskill Items
+              <IconHammer />
+              Add ALL Tradeskill Items
             </button>
           </div>
 
@@ -254,7 +260,7 @@ export function AddItemModal({
               onClick={onCancel}
               style={{
                 padding: "10px 16px",
-                borderRadius: "8px",
+                borderRadius: theme.radius.field,
                 border: "none",
                 background: theme.buttonSecondary,
                 color: theme.textPrimary,
@@ -268,12 +274,10 @@ export function AddItemModal({
               disabled={!selected}
               style={{
                 padding: "10px 16px",
-                borderRadius: "8px",
+                borderRadius: theme.radius.field,
                 border: "none",
-                background: selected
-                  ? "linear-gradient(135deg, #10b981 0%, #059669 100%)"
-                  : theme.buttonSecondary,
-                color: selected ? "#fff" : theme.textSecondary,
+                background: selected ? theme.buttonSuccess : theme.buttonSecondary,
+                color: selected ? ON_ACCENT : theme.textSecondary,
                 cursor: selected ? "pointer" : "not-allowed",
                 fontWeight: 600,
               }}

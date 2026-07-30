@@ -12,6 +12,12 @@ frontend in `src/`. See `README.md` for the full layout and file format.
 
 - **All IPC goes through `src/api.ts`.** Never call `invoke(...)` directly from a
   component. Add a typed wrapper in `api.ts` and import it.
+- **`api.ts` also owns the no-Tauri fallback.** When there is no IPC bridge
+  (`npm run dev` opened in a plain browser) and the build is a dev build, every
+  wrapper routes to the in-memory fixture backend in `src/dev/` instead. Adding
+  a command means adding *both* the `invoke` call and its `mockBackend.ts`
+  counterpart — a command with no fallback silently breaks browser-only UI work.
+  See "Browser-only UI development" below.
 - **Shared types live in `src/types.ts`** and mirror the Rust structs. If you
   change a Rust `#[derive(Serialize)]` struct that crosses the boundary, update
   the matching TS interface (field names are snake_case on both sides).
@@ -19,6 +25,34 @@ frontend in `src/`. See `README.md` for the full layout and file format.
   Presentational pieces are components under `src/components/`.
 - **Pure logic goes in `src/utils.ts`** (frontend) or free functions in
   `lib.rs` (backend) so it can be unit-tested. Prefer extracting over inlining.
+- **Styling is inline style objects, with one exception.** Anything a style
+  object cannot express — `@font-face`, the document type reset,
+  `:focus-visible`, `:hover`, `:disabled`, zebra rows, scrollbars, keyframes —
+  belongs in `buildGlobalStyles(theme)` in `src/theme.ts`, which is injected as
+  a `<style>` tag and re-runs per theme. Do not add a static `.css` file; it
+  could not react to the theme.
+- **The whole visual system is `buildTheme(skin, isDark)` in `theme.ts`.** Two
+  axes: the *skin* (`ledger` — the committed world — plus `glass`, `console`,
+  `solid`) and the light level. Both persist to `settings.json`. Every colour,
+  radius, shadow and blur a component renders must come off the returned
+  `AppTheme`: `theme.cardBg`, `theme.radius.<role>`, `theme.elevation.<step>`,
+  `theme.blur.<step>`, `theme.dangerInk`, `overlay(isDark, alpha)` for chrome
+  tints. **A hardcoded colour or radius in a component is a bug** — it will be
+  wrong in three of the four skins. `DESIGN.md` is the authority on meaning.
+- **Radii are named by role, not size**: `control` · `field` · `action` · `chip`
+  · `panel` · `modal` · `workspace`. Pick the role, never a pixel value.
+- **Surfaces that render outside `<App/>` read `:root` custom properties**, not
+  props. `buildGlobalStyles` publishes `--toast-*`, `--ink-*` and `--icon-tile-*`
+  for exactly this. `Toast` (mounted above `<App/>`) and `EQIcon` (once per row,
+  in three surfaces) both use that bridge; follow it rather than threading the
+  theme down.
+- **Interface icons are inline SVG in `src/components/Icon.tsx`**, stroked in
+  `currentColor` on a 24-unit box at 1.5 weight and marked `aria-hidden`
+  (every one sits beside a text label). No emoji in the chrome, no icon font,
+  no icon package, no `<img>`.
+- **The action channel is skin-independent.** `actionInk`/`actionWash` in
+  `theme.ts` bind the four loot actions to fixed hues, because a row's action is
+  data, not chrome. Do not make them vary by skin.
 
 ## Invariants — don't regress these
 
@@ -50,6 +84,30 @@ Releases are cut by tagging `main` with `app-v*`.
 - There is no automated end-to-end test; manual `npm run tauri dev` covers the
   UI flows (select dir → open/create file → add/edit items → save).
 
+## Browser-only UI development
+
+`npm run dev` alone (no Tauri shell) now serves a working app at
+`localhost:1420` against fixture data, so UI work can happen in a normal browser
+with hot reload and devtools. `npm run tauri dev` is unaffected — the real
+bridge is present, so the real commands run.
+
+- `src/dev/fixtures.ts` — the fake catalog (~1,200 depot items plus curated
+  gear), three `LF_*.ini` files, and three deliberately-unknown item ids so the
+  custom-item flow is reachable.
+- `src/dev/mockBackend.ts` — the in-memory command surface. It mirrors backend
+  *rules*, not just shapes: path confinement, `LF_*.ini` naming, caret/newline
+  rejection, the 200-result search cap, unique-id custom inserts. Keep it that
+  way, so a UI change that would break against Rust breaks here too.
+- Console controls on `window.__eqlMock`: `simulateGameWrite()` (exercises the
+  file watcher and reconcile flow), `simulateDelete()`, `reset()`, and
+  `latencyMs` (defaults to 90ms so loading states actually render).
+- Both modules are behind `import.meta.env.DEV` and a dynamic import, so
+  production builds drop them entirely. Verify with
+  `npm run build && grep -r "__eqlMock" dist/` — it must find nothing.
+
+Fixture settings are in memory only and reset on reload. That is deliberate:
+persisting them would mean `localStorage`, which the real app does not use.
+
 ## Gotchas
 
 - `main.rs` is a thin entry that calls `eql_loot_filter_manager_lib::run()`; all
@@ -77,3 +135,14 @@ Releases are cut by tagging `main` with `app-v*`.
   search use the broad `tradeskills='1'` definition.
 - `EQIcon` computes sprite-sheet offsets from `icon_id` (500 offset,
   column-major, 36 icons/sheet). Sheets live in the frontend `public/icons/`.
+- **The type system is self-hosted IBM Plex.** `public/fonts/` holds
+  `plex-sans-variable-latin.woff2` (variable 100–700) and
+  `plex-mono-400-latin.woff2`, copied out of the
+  `@fontsource-variable/ibm-plex-sans` and `@fontsource/ibm-plex-mono`
+  devDependencies — those packages are provenance only and are never imported at
+  runtime. To update, bump the devDependency and re-copy
+  `files/ibm-plex-sans-latin-wght-normal.woff2` and
+  `files/ibm-plex-mono-latin-400-normal.woff2`. Both `@font-face` blocks are
+  declared twice on purpose: in `theme.ts` for the app, and in `index.html`'s
+  static block so the request starts before the JS bundle parses. Never a CDN,
+  and never add a subset or weight the app does not actually use.

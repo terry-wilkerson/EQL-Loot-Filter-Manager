@@ -1,8 +1,9 @@
-import { SUCCESS_GRADIENT, type GlassTheme } from "../theme";
+import { ON_ACCENT, type AppTheme } from "../theme";
+import { IconFile } from "./Icon";
 import type { FilterFileInfo } from "../types";
 
 interface DashboardProps {
-  theme: GlassTheme;
+  theme: AppTheme;
   uiDirectory: string;
   detectedFiles: FilterFileInfo[];
   onSelectDirectory: () => void;
@@ -26,10 +27,10 @@ export function Dashboard({
         margin: "0 auto",
         padding: "32px",
         background: theme.cardBg,
-        backdropFilter: "blur(20px)",
-        borderRadius: "24px",
+        backdropFilter: theme.blur.work,
+        borderRadius: theme.radius.workspace,
         border: theme.cardBorder,
-        boxShadow: "0 12px 40px rgba(0,0,0,0.25)",
+        boxShadow: theme.elevation.work,
         display: "flex",
         flexDirection: "column",
         overflow: "hidden",
@@ -61,24 +62,27 @@ export function Dashboard({
           type="text"
           readOnly
           value={uiDirectory || "No directory selected..."}
+          // Read-only: a dashed border and a transparent fill so it reads as
+          // a display of the current selection, not a field to type into.
           style={{
             flex: 1,
             padding: "12px 16px",
-            borderRadius: "12px",
-            border: theme.cardBorder,
-            background: theme.inputBg,
-            color: theme.textPrimary,
+            borderRadius: theme.radius.chip,
+            border: `1px dashed ${theme.dashedBorder}`,
+            background: "transparent",
+            color: uiDirectory ? theme.textPrimary : theme.textSecondary,
             fontSize: "14px",
+            cursor: "default",
           }}
         />
         <button
           onClick={onSelectDirectory}
           style={{
             padding: "12px 20px",
-            borderRadius: "12px",
+            borderRadius: theme.radius.chip,
             border: "none",
             background: theme.buttonPrimary,
-            color: "#fff",
+            color: ON_ACCENT,
             fontWeight: 600,
             cursor: "pointer",
           }}
@@ -104,10 +108,10 @@ export function Dashboard({
             onClick={onCreateNewFile}
             style={{
               padding: "8px 16px",
-              borderRadius: "10px",
+              borderRadius: theme.radius.action,
               border: "none",
-              background: SUCCESS_GRADIENT,
-              color: "#fff",
+              background: theme.buttonSuccess,
+              color: ON_ACCENT,
               fontWeight: 600,
               cursor: "pointer",
             }}
@@ -135,20 +139,25 @@ export function Dashboard({
                 justifyContent: "space-between",
                 alignItems: "center",
                 padding: "14px 20px",
-                borderRadius: "12px",
+                borderRadius: theme.radius.chip,
                 background: theme.inputBg,
                 border: theme.cardBorder,
               }}
             >
-              <span style={{ fontWeight: 600 }}>📄 {file.name}</span>
+              <span
+                style={{ fontWeight: 600, display: "inline-flex", alignItems: "center", gap: "8px" }}
+              >
+                <IconFile style={{ color: theme.textSecondary }} />
+                {file.name}
+              </span>
               <button
                 onClick={() => onOpenFile(file.path)}
                 style={{
                   padding: "8px 16px",
-                  borderRadius: "8px",
+                  borderRadius: theme.radius.field,
                   border: "none",
                   background: theme.buttonPrimary,
-                  color: "#fff",
+                  color: ON_ACCENT,
                   cursor: "pointer",
                   fontWeight: 600,
                 }}
@@ -163,8 +172,8 @@ export function Dashboard({
               padding: "40px",
               textAlign: "center",
               color: theme.textSecondary,
-              border: "2px dashed rgba(255,255,255,0.1)",
-              borderRadius: "16px",
+              border: `2px dashed ${theme.dashedBorder}`,
+              borderRadius: theme.radius.panel,
             }}
           >
             {uiDirectory

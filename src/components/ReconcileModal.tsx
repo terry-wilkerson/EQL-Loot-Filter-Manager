@@ -1,7 +1,8 @@
-import { modalCardStyle, modalOverlayStyle, type GlassTheme } from "../theme";
+import { ON_ACCENT, modalCardStyle, modalOverlayStyle, type AppTheme } from "../theme";
+import { IconMerge, IconPencil, IconRevert } from "./Icon";
 
 interface ReconcileModalProps {
-  theme: GlassTheme;
+  theme: AppTheme;
   fileName: string;
   // Preview counts from a trial 3-way merge.
   added: number;
@@ -25,20 +26,23 @@ export function ReconcileModal({
 }: ReconcileModalProps) {
   const btn = (bg: string, color: string): React.CSSProperties => ({
     padding: "10px 16px",
-    borderRadius: "8px",
+    borderRadius: theme.radius.field,
     border: "none",
     background: bg,
     color,
     fontWeight: 600,
     cursor: "pointer",
     textAlign: "left",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
   });
 
   return (
-    <div style={{ ...modalOverlayStyle, zIndex: 2500 }}>
+    <div style={{ ...modalOverlayStyle(theme), zIndex: 2500 }}>
       <div
         style={{
-          ...modalCardStyle,
+          ...modalCardStyle(theme),
           maxWidth: "460px",
           background: theme.cardBg,
           border: theme.cardBorder,
@@ -58,7 +62,7 @@ export function ReconcileModal({
             <>
               {" "}
               (
-              <strong style={{ color: "#f59e0b" }}>{conflicts}</strong> item(s)
+              <strong style={{ color: theme.warnInk }}>{conflicts}</strong> item(s)
               changed in both places — your version is kept)
             </>
           ) : null}
@@ -66,22 +70,25 @@ export function ReconcileModal({
         </p>
 
         <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          <button type="button" onClick={onMerge} style={btn(theme.buttonPrimary, "#fff")}>
-            🔀 Merge game changes into mine {added > 0 ? `(+${added})` : ""}
+          <button type="button" onClick={onMerge} style={btn(theme.buttonPrimary, ON_ACCENT)}>
+            <IconMerge />
+            Merge game changes into mine {added > 0 ? `(+${added})` : ""}
           </button>
           <button
             type="button"
             onClick={onDiscard}
             style={btn(theme.buttonSecondary, theme.textPrimary)}
           >
-            ↩️ Discard my changes &amp; reload from disk
+            <IconRevert />
+            Discard my changes &amp; reload from disk
           </button>
           <button
             type="button"
             onClick={onKeep}
             style={btn(theme.buttonSecondary, theme.textPrimary)}
           >
-            ✏️ Keep editing (my next save overwrites the game's changes)
+            <IconPencil />
+            Keep editing (my next save overwrites the game's changes)
           </button>
         </div>
       </div>

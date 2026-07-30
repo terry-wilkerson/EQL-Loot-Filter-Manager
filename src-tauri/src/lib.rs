@@ -47,6 +47,13 @@ pub struct ScanResult {
 pub struct AppSettings {
     pub dark_mode: bool,
     pub ui_directory: Option<String>,
+    /// Which visual skin the interface wears. `#[serde(default)]` so a
+    /// settings.json written before skins existed still deserializes — without
+    /// it, every upgrading user silently loses their saved directory too.
+    /// Validation lives on the frontend, which owns the list of skin ids; an
+    /// unrecognized value falls back to the default there.
+    #[serde(default)]
+    pub skin: Option<String>,
 }
 
 impl Default for AppSettings {
@@ -54,6 +61,7 @@ impl Default for AppSettings {
         Self {
             dark_mode: true,
             ui_directory: None,
+            skin: None,
         }
     }
 }
@@ -75,10 +83,7 @@ struct AppState {
 /// bogus "file name". Rejecting `..` plus the fact that the result contains no
 /// separator means it can't traverse out of the root once joined.
 fn sanitized_filter_file_name(file_path: &str) -> Result<String, String> {
-    let name = file_path
-        .rsplit(|c| c == '/' || c == '\\')
-        .next()
-        .unwrap_or("");
+    let name = file_path.rsplit(['/', '\\']).next().unwrap_or("");
     if name.is_empty()
         || name.contains("..")
         || !(name.starts_with("LF_") && name.to_lowercase().ends_with(".ini"))
@@ -216,11 +221,11 @@ fn search_eq_items(
         .query_map(params![sql_param], row_to_loot_item)
         .map_err(|e| e.to_string())?;
 
+    // Rows that fail to deserialize are skipped rather than failing the whole
+    // search — a single malformed catalog row shouldn't blank the results.
     let mut results = Vec::new();
-    for item in item_iter {
-        if let Ok(i) = item {
-            results.push(i);
-        }
+    for i in item_iter.flatten() {
+        results.push(i);
     }
     Ok(results)
 }
@@ -238,8 +243,7 @@ fn query_present_ids(
 ) -> Result<Vec<u32>, String> {
     let mut found = Vec::new();
     for chunk in ids.chunks(ID_CHUNK) {
-        let placeholders = std::iter::repeat("?")
-            .take(chunk.len())
+        let placeholders = std::iter::repeat_n("?", chunk.len())
             .collect::<Vec<_>>()
             .join(",");
         let sql = if tradeskill_only {
@@ -458,7 +462,7 @@ fn scan_ui_directory(state: State<AppState>, dir_path: String) -> Result<ScanRes
             }
         }
     }
-    files.sort_by(|a, b| a.name.to_lowercase().cmp(&b.name.to_lowercase()));
+    files.sort_by_key(|f| f.name.to_lowercase());
 
     *state
         .ui_dir
@@ -760,6 +764,20 @@ mod tests {
         let s = AppSettings::default();
         assert!(s.dark_mode);
         assert!(s.ui_directory.is_none());
+        assert!(s.skin.is_none());
+    }
+
+    /// A settings.json written before the `skin` field existed must still load,
+    /// carrying its other values intact. Without `#[serde(default)]` this
+    /// deserialization fails and `load_settings` silently discards the user's
+    /// saved UI directory.
+    #[test]
+    fn settings_without_skin_field_still_deserialize() {
+        let json = r#"{"dark_mode": false, "ui_directory": "C:/EQ/uifiles"}"#;
+        let s: AppSettings = serde_json::from_str(json).expect("legacy settings should load");
+        assert!(!s.dark_mode);
+        assert_eq!(s.ui_directory.as_deref(), Some("C:/EQ/uifiles"));
+        assert!(s.skin.is_none());
     }
 
     #[test]

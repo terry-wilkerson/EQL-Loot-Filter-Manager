@@ -40,6 +40,13 @@ export interface SortState {
 
 type SortableItem = Pick<LootItem, "item_id" | "name" | "filter_id">;
 
+// Built once and reused. `String.prototype.localeCompare` constructs a fresh
+// collator on every call, which is the dominant cost when sorting a filter
+// that has had the whole tradeskill catalog added to it (~7,600 rows is well
+// over 100,000 comparisons). Same collation, same options — just not rebuilt
+// a hundred thousand times.
+const NAME_COLLATOR = new Intl.Collator(undefined, { sensitivity: "base" });
+
 // Returns a new array sorted by the given column/direction. A null sort leaves
 // the original order untouched. Stable and non-mutating (display-only concern).
 export function sortRows<T extends SortableItem>(
@@ -51,7 +58,7 @@ export function sortRows<T extends SortableItem>(
   return [...rows].sort((a, b) => {
     let cmp: number;
     if (sort.key === "name") {
-      cmp = a.name.localeCompare(b.name, undefined, { sensitivity: "base" });
+      cmp = NAME_COLLATOR.compare(a.name, b.name);
     } else if (sort.key === "item_id") {
       cmp = a.item_id - b.item_id;
     } else {
