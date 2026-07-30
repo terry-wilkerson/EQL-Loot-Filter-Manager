@@ -4,7 +4,7 @@ already carries a 13k-item catalog and 379 icon sheets."""
 from PIL import Image
 import numpy as np, os
 
-SRC = 'src/assets/b1-quartermaster-v2.png'
+SRC = 'brand/quartermaster-original.png'
 im = Image.open(SRC).convert('RGB')
 W, H = im.size
 
@@ -40,8 +40,8 @@ im.paste(src, (box[0], box[1]), Image.fromarray(mask.astype(np.uint8)))
 chk = np.asarray(im.crop((X0-40, Y0-40, X1+40, Y1+40)).convert('L'))
 print('post-patch max luminance in region:', chk.max(), '(background median ~17)')
 
-im.save('src/assets/b1-quartermaster-v2-clean.png')
-for width, name in ((1920, 'quartermaster-1920.webp'), (1280, 'quartermaster-1280.webp')):
+im.save('brand/quartermaster-master.png')
+for width, name in ((1920, 'src/assets/quartermaster-1920.webp'), (1280, 'src/assets/quartermaster-1280.webp')):
     out = im.resize((width, round(H*width/W)), Image.LANCZOS)
     out.save(name, format='WEBP', quality=82, method=6)
     print('{}  {}x{}  {:.0f} KB'.format(name, out.width, out.height, os.path.getsize(name)/1024))

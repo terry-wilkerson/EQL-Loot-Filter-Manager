@@ -8,7 +8,7 @@ a transparent variant (for the in-app tile and README).
 from PIL import Image
 import numpy as np
 
-SRC = 'src/assets/a4-quill-icon-v1.png'
+SRC = 'brand/quill-mark-original.png'
 FILL = 0.80          # fraction of the canvas the mark should occupy
 WATERMARK = (1740, 1740, 1875, 1875)
 
@@ -64,13 +64,13 @@ print('mark {}x{} -> {:.0f}% of canvas'.format(mw, mh, 100*max(mw,mh)/W))
 # Transparent variant
 tr = Image.new('RGBA', (W, H), (0,0,0,0))
 tr.paste(mark, ((W-mw)//2, (H-mh)//2), mark)
-tr.save('icon-transparent-2048.png')
+tr.save('brand/icon-mark-transparent-2048.png')
 
 # Opaque variant: the mark over the app's own dark ground
 r = np.clip(np.sqrt(((xx-W/2)/(W/2))**2 + ((yy-H/2)/(H/2))**2)/1.414*1.15, 0, 1)[..., None]
 bg = Image.fromarray(np.clip(VELLUM_INDIGO*(1-r) + INK_SLATE*r, 0, 255).astype(np.uint8))
 op = bg.convert('RGBA'); op.alpha_composite(tr)
-op.convert('RGB').save('icon-source-2048.png')
+op.convert('RGB').save('brand/icon-source-2048.png')
 
 # Legibility strip, dark ground and light ground
 for name, ground in (('icon-sizes-dark.png', (15,23,42)), ('icon-sizes-light.png', (224,231,255))):
@@ -80,4 +80,5 @@ for name, ground in (('icon-sizes-dark.png', (15,23,42)), ('icon-sizes-light.png
     for s in sizes:
         strip.paste(op.convert('RGB').resize((s,s), Image.LANCZOS), (x, (160-s)//2)); x += s+16
     strip.save(name)
-print('written icon-source-2048.png, icon-transparent-2048.png, size strips')
+op.convert('RGB').resize((144,144), Image.LANCZOS).save('src/assets/mark-144.png', optimize=True)
+print('written brand/icon-source-2048.png, brand/icon-mark-transparent-2048.png, src/assets/mark-144.png, size strips')

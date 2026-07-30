@@ -1,0 +1,46 @@
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -17,7 +17,7 @@
+       - name: verify LFS-tracked assets are not committed raw
+         run: |
+           set -e
+-          mapfile -t tracked < <(git ls-files 'public/icons/*.png' '*.sqlite')
++          mapfile -t tracked < <(git ls-files 'public/icons/*.png' '*.sqlite' 'brand/*')
+           mapfile -t lfs < <(git lfs ls-files -n)
+           violations=0
+           for f in "${tracked[@]}"; do
+@@ -29,10 +29,31 @@
+           done
+           if [ "$violations" -ne 0 ]; then
+             echo "Assets above bypassed Git LFS. Fix with:"
+-            echo "  git lfs migrate import --include=\"*.sqlite,public/icons/*.png\""
++            echo "  git lfs migrate import --include=\"*.sqlite,public/icons/*.png,brand/**\""
+             exit 1
+           fi
+-          echo "OK: all .sqlite and public/icons PNG assets are stored via Git LFS."
++          echo "OK: all .sqlite, public/icons and brand/ assets are stored via Git LFS."
++
++      - name: build-time assets must NOT be in Git LFS
++        run: |
++          set -e
++          # The frontend job checks out with lfs:false, so anything Vite bundles
++          # or tauri-build reads has to be a real blob, not a pointer.
++          mapfile -t lfs < <(git lfs ls-files -n)
++          violations=0
++          for f in "${lfs[@]}"; do
++            [ -z "$f" ] && continue
++            case "$f" in
++              src/assets/*|public/fonts/*|src-tauri/icons/*|index.html)
++                echo "::error file=$f::$f is read at build time and must not be stored via Git LFS"
++                violations=1 ;;
++            esac
++          done
++          if [ "$violations" -ne 0 ]; then
++            echo "Move these out of an LFS-tracked path (design masters belong in brand/)."
++            exit 1
++          fi
++          echo "OK: no build-time asset is behind Git LFS."
+ 
+   # Catch version drift early: package.json and tauri.conf.json must agree on
+   # major.minor.patch (a 4th component or -prerelease suffix is ignored). The

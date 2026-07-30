@@ -89,8 +89,6 @@ user preference):
 
 Explicitly undecided:
 
-- Whether a distinct visual mark exists for the product, or whether the bundled
-  icon set is still a placeholder.
 - No primary OS has been declared, despite Windows being the game's platform.
 
 ## Brand Commitments
@@ -103,9 +101,14 @@ Explicitly undecided:
 - **The game's own item icon art is an identity commitment,** not a convenience.
   Item recognition through the sprite-sheet artwork is part of what the product
   is, and must not be traded away for generic iconography.
+- **A distinct visual mark now exists** (confirmed 2026-07-28): a fountain-pen
+  nib with a single indigo checkmark on a dark indigo ground — "recorded, and
+  decided". It replaces the placeholder icon set and the header's "EQ"
+  letterform. See DESIGN.md's App Mark section for its construction and
+  constraints; `brand/icon-source-2048.png` is the master.
 
-Nothing else is committed: no confirmed voice, no confirmed mark, and no
-required affiliation disclaimer.
+Nothing else is committed: no confirmed voice and no required affiliation
+disclaimer.
 
 ## Evidence on Hand
 
@@ -118,6 +121,11 @@ Real assets present in the repository:
   sheet offsets from `icon_id` (500 offset, column-major, 36 icons per sheet).
 - `README.md`, `CONTRIBUTING.md`, `CLAUDE.md`, and CI/release GitHub Actions
   workflows.
+- The app mark and its generated icon set (`brand/icon-source-2048.png`,
+  `src-tauri/icons/`), plus one illustrated key art piece of a quartermaster
+  recording loot at a camp table (`brand/quartermaster-master.png`, with
+  1920/1280 WebP derivatives in `src/assets/`). Placement of the illustration
+  is undecided.
 
 Absent — future work must not fabricate these: no screenshots or product
 imagery, no testimonials, no user or download counts, no press or reviews, no

@@ -20,6 +20,7 @@
 *.sqlite filter=lfs diff=lfs merge=lfs -text
 # Binary assets — Git must never munge line endings or try to diff these.
 *.png    binary
+*.webp   binary
 *.ico    binary
 *.icns   binary
 *.dll    binary
@@ -31,6 +32,13 @@
 # public/icons so the small app icons in src-tauri/icons stay in regular Git.
 # (This line comes after *.png binary so it wins for these paths.)
 public/icons/*.png filter=lfs diff=lfs merge=lfs -text
+# Design masters — multi-megabyte source artwork (the 2048px icon master, the
+# key-art illustration, the raw generator output). Nothing here is imported by
+# the app or read by a build; that is exactly why the whole folder can go to
+# LFS safely. Build-time assets must NOT be added here: the `frontend` CI job
+# checks out with lfs:false, so an LFS-tracked file that Vite bundles would ship
+# as a 130-byte pointer. Small derived assets live in src/assets/ instead.
+brand/** filter=lfs diff=lfs merge=lfs -text
 # Generated lockfiles: collapse in diffs and exclude from language stats.
 Cargo.lock        linguist-generated=true
 package-lock.json linguist-generated=true

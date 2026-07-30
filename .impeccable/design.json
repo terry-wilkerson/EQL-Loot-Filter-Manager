@@ -1,418 +1,354 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-07-28T18:15:02.291Z",
+  "generatedAt": "2026-07-30T16:17:49.380Z",
   "title": "Design System: EQL Loot",
   "extensions": {
     "colorMeta": {
-      "paper-ground": {
-        "role": "neutral",
-        "displayName": "Paper Ground",
-        "canonical": "oklch(94.3% 0.012 91.5)",
-        "hex": "#efece3",
-        "tonalRamp": [
-          "oklch(15% 0.010 91.5)",
-          "oklch(26% 0.011 91.5)",
-          "oklch(37% 0.012 91.5)",
-          "oklch(48% 0.012 91.5)",
-          "oklch(59% 0.012 91.5)",
-          "oklch(70% 0.012 91.5)",
-          "oklch(82% 0.012 91.5)",
-          "oklch(95% 0.011 91.5)"
-        ]
-      },
-      "paper-card": {
-        "role": "neutral",
-        "displayName": "Paper Card",
-        "canonical": "oklch(99.4% 0.007 88.6)",
-        "hex": "#fffdf8",
-        "tonalRamp": [
-          "oklch(15% 0.005 88.6)",
-          "oklch(26% 0.006 88.6)",
-          "oklch(37% 0.007 88.6)",
-          "oklch(48% 0.007 88.6)",
-          "oklch(59% 0.007 88.6)",
-          "oklch(70% 0.007 88.6)",
-          "oklch(82% 0.007 88.6)",
-          "oklch(95% 0.006 88.6)"
-        ]
-      },
-      "paper-field": {
-        "role": "neutral",
-        "displayName": "Paper Field",
-        "canonical": "oklch(97.6% 0.011 89.7)",
-        "hex": "#faf7ef",
-        "tonalRamp": [
-          "oklch(15% 0.008 89.7)",
-          "oklch(26% 0.010 89.7)",
-          "oklch(37% 0.010 89.7)",
-          "oklch(48% 0.011 89.7)",
-          "oklch(59% 0.011 89.7)",
-          "oklch(70% 0.011 89.7)",
-          "oklch(82% 0.010 89.7)",
-          "oklch(95% 0.009 89.7)"
-        ]
-      },
-      "paper-head": {
-        "role": "neutral",
-        "displayName": "Paper Head",
-        "canonical": "oklch(94.1% 0.017 88.0)",
-        "hex": "#f0ebdf",
-        "tonalRamp": [
-          "oklch(15% 0.013 88.0)",
-          "oklch(26% 0.015 88.0)",
-          "oklch(37% 0.016 88.0)",
-          "oklch(48% 0.017 88.0)",
-          "oklch(59% 0.017 88.0)",
-          "oklch(70% 0.017 88.0)",
-          "oklch(82% 0.016 88.0)",
-          "oklch(95% 0.014 88.0)"
-        ]
-      },
-      "paper-raised": {
-        "role": "neutral",
-        "displayName": "Paper Raised",
-        "canonical": "oklch(91.4% 0.019 86.1)",
-        "hex": "#e8e2d5",
-        "tonalRamp": [
-          "oklch(15% 0.014 86.1)",
-          "oklch(26% 0.016 86.1)",
-          "oklch(37% 0.017 86.1)",
-          "oklch(48% 0.018 86.1)",
-          "oklch(59% 0.019 86.1)",
-          "oklch(70% 0.018 86.1)",
-          "oklch(82% 0.018 86.1)",
-          "oklch(95% 0.016 86.1)"
-        ]
-      },
-      "paper-rule": {
-        "role": "neutral",
-        "displayName": "Paper Rule",
-        "canonical": "oklch(87.8% 0.022 85.9)",
-        "hex": "#ddd6c7",
-        "tonalRamp": [
-          "oklch(15% 0.017 85.9)",
-          "oklch(26% 0.019 85.9)",
-          "oklch(37% 0.020 85.9)",
-          "oklch(48% 0.021 85.9)",
-          "oklch(59% 0.022 85.9)",
-          "oklch(70% 0.021 85.9)",
-          "oklch(82% 0.020 85.9)",
-          "oklch(95% 0.019 85.9)"
-        ]
-      },
-      "night-ground": {
-        "role": "neutral",
-        "displayName": "Night Ground",
-        "canonical": "oklch(18.6% 0.008 95.5)",
-        "hex": "#14130f",
-        "tonalRamp": [
-          "oklch(15% 0.006 95.5)",
-          "oklch(26% 0.007 95.5)",
-          "oklch(37% 0.008 95.5)",
-          "oklch(48% 0.008 95.5)",
-          "oklch(59% 0.008 95.5)",
-          "oklch(70% 0.008 95.5)",
-          "oklch(82% 0.008 95.5)",
-          "oklch(95% 0.007 95.5)"
-        ]
-      },
-      "night-card": {
-        "role": "neutral",
-        "displayName": "Night Card",
-        "canonical": "oklch(22.2% 0.008 95.4)",
-        "hex": "#1c1b17",
-        "tonalRamp": [
-          "oklch(15% 0.006 95.4)",
-          "oklch(26% 0.007 95.4)",
-          "oklch(37% 0.007 95.4)",
-          "oklch(48% 0.008 95.4)",
-          "oklch(59% 0.008 95.4)",
-          "oklch(70% 0.008 95.4)",
-          "oklch(82% 0.007 95.4)",
-          "oklch(95% 0.007 95.4)"
-        ]
-      },
-      "night-field": {
-        "role": "neutral",
-        "displayName": "Night Field",
-        "canonical": "oklch(24.4% 0.014 87.6)",
-        "hex": "#232019",
-        "tonalRamp": [
-          "oklch(15% 0.010 87.6)",
-          "oklch(26% 0.012 87.6)",
-          "oklch(37% 0.013 87.6)",
-          "oklch(48% 0.013 87.6)",
-          "oklch(59% 0.014 87.6)",
-          "oklch(70% 0.013 87.6)",
-          "oklch(82% 0.013 87.6)",
-          "oklch(95% 0.012 87.6)"
-        ]
-      },
-      "night-raised": {
-        "role": "neutral",
-        "displayName": "Night Raised",
-        "canonical": "oklch(27.8% 0.012 84.6)",
-        "hex": "#2b2822",
-        "tonalRamp": [
-          "oklch(15% 0.009 84.6)",
-          "oklch(26% 0.010 84.6)",
-          "oklch(37% 0.011 84.6)",
-          "oklch(48% 0.011 84.6)",
-          "oklch(59% 0.012 84.6)",
-          "oklch(70% 0.011 84.6)",
-          "oklch(82% 0.011 84.6)",
-          "oklch(95% 0.010 84.6)"
-        ]
-      },
-      "night-rule": {
-        "role": "neutral",
-        "displayName": "Night Rule",
-        "canonical": "oklch(31.8% 0.014 89.9)",
-        "hex": "#35322a",
-        "tonalRamp": [
-          "oklch(15% 0.011 89.9)",
-          "oklch(26% 0.012 89.9)",
-          "oklch(37% 0.014 89.9)",
-          "oklch(48% 0.014 89.9)",
-          "oklch(59% 0.014 89.9)",
-          "oklch(70% 0.014 89.9)",
-          "oklch(82% 0.014 89.9)",
-          "oklch(95% 0.012 89.9)"
-        ]
-      },
-      "ink-primary": {
-        "role": "neutral",
-        "displayName": "Ink",
-        "canonical": "oklch(21.6% 0.006 56.0)",
-        "hex": "#1c1917",
-        "tonalRamp": [
-          "oklch(15% 0.005 56.0)",
-          "oklch(26% 0.005 56.0)",
-          "oklch(37% 0.006 56.0)",
-          "oklch(48% 0.006 56.0)",
-          "oklch(59% 0.006 56.0)",
-          "oklch(70% 0.006 56.0)",
-          "oklch(82% 0.006 56.0)",
-          "oklch(95% 0.005 56.0)"
-        ]
-      },
-      "ink-secondary": {
-        "role": "neutral",
-        "displayName": "Ink Secondary",
-        "canonical": "oklch(44.4% 0.010 73.6)",
-        "hex": "#57534e",
-        "tonalRamp": [
-          "oklch(15% 0.007 73.6)",
-          "oklch(26% 0.008 73.6)",
-          "oklch(37% 0.009 73.6)",
-          "oklch(48% 0.009 73.6)",
-          "oklch(59% 0.010 73.6)",
-          "oklch(70% 0.009 73.6)",
-          "oklch(82% 0.009 73.6)",
-          "oklch(95% 0.008 73.6)"
-        ]
-      },
-      "ink-primary-night": {
-        "role": "neutral",
-        "displayName": "Night Ink",
-        "canonical": "oklch(95.6% 0.014 84.6)",
-        "hex": "#f5f0e6",
-        "tonalRamp": [
-          "oklch(15% 0.011 84.6)",
-          "oklch(26% 0.012 84.6)",
-          "oklch(37% 0.013 84.6)",
-          "oklch(48% 0.014 84.6)",
-          "oklch(59% 0.014 84.6)",
-          "oklch(70% 0.014 84.6)",
-          "oklch(82% 0.014 84.6)",
-          "oklch(95% 0.012 84.6)"
-        ]
-      },
-      "ink-secondary-night": {
-        "role": "neutral",
-        "displayName": "Night Ink Secondary",
-        "canonical": "oklch(71.6% 0.009 56.3)",
-        "hex": "#a8a29e",
-        "tonalRamp": [
-          "oklch(15% 0.007 56.3)",
-          "oklch(26% 0.008 56.3)",
-          "oklch(37% 0.008 56.3)",
-          "oklch(48% 0.009 56.3)",
-          "oklch(59% 0.009 56.3)",
-          "oklch(70% 0.009 56.3)",
-          "oklch(82% 0.009 56.3)",
-          "oklch(95% 0.008 56.3)"
-        ]
-      },
-      "stamp-blue": {
+      "manifest-indigo": {
         "role": "primary",
-        "displayName": "Stamp Blue",
-        "canonical": "oklch(48.8% 0.217 264.4)",
-        "hex": "#1d4ed8",
-        "tonalRamp": [
-          "oklch(15% 0.166 264.4)",
-          "oklch(26% 0.188 264.4)",
-          "oklch(37% 0.204 264.4)",
-          "oklch(48% 0.214 264.4)",
-          "oklch(59% 0.217 264.4)",
-          "oklch(70% 0.215 264.4)",
-          "oklch(82% 0.205 264.4)",
-          "oklch(95% 0.186 264.4)"
-        ]
-      },
-      "stamp-blue-night": {
-        "role": "primary",
-        "displayName": "Stamp Blue Night",
-        "canonical": "oklch(71.4% 0.143 254.6)",
-        "hex": "#60a5fa",
-        "tonalRamp": [
-          "oklch(15% 0.110 254.6)",
-          "oklch(26% 0.124 254.6)",
-          "oklch(37% 0.135 254.6)",
-          "oklch(48% 0.141 254.6)",
-          "oklch(59% 0.143 254.6)",
-          "oklch(70% 0.142 254.6)",
-          "oklch(82% 0.135 254.6)",
-          "oklch(95% 0.123 254.6)"
-        ]
-      },
-      "stamp-green": {
-        "role": "secondary",
-        "displayName": "Stamp Green",
-        "canonical": "oklch(52.7% 0.137 150.1)",
-        "hex": "#15803d",
-        "tonalRamp": [
-          "oklch(15% 0.105 150.1)",
-          "oklch(26% 0.119 150.1)",
-          "oklch(37% 0.129 150.1)",
-          "oklch(48% 0.135 150.1)",
-          "oklch(59% 0.137 150.1)",
-          "oklch(70% 0.136 150.1)",
-          "oklch(82% 0.129 150.1)",
-          "oklch(95% 0.118 150.1)"
-        ]
-      },
-      "stamp-red": {
-        "role": "tertiary",
-        "displayName": "Stamp Red",
-        "canonical": "oklch(50.5% 0.190 27.5)",
-        "hex": "#b91c1c",
-        "tonalRamp": [
-          "oklch(15% 0.146 27.5)",
-          "oklch(26% 0.165 27.5)",
-          "oklch(37% 0.179 27.5)",
-          "oklch(48% 0.187 27.5)",
-          "oklch(59% 0.190 27.5)",
-          "oklch(70% 0.188 27.5)",
-          "oklch(82% 0.180 27.5)",
-          "oklch(95% 0.163 27.5)"
-        ]
-      },
-      "stamp-amber": {
-        "role": "tertiary",
-        "displayName": "Stamp Amber",
-        "canonical": "oklch(55.4% 0.121 66.4)",
-        "hex": "#a16207",
-        "tonalRamp": [
-          "oklch(15% 0.092 66.4)",
-          "oklch(26% 0.105 66.4)",
-          "oklch(37% 0.113 66.4)",
-          "oklch(48% 0.119 66.4)",
-          "oklch(59% 0.121 66.4)",
-          "oklch(70% 0.119 66.4)",
-          "oklch(82% 0.114 66.4)",
-          "oklch(95% 0.104 66.4)"
-        ]
-      },
-      "stamp-amber-night": {
-        "role": "tertiary",
-        "displayName": "Stamp Amber Night",
-        "canonical": "oklch(83.7% 0.164 84.4)",
-        "hex": "#fbbf24",
-        "tonalRamp": [
-          "oklch(15% 0.126 84.4)",
-          "oklch(26% 0.142 84.4)",
-          "oklch(37% 0.154 84.4)",
-          "oklch(48% 0.162 84.4)",
-          "oklch(59% 0.164 84.4)",
-          "oklch(70% 0.163 84.4)",
-          "oklch(82% 0.155 84.4)",
-          "oklch(95% 0.141 84.4)"
-        ]
-      },
-      "action-store": {
-        "role": "tertiary",
-        "displayName": "Action · Always Store",
-        "canonical": "oklch(69.6% 0.149 162.5)",
-        "hex": "#10b981",
-        "tonalRamp": [
-          "oklch(15% 0.114 162.5)",
-          "oklch(26% 0.129 162.5)",
-          "oklch(37% 0.140 162.5)",
-          "oklch(48% 0.147 162.5)",
-          "oklch(59% 0.149 162.5)",
-          "oklch(70% 0.147 162.5)",
-          "oklch(82% 0.141 162.5)",
-          "oklch(95% 0.128 162.5)"
-        ]
-      },
-      "action-loot": {
-        "role": "tertiary",
-        "displayName": "Action · Always Loot",
+        "displayName": "Manifest Indigo",
         "canonical": "oklch(58.5% 0.204 277.1)",
         "hex": "#6366f1",
         "tonalRamp": [
-          "oklch(15% 0.156 277.1)",
-          "oklch(26% 0.177 277.1)",
-          "oklch(37% 0.192 277.1)",
-          "oklch(48% 0.201 277.1)",
-          "oklch(59% 0.204 277.1)",
-          "oklch(70% 0.202 277.1)",
-          "oklch(82% 0.193 277.1)",
-          "oklch(95% 0.175 277.1)"
+          "oklch(15% 0.149 277.1)",
+          "oklch(26% 0.163 277.1)",
+          "oklch(37% 0.177 277.1)",
+          "oklch(48% 0.191 277.1)",
+          "oklch(59% 0.203 277.1)",
+          "oklch(70% 0.189 277.1)",
+          "oklch(82% 0.174 277.1)",
+          "oklch(95% 0.157 277.1)"
         ]
       },
-      "action-merge": {
-        "role": "tertiary",
-        "displayName": "Action · Always Merge",
-        "canonical": "oklch(76.9% 0.165 70.1)",
-        "hex": "#f59e0b",
+      "manifest-indigo-deep": {
+        "role": "primary",
+        "displayName": "Manifest Indigo Deep",
+        "canonical": "oklch(51.1% 0.23 277)",
+        "hex": "#4f46e5",
         "tonalRamp": [
-          "oklch(15% 0.126 70.1)",
-          "oklch(26% 0.143 70.1)",
-          "oklch(37% 0.155 70.1)",
-          "oklch(48% 0.162 70.1)",
-          "oklch(59% 0.165 70.1)",
-          "oklch(70% 0.163 70.1)",
-          "oklch(82% 0.155 70.1)",
-          "oklch(95% 0.141 70.1)"
+          "oklch(15% 0.178 277)",
+          "oklch(26% 0.194 277)",
+          "oklch(37% 0.210 277)",
+          "oklch(48% 0.226 277)",
+          "oklch(59% 0.219 277)",
+          "oklch(70% 0.203 277)",
+          "oklch(82% 0.186 277)",
+          "oklch(95% 0.167 277)"
         ]
       },
-      "action-sell": {
+      "ledger-green": {
+        "role": "secondary",
+        "displayName": "Ledger Green",
+        "canonical": "oklch(69.6% 0.149 162.5)",
+        "hex": "#10b981",
+        "tonalRamp": [
+          "oklch(15% 0.098 162.5)",
+          "oklch(26% 0.108 162.5)",
+          "oklch(37% 0.119 162.5)",
+          "oklch(48% 0.129 162.5)",
+          "oklch(59% 0.139 162.5)",
+          "oklch(70% 0.149 162.5)",
+          "oklch(82% 0.137 162.5)",
+          "oklch(95% 0.125 162.5)"
+        ]
+      },
+      "ledger-green-deep": {
+        "role": "secondary",
+        "displayName": "Ledger Green Deep",
+        "canonical": "oklch(59.6% 0.127 163.2)",
+        "hex": "#059669",
+        "tonalRamp": [
+          "oklch(15% 0.092 163.2)",
+          "oklch(26% 0.100 163.2)",
+          "oklch(37% 0.109 163.2)",
+          "oklch(48% 0.118 163.2)",
+          "oklch(59% 0.127 163.2)",
+          "oklch(70% 0.119 163.2)",
+          "oklch(82% 0.109 163.2)",
+          "oklch(95% 0.099 163.2)"
+        ]
+      },
+      "struck-red": {
         "role": "tertiary",
-        "displayName": "Action · Always Sell",
+        "displayName": "Struck Red",
         "canonical": "oklch(63.7% 0.208 25.3)",
         "hex": "#ef4444",
         "tonalRamp": [
-          "oklch(15% 0.159 25.3)",
-          "oklch(26% 0.180 25.3)",
-          "oklch(37% 0.195 25.3)",
-          "oklch(48% 0.204 25.3)",
-          "oklch(59% 0.208 25.3)",
-          "oklch(70% 0.205 25.3)",
-          "oklch(82% 0.196 25.3)",
-          "oklch(95% 0.178 25.3)"
+          "oklch(15% 0.145 25.3)",
+          "oklch(26% 0.159 25.3)",
+          "oklch(37% 0.173 25.3)",
+          "oklch(48% 0.188 25.3)",
+          "oklch(59% 0.202 25.3)",
+          "oklch(70% 0.200 25.3)",
+          "oklch(82% 0.184 25.3)",
+          "oklch(95% 0.167 25.3)"
+        ]
+      },
+      "struck-red-deep": {
+        "role": "tertiary",
+        "displayName": "Struck Red Deep",
+        "canonical": "oklch(57.7% 0.215 27.3)",
+        "hex": "#dc2626",
+        "tonalRamp": [
+          "oklch(15% 0.158 27.3)",
+          "oklch(26% 0.172 27.3)",
+          "oklch(37% 0.187 27.3)",
+          "oklch(48% 0.202 27.3)",
+          "oklch(59% 0.213 27.3)",
+          "oklch(70% 0.198 27.3)",
+          "oklch(82% 0.182 27.3)",
+          "oklch(95% 0.165 27.3)"
+        ]
+      },
+      "margin-amber": {
+        "role": "tertiary",
+        "displayName": "Margin Amber",
+        "canonical": "oklch(76.9% 0.165 70.1)",
+        "hex": "#f59e0b",
+        "tonalRamp": [
+          "oklch(15% 0.101 70.1)",
+          "oklch(26% 0.113 70.1)",
+          "oklch(37% 0.124 70.1)",
+          "oklch(48% 0.135 70.1)",
+          "oklch(59% 0.147 70.1)",
+          "oklch(70% 0.158 70.1)",
+          "oklch(82% 0.160 70.1)",
+          "oklch(95% 0.146 70.1)"
+        ]
+      },
+      "on-accent": {
+        "role": "neutral",
+        "displayName": "On Accent",
+        "canonical": "oklch(100% 0 89.9)",
+        "hex": "#ffffff",
+        "tonalRamp": [
+          "oklch(15% 0.000 89.9)",
+          "oklch(26% 0.000 89.9)",
+          "oklch(37% 0.000 89.9)",
+          "oklch(48% 0.000 89.9)",
+          "oklch(59% 0.000 89.9)",
+          "oklch(70% 0.000 89.9)",
+          "oklch(82% 0.000 89.9)",
+          "oklch(95% 0.000 89.9)"
+        ]
+      },
+      "scroll-gutter-dark": {
+        "role": "neutral",
+        "displayName": "Scroll Gutter Dark",
+        "canonical": "oklch(22.5% 0.041 266.6)",
+        "hex": "#131b2f",
+        "tonalRamp": [
+          "oklch(15% 0.039 266.6)",
+          "oklch(26% 0.040 266.6)",
+          "oklch(37% 0.037 266.6)",
+          "oklch(48% 0.034 266.6)",
+          "oklch(59% 0.032 266.6)",
+          "oklch(70% 0.029 266.6)",
+          "oklch(82% 0.026 266.6)",
+          "oklch(95% 0.022 266.6)"
+        ]
+      },
+      "scroll-gutter-light": {
+        "role": "neutral",
+        "displayName": "Scroll Gutter Light",
+        "canonical": "oklch(93.8% 0.016 274.8)",
+        "hex": "#e7eaf6",
+        "tonalRamp": [
+          "oklch(15% 0.008 274.8)",
+          "oklch(26% 0.009 274.8)",
+          "oklch(37% 0.010 274.8)",
+          "oklch(48% 0.011 274.8)",
+          "oklch(59% 0.013 274.8)",
+          "oklch(70% 0.014 274.8)",
+          "oklch(82% 0.015 274.8)",
+          "oklch(95% 0.016 274.8)"
+        ]
+      },
+      "ink-slate": {
+        "role": "neutral",
+        "displayName": "Ink Slate",
+        "canonical": "oklch(20.8% 0.04 265.8)",
+        "hex": "#0f172a",
+        "tonalRamp": [
+          "oklch(15% 0.039 265.8)",
+          "oklch(26% 0.039 265.8)",
+          "oklch(37% 0.036 265.8)",
+          "oklch(48% 0.033 265.8)",
+          "oklch(59% 0.030 265.8)",
+          "oklch(70% 0.028 265.8)",
+          "oklch(82% 0.025 265.8)",
+          "oklch(95% 0.021 265.8)"
+        ]
+      },
+      "vellum-indigo": {
+        "role": "neutral",
+        "displayName": "Vellum Indigo",
+        "canonical": "oklch(25.7% 0.086 281.3)",
+        "hex": "#1e1b4b",
+        "tonalRamp": [
+          "oklch(15% 0.080 281.3)",
+          "oklch(26% 0.086 281.3)",
+          "oklch(37% 0.080 281.3)",
+          "oklch(48% 0.074 281.3)",
+          "oklch(59% 0.068 281.3)",
+          "oklch(70% 0.062 281.3)",
+          "oklch(82% 0.056 281.3)",
+          "oklch(95% 0.049 281.3)"
+        ]
+      },
+      "shadow-slate": {
+        "role": "neutral",
+        "displayName": "Shadow Slate",
+        "canonical": "oklch(16% 0.02 265.6)",
+        "hex": "#090d16",
+        "tonalRamp": [
+          "oklch(15% 0.020 265.6)",
+          "oklch(26% 0.019 265.6)",
+          "oklch(37% 0.017 265.6)",
+          "oklch(48% 0.016 265.6)",
+          "oklch(59% 0.015 265.6)",
+          "oklch(70% 0.013 265.6)",
+          "oklch(82% 0.012 265.6)",
+          "oklch(95% 0.010 265.6)"
+        ]
+      },
+      "surface-slate": {
+        "role": "neutral",
+        "displayName": "Surface Slate",
+        "canonical": "oklch(27.9% 0.037 260)",
+        "hex": "#1e293b",
+        "tonalRamp": [
+          "oklch(15% 0.034 260)",
+          "oklch(26% 0.037 260)",
+          "oklch(37% 0.035 260)",
+          "oklch(48% 0.032 260)",
+          "oklch(59% 0.030 260)",
+          "oklch(70% 0.027 260)",
+          "oklch(82% 0.024 260)",
+          "oklch(95% 0.021 260)"
+        ]
+      },
+      "raised-slate": {
+        "role": "neutral",
+        "displayName": "Raised Slate",
+        "canonical": "oklch(37.2% 0.039 257.3)",
+        "hex": "#334155",
+        "tonalRamp": [
+          "oklch(15% 0.034 257.3)",
+          "oklch(26% 0.036 257.3)",
+          "oklch(37% 0.039 257.3)",
+          "oklch(48% 0.036 257.3)",
+          "oklch(59% 0.034 257.3)",
+          "oklch(70% 0.031 257.3)",
+          "oklch(82% 0.028 257.3)",
+          "oklch(95% 0.025 257.3)"
+        ]
+      },
+      "faded-slate": {
+        "role": "neutral",
+        "displayName": "Faded Slate",
+        "canonical": "oklch(71.1% 0.035 256.8)",
+        "hex": "#94a3b8",
+        "tonalRamp": [
+          "oklch(15% 0.023 256.8)",
+          "oklch(26% 0.025 256.8)",
+          "oklch(37% 0.028 256.8)",
+          "oklch(48% 0.030 256.8)",
+          "oklch(59% 0.032 256.8)",
+          "oklch(70% 0.035 256.8)",
+          "oklch(82% 0.033 256.8)",
+          "oklch(95% 0.030 256.8)"
+        ]
+      },
+      "faded-slate-deep": {
+        "role": "neutral",
+        "displayName": "Faded Slate Deep",
+        "canonical": "oklch(55.4% 0.041 257.4)",
+        "hex": "#64748b",
+        "tonalRamp": [
+          "oklch(15% 0.031 257.4)",
+          "oklch(26% 0.033 257.4)",
+          "oklch(37% 0.036 257.4)",
+          "oklch(48% 0.039 257.4)",
+          "oklch(59% 0.040 257.4)",
+          "oklch(70% 0.037 257.4)",
+          "oklch(82% 0.034 257.4)",
+          "oklch(95% 0.031 257.4)"
+        ]
+      },
+      "slate-paper": {
+        "role": "neutral",
+        "displayName": "Slate Paper",
+        "canonical": "oklch(98.4% 0.003 247.9)",
+        "hex": "#f8fafc",
+        "tonalRamp": [
+          "oklch(15% 0.001 247.9)",
+          "oklch(26% 0.002 247.9)",
+          "oklch(37% 0.002 247.9)",
+          "oklch(48% 0.002 247.9)",
+          "oklch(59% 0.002 247.9)",
+          "oklch(70% 0.002 247.9)",
+          "oklch(82% 0.003 247.9)",
+          "oklch(95% 0.003 247.9)"
+        ]
+      },
+      "wash-indigo": {
+        "role": "neutral",
+        "displayName": "Wash Indigo",
+        "canonical": "oklch(93% 0.033 272.8)",
+        "hex": "#e0e7ff",
+        "tonalRamp": [
+          "oklch(15% 0.017 272.8)",
+          "oklch(26% 0.019 272.8)",
+          "oklch(37% 0.021 272.8)",
+          "oklch(48% 0.024 272.8)",
+          "oklch(59% 0.026 272.8)",
+          "oklch(70% 0.028 272.8)",
+          "oklch(82% 0.031 272.8)",
+          "oklch(95% 0.033 272.8)"
+        ]
+      },
+      "wash-violet": {
+        "role": "neutral",
+        "displayName": "Wash Violet",
+        "canonical": "oklch(94.6% 0.033 307.2)",
+        "hex": "#f3e8ff",
+        "tonalRamp": [
+          "oklch(15% 0.017 307.2)",
+          "oklch(26% 0.019 307.2)",
+          "oklch(37% 0.021 307.2)",
+          "oklch(48% 0.023 307.2)",
+          "oklch(59% 0.026 307.2)",
+          "oklch(70% 0.028 307.2)",
+          "oklch(82% 0.030 307.2)",
+          "oklch(95% 0.033 307.2)"
+        ]
+      },
+      "wash-slate": {
+        "role": "neutral",
+        "displayName": "Wash Slate",
+        "canonical": "oklch(96.8% 0.007 247.9)",
+        "hex": "#f1f5f9",
+        "tonalRamp": [
+          "oklch(15% 0.003 247.9)",
+          "oklch(26% 0.004 247.9)",
+          "oklch(37% 0.004 247.9)",
+          "oklch(48% 0.005 247.9)",
+          "oklch(59% 0.005 247.9)",
+          "oklch(70% 0.006 247.9)",
+          "oklch(82% 0.006 247.9)",
+          "oklch(95% 0.007 247.9)"
         ]
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "Section headings inside a workspace card — 'EverQuest UI Directory'. The largest type in the product."
+        "purpose": "Section headings inside a workspace card. The largest type in the product."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "The app title in the header bar. The only place negative tracking is used."
+        "purpose": "App title in the header bar. The only use of negative tracking (-0.5px)."
       },
       "title": {
         "displayName": "Title",
@@ -420,58 +356,162 @@
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Default text. Item names lift to 600 because the name is the row's identity and must win against the id beside it."
+        "purpose": "Default text. Item names lift to 600 so the name wins against the id beside it."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Every button, select and input. Interactive text is always heavier than the prose around it."
+        "purpose": "Every button, select and input, pinned to 14px by the global reset. Interactive text is always heavier than prose."
       },
       "caption": {
         "displayName": "Caption",
-        "purpose": "The unknown-items banner line, the 'Editing: …' file name, the spinner message."
+        "purpose": "Advisory text beside the work — the unknown-items banner, the bulk-add explainer."
+      },
+      "micro": {
+        "displayName": "Micro",
+        "purpose": "Metadata that names state without competing with it — \"Editing: LF_Terrilyn_Vox.ini\"."
       },
       "mono": {
         "displayName": "Mono",
-        "purpose": "Item ids, prefixed #, in secondary ink with tabular figures. Never used for anything a human reads as language."
+        "purpose": "IBM Plex Mono. Item ids prefixed #, and the missing-icon badge. Never for language."
       }
     },
     "shadows": [
       {
-        "name": "chrome",
-        "value": "none",
-        "purpose": "The header bar. Ledger separates chrome from the ground with a paper tint and a hairline, the way a printed form's heading band does — not with lift."
+        "name": "ambient-header",
+        "value": "0 8px 32px 0 rgba(0, 0, 0, 0.2)",
+        "purpose": "Elevation step 1 — the header bar detaching from the app gradient."
       },
       {
-        "name": "work",
-        "value": "none",
-        "purpose": "The workspace card and the Dashboard card. Same reasoning as chrome; the rule and the fill carry the ranking."
+        "name": "workspace",
+        "value": "0 12px 40px rgba(0, 0, 0, 0.25)",
+        "purpose": "Elevation step 2 — the main content card and the Dashboard card."
       },
       {
         "name": "overlay",
-        "value": "0 24px 48px rgba(0, 0, 0, 0.45)",
-        "purpose": "Modal cards and the loading panel — the one layer where physical separation is the whole point, so it gets a real offset and a soft blur."
+        "value": "0 20px 50px rgba(0, 0, 0, 0.4)",
+        "purpose": "Elevation step 3 — modal cards and the loading panel, over a blurred scrim."
+      },
+      {
+        "name": "icon-tile",
+        "value": "0 2px 8px rgba(0, 0, 0, 0.2)",
+        "purpose": "The 40px item icon tile. Not part of the three-step scale."
+      },
+      {
+        "name": "toast",
+        "value": "0 10px 30px rgba(0, 0, 0, 0.4)",
+        "purpose": "The bottom-right toast stack."
+      },
+      {
+        "name": "dropdown",
+        "value": "0 10px 25px rgba(0, 0, 0, 0.5)",
+        "purpose": "The Add Item search-results dropdown."
+      }
+    ],
+    "blurs": [
+      {
+        "name": "scrim",
+        "value": "blur(8px)",
+        "purpose": "Modal overlay scrim over rgba(0,0,0,0.6)."
+      },
+      {
+        "name": "toast",
+        "value": "blur(12px)",
+        "purpose": "Toast surfaces."
+      },
+      {
+        "name": "header",
+        "value": "blur(16px)",
+        "purpose": "The header bar."
+      },
+      {
+        "name": "workspace",
+        "value": "blur(20px)",
+        "purpose": "Workspace, Dashboard and loading cards."
       }
     ],
     "motion": [
       {
-        "name": "control-state",
-        "value": "filter 0.15s ease, background 0.2s ease, opacity 0.15s ease",
-        "purpose": "Every enabled button and select. Hover lifts brightness to 1.06 by day and 1.12 by night, since the same lift reads weaker on a dark ground; active drops to 0.94."
-      },
-      {
-        "name": "row-track",
-        "value": "background 0.2s ease",
-        "purpose": "Table rows and item-search results, so the hover band arrives softly while scanning a long manifest rather than strobing under the cursor."
-      },
-      {
-        "name": "skin-change",
+        "name": "theme-swap",
         "value": "all 0.3s ease",
-        "purpose": "The app shell, so switching skin or light level reads as the room changing rather than as a repaint."
+        "purpose": "Root-level dark/light transition."
+      },
+      {
+        "name": "row-state",
+        "value": "background 0.2s ease",
+        "purpose": "Table row and search-result row hover tint."
+      },
+      {
+        "name": "control-state",
+        "value": "filter 0.15s ease",
+        "purpose": "Button hover (brightness 1.08) and active (0.94)."
       },
       {
         "name": "spinner",
         "value": "eql-spin 0.8s linear infinite",
-        "purpose": "The loading overlay's leading arc during long operations such as the bulk tradeskill add."
+        "purpose": "Loading overlay spinner rotation."
+      },
+      {
+        "name": "toast-life",
+        "value": "4000ms",
+        "purpose": "Toast auto-dismiss duration."
+      }
+    ],
+    "overlays": [
+      {
+        "name": "overlay-03",
+        "value": "rgba(255, 255, 255, 0.03)",
+        "purpose": "Table row hover. Inverted to black at the same alpha in light mode."
+      },
+      {
+        "name": "overlay-10",
+        "value": "rgba(255, 255, 255, 0.1)",
+        "purpose": "Hairline borders and search-result row hover."
+      },
+      {
+        "name": "overlay-20",
+        "value": "rgba(255, 255, 255, 0.2)",
+        "purpose": "Scrollbar thumb."
+      },
+      {
+        "name": "overlay-30",
+        "value": "rgba(255, 255, 255, 0.3)",
+        "purpose": "Scrollbar thumb hover."
+      }
+    ],
+    "fonts": [
+      {
+        "name": "IBM Plex Sans",
+        "value": "public/fonts/plex-sans-variable-latin.woff2",
+        "purpose": "Interface face. Latin subset, variable 100-700, 45KB. Self-hosted; never a CDN."
+      },
+      {
+        "name": "IBM Plex Mono",
+        "value": "public/fonts/plex-mono-400-latin.woff2",
+        "purpose": "Item ids and the missing-icon badge. Latin subset, weight 400 only, 14KB."
+      }
+    ],
+    "brand": [
+      {
+        "name": "App Mark",
+        "value": "src/assets/icon-source-2048.png",
+        "purpose": "Fountain-pen nib in Slate Paper with a Manifest Indigo checkmark on a Vellum-Indigo-to-Ink-Slate radial ground. 80% canvas fill. Never on a light or saturated surface."
+      },
+      {
+        "name": "App Mark (transparent)",
+        "value": "src/assets/icon-mark-transparent-2048.png",
+        "purpose": "Knocked-out variant for compositing onto a known dark ground."
+      },
+      {
+        "name": "Header mark",
+        "value": "src/assets/mark-144.png",
+        "purpose": "What App.tsx imports for the 36px header tile, 10px radius, theme hairline border, alt=\"\"."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "window-default",
+        "value": "1400px",
+        "purpose": "Tauri default window width (1400x600). Not a media query — the toolbar reflows via flex-wrap instead."
       }
     ]
   },
@@ -480,186 +520,178 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Stamp Blue flat fill. The one action per surface that commits — Save Changes, Open Filter, Browse Folder.",
-      "html": "<button class=\"ds-btn-primary\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" style=\"flex-shrink:0\"><path d=\"M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z\"/><path d=\"M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7\"/><path d=\"M7 3v4a1 1 0 0 0 1 1h6\"/></svg>Save Changes</button>",
-      "css": ".ds-btn-primary { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; line-height: 1.2; display: inline-flex; align-items: center; gap: 8px; background: #1d4ed8; color: #ffffff; padding: 10px 18px; border: none; border-radius: 3px; cursor: pointer; transition: filter 0.15s ease; } .ds-btn-primary:hover { filter: brightness(1.06); } .ds-btn-primary:active { filter: brightness(0.94); } .ds-btn-primary:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }"
+      "description": "Commits an action — Save Changes, Open Filter, Browse Folder. One per surface. Hover, active and focus are applied globally from buildGlobalStyles.",
+      "html": "<button class=\"ds-btn-primary\">💾 Save Changes</button>",
+      "css": ".ds-btn-primary { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; color: #fff; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border: none; border-radius: 10px; padding: 10px 18px; cursor: pointer; transition: filter 0.2s, transform 0.2s; } .ds-btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); } .ds-btn-primary:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; } .ds-btn-primary:active { transform: translateY(0); }"
     },
     {
       "name": "Create Button",
       "kind": "button",
-      "refersTo": "button-create",
-      "description": "Stamp Green flat fill. Reserved for creation specifically — Add Item, Create New Filter File. A save is blue; a new row is green.",
-      "html": "<button class=\"ds-btn-create\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" style=\"flex-shrink:0\"><path d=\"M5 12h14M12 5v14\"/></svg>Add Item</button>",
-      "css": ".ds-btn-create { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; line-height: 1.2; display: inline-flex; align-items: center; gap: 8px; background: #15803d; color: #ffffff; padding: 10px 18px; border: none; border-radius: 3px; cursor: pointer; transition: filter 0.15s ease; } .ds-btn-create:hover { filter: brightness(1.06); } .ds-btn-create:active { filter: brightness(0.94); } .ds-btn-create:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }"
-    },
-    {
-      "name": "Destructive Button",
-      "kind": "button",
-      "refersTo": "button-destroy",
-      "description": "Stamp Red flat fill. Only for operations that destroy many rows at once; a single row uses the wash variant instead.",
-      "html": "<button class=\"ds-btn-destroy\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" style=\"flex-shrink:0\"><path d=\"M3 6h18\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\"/><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/><path d=\"M10 11v6M14 11v6\"/></svg>Bulk Remove Matched (12)</button>",
-      "css": ".ds-btn-destroy { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; line-height: 1.2; display: inline-flex; align-items: center; gap: 8px; background: #b91c1c; color: #ffffff; padding: 10px 18px; border: none; border-radius: 3px; cursor: pointer; transition: filter 0.15s ease; } .ds-btn-destroy:hover { filter: brightness(1.06); } .ds-btn-destroy:active { filter: brightness(0.94); } .ds-btn-destroy:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }"
+      "refersTo": "button-success",
+      "description": "Reserved for actions that bring a new row or file into existence — Add Item, Create New Filter File. Never used for save confirmation.",
+      "html": "<button class=\"ds-btn-create\">+ Add Item</button>",
+      "css": ".ds-btn-create { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; color: #fff; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border: none; border-radius: 10px; padding: 10px 18px; cursor: pointer; transition: filter 0.2s, transform 0.2s; } .ds-btn-create:hover { filter: brightness(1.08); transform: translateY(-1px); } .ds-btn-create:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Paper Raised with the rule hairline. Anything that navigates or toggles rather than commits — Save As…, Switch File, the light toggle, the skin picker.",
-      "html": "<button class=\"ds-btn-secondary\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" style=\"flex-shrink:0\"><path d=\"M8 3 4 7l4 4\"/><path d=\"M4 7h16\"/><path d=\"m16 21 4-4-4-4\"/><path d=\"M20 17H4\"/></svg>Switch File</button>",
-      "css": ".ds-btn-secondary { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; line-height: 1.2; display: inline-flex; align-items: center; gap: 8px; background: #e8e2d5; color: #1c1917; padding: 10px 18px; border: 1px solid #ddd6c7; border-radius: 3px; cursor: pointer; transition: filter 0.15s ease; } .ds-btn-secondary:hover { filter: brightness(1.06); } .ds-btn-secondary:active { filter: brightness(0.94); } .ds-btn-secondary:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }"
+      "description": "Navigation and toggles — Save As…, Switch File, theme toggle, inactive Tradeskill Only. Translucent fill plus the inverted hairline border.",
+      "html": "<button class=\"ds-btn-secondary\">📁 Switch File</button>",
+      "css": ".ds-btn-secondary { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; color: #f8fafc; background: rgba(51, 65, 85, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px 18px; cursor: pointer; transition: background 0.2s; } .ds-btn-secondary:hover { background: rgba(51, 65, 85, 0.85); } .ds-btn-secondary:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
     },
     {
       "name": "Row Remove Button",
       "kind": "button",
-      "refersTo": "button-remove-row",
-      "description": "The Two-Intensity Rule in one component: a 10% wash of Stamp Red with red ink, so two hundred rows never read as two hundred alarms.",
+      "refersTo": "button-danger-soft",
+      "description": "Per-row destruction at 15% intensity, so a 200-row table does not read as 200 alarms. The full Struck Red gradient is reserved for bulk removal.",
       "html": "<button class=\"ds-btn-remove\">Remove</button>",
-      "css": ".ds-btn-remove { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; line-height: 1.2; background: rgba(185, 28, 28, 0.1); color: #b91c1c; padding: 6px 12px; border: none; border-radius: 2px; cursor: pointer; transition: filter 0.15s ease; } .ds-btn-remove:hover { filter: brightness(1.06); } .ds-btn-remove:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }"
+      "css": ".ds-btn-remove { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; color: #ef4444; background: rgba(239, 68, 68, 0.15); border: none; border-radius: 6px; padding: 6px 12px; cursor: pointer; transition: background 0.2s; } .ds-btn-remove:hover { background: rgba(239, 68, 68, 0.28); } .ds-btn-remove:focus-visible { outline: 2px solid #ef4444; outline-offset: 2px; }"
     },
     {
-      "name": "Text Input",
+      "name": "Search Input",
       "kind": "input",
       "refersTo": "input-text",
-      "description": "Paper Field fill, rule hairline, 2px corner. box-sizing is border-box so a full-width field never overflows its card.",
-      "html": "<div class=\"ds-field\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" style=\"flex-shrink:0\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-4.35-4.35\"/></svg><input class=\"ds-input-text\" type=\"text\" placeholder=\"Search item name or ID…\" /></div>",
-      "css": ".ds-field { position: relative; display: inline-flex; align-items: center; color: #57534e; } .ds-field svg { position: absolute; left: 12px; pointer-events: none; } .ds-input-text { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; background: #faf7ef; color: #1c1917; padding: 10px 16px 10px 36px; border: 1px solid #ddd6c7; border-radius: 2px; box-sizing: border-box; min-width: 260px; } .ds-input-text::placeholder { color: #57534e; font-weight: 400; } .ds-input-text:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; }"
+      "description": "Toolbar and modal text entry. box-sizing: border-box so a full-width field never overflows its card. Pinned to the 14px Label step by the global control reset.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"🔍 Search item name or ID...\" />",
+      "css": ".ds-input { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 400; color: #f8fafc; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 10px; padding: 10px 16px; min-width: 240px; box-sizing: border-box; } .ds-input::placeholder { color: #94a3b8; } .ds-input:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; border-color: #6366f1; }"
     },
     {
-      "name": "Action Select (the action channel)",
-      "kind": "custom",
+      "name": "Action Select",
+      "kind": "input",
       "refersTo": "select-action",
-      "description": "The signature component. Each of the four loot actions wears a fixed hue as a ~12% wash with a hairline of the same hue and a contrast-stepped text ink, so a manifest is scanned by colour rather than read row by row. The label always names the action; the hue is a second channel, never the only one.",
-      "html": "<div class=\"ds-action-row\"><select class=\"ds-select-action ds-act-store\"><option>Always Store</option></select><select class=\"ds-select-action ds-act-loot\"><option>Always Loot</option></select><select class=\"ds-select-action ds-act-merge\"><option>Always Merge</option></select><select class=\"ds-select-action ds-act-sell\"><option>Always Sell</option></select></div>",
-      "css": ".ds-action-row { display: flex; gap: 12px; flex-wrap: wrap; } .ds-select-action { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; padding: 8px 12px; border-radius: 2px; cursor: pointer; } .ds-select-action:focus-visible { outline: 2px solid #1d4ed8; outline-offset: 2px; } .ds-act-store { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); color: #047857; } .ds-act-loot { background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.35); color: #4338ca; } .ds-act-merge { background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); color: #b45309; } .ds-act-sell { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #b91c1c; }"
+      "description": "The per-row loot action chooser — the single most-used control in the product. Four options, mapped to the on-disk filter ids 1-4.",
+      "html": "<select class=\"ds-select\"><option>Always Store</option><option selected>Always Loot</option><option>Always Merge</option><option>Always Sell</option></select>",
+      "css": ".ds-select { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 500; color: #f8fafc; background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 8px 12px; cursor: pointer; } .ds-select:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
     },
     {
-      "name": "Manifest Table",
-      "kind": "custom",
-      "refersTo": "table-head",
-      "description": "The product's centre of gravity. Sticky heading band on Paper Head, hairline row separators, mono tabular item ids, and zebra banding so the eye carries a line across five columns without slipping.",
-      "html": "<table class=\"ds-table\"><thead><tr><th>Icon</th><th>Item ID ↕</th><th>Item Name ↕</th><th>Current Action Filter ▲</th><th class=\"ds-right\">Actions</th></tr></thead><tbody><tr><td><span class=\"ds-icon-tile\"></span></td><td class=\"ds-id\">#12503</td><td class=\"ds-name\">Blue Diamond</td><td><span class=\"ds-chip ds-act-store\">Always Store</span></td><td class=\"ds-right\"><button class=\"ds-btn-remove\">Remove</button></td></tr><tr><td><span class=\"ds-icon-tile\"></span></td><td class=\"ds-id\">#8841</td><td class=\"ds-name\">Rusty Short Sword</td><td><span class=\"ds-chip ds-act-sell\">Always Sell</span></td><td class=\"ds-right\"><button class=\"ds-btn-remove\">Remove</button></td></tr><tr><td><span class=\"ds-icon-tile\"></span></td><td class=\"ds-id\">#3390</td><td class=\"ds-name\">Spiderling Silk</td><td><span class=\"ds-chip ds-act-merge\">Always Merge</span></td><td class=\"ds-right\"><button class=\"ds-btn-remove\">Remove</button></td></tr></tbody></table>",
-      "css": ".ds-table { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; width: 100%; border-collapse: collapse; text-align: left; background: #fffdf8; border: 1px solid #ddd6c7; border-radius: 4px; overflow: hidden; font-variant-numeric: tabular-nums; color: #1c1917; } .ds-table th { background: #f0ebdf; font-size: 16px; font-weight: 700; padding: 14px 20px; border-bottom: 1px solid #ddd6c7; white-space: nowrap; } .ds-table td { padding: 12px 20px; border-bottom: 1px solid #ddd6c7; } .ds-table tbody tr { transition: background 0.2s ease; } .ds-table tbody tr:nth-child(even) { background: rgba(28, 25, 23, 0.022); } .ds-table tbody tr:hover { background: rgba(28, 25, 23, 0.05); } .ds-right { text-align: right; } .ds-id { font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 13px; color: #57534e; } .ds-name { font-weight: 600; } .ds-chip { display: inline-block; font-size: 14px; font-weight: 600; padding: 8px 12px; border-radius: 2px; } .ds-icon-tile { display: inline-block; width: 40px; height: 40px; border: 1px solid #ddd6c7; border-radius: 2px; background: rgba(0, 0, 0, 0.06); } .ds-btn-remove { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; background: rgba(185, 28, 28, 0.1); color: #b91c1c; padding: 6px 12px; border: none; border-radius: 2px; cursor: pointer; } .ds-btn-remove:hover { filter: brightness(1.06); } .ds-act-store { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.35); color: #047857; } .ds-act-merge { background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); color: #b45309; } .ds-act-sell { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.35); color: #b91c1c; }"
-    },
-    {
-      "name": "Toast",
-      "kind": "custom",
-      "refersTo": "toast",
-      "description": "Bottom-right stack, near-black ink ground, with a 4px left border carrying the kind accent — green success, red error, blue info. Click to dismiss, auto-dismiss at 4s.",
-      "html": "<div class=\"ds-toast-stack\"><div class=\"ds-toast ds-toast-success\" role=\"status\">Saved 214 items to LF_Terrik_Vox.ini</div><div class=\"ds-toast ds-toast-error\" role=\"status\">Item name contains a caret and cannot be saved</div></div>",
-      "css": ".ds-toast-stack { display: flex; flex-direction: column; gap: 10px; max-width: 360px; } .ds-toast { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 500; background: #1c1917; color: #f5f0e6; padding: 12px 16px; border: 1px solid #3d3830; border-radius: 3px; box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45); cursor: pointer; } .ds-toast-success { border-left: 4px solid #15803d; } .ds-toast-error { border-left: 4px solid #b91c1c; }"
-    },
-    {
-      "name": "Interface Icons",
-      "kind": "custom",
-      "refersTo": "icon-set",
-      "description": "Inline SVG on a 24-unit box, 1.5 stroke, round caps, no fill, rendered at 16px beside the 14px Label step. Every icon strokes in currentColor so it inherits the ink of the control it sits in — correct in both light levels and all four skins with nothing to keep in sync. Decorative and aria-hidden: each sits beside a text label that already names the action.",
-      "html": "<div class=\"ds-icons\"><figure class=\"ds-icon\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2v2M12 20v2M2 12h2M20 12h2\"/><path d=\"m4.93 4.93 1.41 1.41M17.66 17.66l1.41 1.41M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41\"/></svg><figcaption>Light</figcaption></figure><figure class=\"ds-icon\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z\"/></svg><figcaption>Dark</figcaption></figure><figure class=\"ds-icon\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 3 4 7l4 4\"/><path d=\"M4 7h16\"/><path d=\"m16 21 4-4-4-4\"/><path d=\"M20 17H4\"/></svg><figcaption>Switch</figcaption></figure><figure class=\"ds-icon\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-4.35-4.35\"/></svg><figcaption>Search</figcaption></figure><figure class=\"ds-icon\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z\"/><path d=\"M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7\"/><path d=\"M7 3v4a1 1 0 0 0 1 1h6\"/></svg><figcaption>Save</figcaption></figure><figure class=\"ds-icon\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 6h18\"/><path d=\"M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6\"/><path d=\"M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2\"/><path d=\"M10 11v6M14 11v6\"/></svg><figcaption>Remove</figcaption></figure><figure class=\"ds-icon\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z\"/><path d=\"M14 2v4a2 2 0 0 0 2 2h4\"/><path d=\"M8 13h8M8 17h6\"/></svg><figcaption>File</figcaption></figure><figure class=\"ds-icon\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/></svg><figcaption>Warn</figcaption></figure></div>",
-      "css": ".ds-icons { display: flex; flex-wrap: wrap; gap: 20px; font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; color: #1c1917; } .ds-icon { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 0; } .ds-icon figcaption { font-size: 13px; color: #57534e; }"
+      "name": "Workspace Card",
+      "kind": "card",
+      "refersTo": "card-workspace",
+      "description": "The glass surface every working region sits on. Translucent slate over the app gradient, 20px backdrop blur, elevation step 2, inverted hairline border.",
+      "html": "<div class=\"ds-card\"><h2 class=\"ds-card-title\">EverQuest UI Directory</h2><p class=\"ds-card-sub\">Select your EverQuest folder to auto-detect character loot files.</p></div>",
+      "css": ".ds-card { background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25); padding: 24px; } .ds-card-title { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 22px; font-weight: 700; color: #f8fafc; margin: 0 0 8px 0; } .ds-card-sub { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 400; color: #94a3b8; margin: 0; }"
     },
     {
       "name": "Warning Banner",
       "kind": "custom",
       "refersTo": "banner-warning",
-      "description": "Stamp Amber annotating, never blocking. The only place amber appears, alongside the reconcile conflict count. It never fills a control.",
-      "html": "<div class=\"ds-banner-warn\"><span class=\"ds-warn-label\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" style=\"flex-shrink:0\"><path d=\"m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3\"/><path d=\"M12 9v4\"/><path d=\"M12 17h.01\"/></svg>3 item(s) in this filter aren't in the item database.</span><button class=\"ds-btn-primary\">Review &amp; Add to DB</button></div>",
-      "css": ".ds-warn-label { display: inline-flex; align-items: center; gap: 8px; color: #a16207; } .ds-banner-warn { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 13px; color: #1c1917; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; background: rgba(161, 98, 7, 0.1); border: 1px solid rgba(161, 98, 7, 0.35); border-radius: 3px; } .ds-btn-primary { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 600; line-height: 1.2; background: #1d4ed8; color: #ffffff; padding: 8px 14px; border: none; border-radius: 2px; cursor: pointer; white-space: nowrap; } .ds-btn-primary:hover { filter: brightness(1.06); }"
+      "description": "Margin Amber's only job: advisory, never blocking. A 12% fill inside a 40% border, with the resolving action on the right.",
+      "html": "<div class=\"ds-banner\"><span class=\"ds-banner-text\">⚠️ 3 item(s) in this filter aren't in the item database.</span><button class=\"ds-banner-action\">Review &amp; Add to DB</button></div>",
+      "css": ".ds-banner { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.4); border-radius: 12px; padding: 12px 16px; } .ds-banner-text { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 13px; color: #f8fafc; } .ds-banner-action { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 13px; font-weight: 600; color: #fff; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); border: none; border-radius: 8px; padding: 8px 14px; cursor: pointer; } .ds-banner-action:focus-visible { outline: 2px solid #6366f1; outline-offset: 2px; }"
+    },
+    {
+      "name": "Toast",
+      "kind": "custom",
+      "refersTo": "toast",
+      "description": "Bottom-right stack. The 4px left border carries the status accent — green success, red error, indigo info. A signature move; reuse it rather than swapping in icons.",
+      "html": "<div class=\"ds-toast ds-toast--success\" role=\"status\">Loot filter saved successfully!</div>",
+      "css": ".ds-toast { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 14px; font-weight: 500; color: #f8fafc; background: rgba(15, 23, 42, 0.92); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); padding: 12px 16px; max-width: 360px; cursor: pointer; } .ds-toast--success { border-left: 4px solid #10b981; } .ds-toast--error { border-left: 4px solid #ef4444; } .ds-toast--info { border-left: 4px solid #6366f1; }"
+    },
+    {
+      "name": "Item Row",
+      "kind": "custom",
+      "refersTo": "table",
+      "description": "The signature component. Icon tile, mono id, 600-weight name, action select, right-aligned remove. Rows tint with the 0.03 neutral overlay on hover.",
+      "html": "<table class=\"ds-table\"><tbody><tr class=\"ds-row\"><td class=\"ds-cell ds-cell--icon\"><span class=\"ds-icon\"></span></td><td class=\"ds-cell ds-cell--id\">#1042</td><td class=\"ds-cell ds-cell--name\">Fine Steel Dagger</td><td class=\"ds-cell\"><select class=\"ds-select\"><option>Always Loot</option></select></td><td class=\"ds-cell ds-cell--actions\"><button class=\"ds-btn-remove\">Remove</button></td></tr></tbody></table>",
+      "css": ".ds-table { width: 100%; border-collapse: collapse; text-align: left; } .ds-row { border-bottom: 1px solid rgba(255, 255, 255, 0.1); transition: background 0.2s; } .ds-row:hover { background: rgba(255, 255, 255, 0.03); } .ds-cell { font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; font-size: 16px; color: #f8fafc; padding: 12px 20px; } .ds-cell--icon { width: 60px; } .ds-icon { display: inline-block; width: 40px; height: 40px; border-radius: 6px; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); background: linear-gradient(135deg, #334155, #1e293b); } .ds-cell--id { font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Consolas, monospace; font-variant-numeric: tabular-nums; font-size: 13px; color: #94a3b8; } .ds-cell--name { font-weight: 600; } .ds-cell--actions { text-align: right; }"
     }
   ],
   "narrative": {
-    "northStar": "The Quartermaster's Stock Book",
-    "overview": "EQL Loot is a supply officer's ledger, and now it looks like one. The centre of gravity is a dense sortable table where every row is an item id, a name, and one of four decisive actions — loot it, store it, merge it, sell it. Everything else on screen exists to get the quartermaster to that table faster and to keep the manifest correct while the game rewrites it underneath.\n\nThe material is paper, not glass. Surfaces are opaque: warm cream stock by day, ink-dark board by night. Nothing is translucent, nothing is blurred, and almost nothing is lifted. Ranking is carried by rule weight and fill, the way a printed form ranks — a heading band is a different tint of the same paper, not a card floating above it. Corners are 2–4px: present enough that the eye reads a made object rather than a raw box, small enough that no surface reads as soft.\n\nAccents are stamped, not lit. A committing control is one flat saturated fill — a rubber stamp pressed onto the page — with no gradient, no glow and no shadow. Three stamps exist and each carries a single verb: blue commits, green creates, red destroys. Amber annotates but never fills a control.\n\nThe one place colour is allowed to spread across the page is the action channel: each row's loot action wears a tinted wash so a two-hundred-row manifest can be scanned by colour instead of read line by line. That channel is data, not chrome — it means the same thing in every skin, for the same reason the game's own item art does.",
+    "northStar": "The Quartermaster's Manifest",
+    "overview": "EQL Loot is a supply officer's ledger, not a dashboard. Its centre of gravity is a dense sortable table where every row is an item id, a name, and one of four decisive actions — loot it, store it, merge it, sell it. Everything else on screen exists to get the quartermaster to that table faster and to keep the manifest correct while the game rewrites it underneath. The glass, the gradient and the blur are the room the ledger sits in; they are packaging, and packaging never outranks the rows.\n\nThe material is a translucent indigo night. Surfaces are rgba slate at 65% opacity over a three-stop gradient that runs deep navy → violet-black → near black, with every card carrying a backdrop-filter blur. That atmosphere is constant and unranked. The elevation scale on top of it is not: three shadow weights separate the header, the workspace and the modal layer, and that ordering is a hierarchy future work must respect. The material is atmospheric; the elevation scale is structural. Both are true at once, and that tension is the system's defining rule.\n\nControls are tactile and game-adjacent. Anything that commits an action wears a saturated 135° gradient — indigo to add or save, green to create, red to destroy. Anything that merely navigates stays a quiet translucent slate. Radii are generous and scale with the surface they wrap, so the whole interface reads soft-cornered rather than engineered. The emoji glyphs on toolbar buttons are deliberate: this tool lives beside a fantasy MMO and is allowed to sound like it. What it must never become is enterprise-dashboard grey.",
     "keyCharacteristics": [
-      "Opaque paper surfaces; no translucency and no `backdrop-filter` anywhere",
-      "Hairline rules as the primary ranking device; one real shadow, on the modal layer",
-      "2–4px corners across the whole product",
-      "Flat stamped accents — no gradients on any control",
-      "Zebra-banded table rows for horizontal tracking across five columns",
-      "A four-hue action channel that survives a change of skin",
-      "Full day/night parity; neither light level is the afterthought"
+      "Translucent slate surfaces at 65% opacity over an indigo→violet→black gradient",
+      "A constant backdrop-filter blur (8–20px) as ambient material",
+      "Three structural elevation steps: header, workspace, modal",
+      "Saturated 135° gradients reserved strictly for committing actions",
+      "Radii that scale with surface size (6px control → 24px workspace)",
+      "Full dark/light parity; neither theme is the afterthought",
+      "Emoji glyphs as functional iconography, not decoration"
     ],
     "rules": [
       {
-        "name": "The One Verb Rule",
+        "name": "The One Meaning Rule",
         "section": "colors",
-        "body": "Each stamp carries exactly one verb: blue commits, green creates, red destroys, amber annotates. A new feature does not get to borrow green because it looks friendly. If a new verb appears, it earns a new stamp or it reuses the one whose meaning it actually shares."
+        "body": "Each saturated ink carries exactly one verb: indigo commits, green creates, red destroys, amber warns. A new feature does not get to borrow green because it looks friendly. If a new verb appears, it earns a new ink or it reuses the one whose meaning it actually shares."
       },
       {
         "name": "The Two-Intensity Rule",
         "section": "colors",
-        "body": "A destructive action at row scale uses the 10% wash with red text. Only an action that destroys many rows at once earns the flat fill. Repetition of a full-strength danger colour down a table is a defect, not emphasis."
-      },
-      {
-        "name": "The Channel Separation Rule",
-        "section": "colors",
-        "body": "Chrome and data never share an intensity. A control that commits wears a full-strength flat fill; the action channel never rises above a wash with a hairline. This is what lets the action hues overlap the stamp hues without either being mistaken for the other."
-      },
-      {
-        "name": "The Warm Neutral Rule",
-        "section": "colors",
-        "body": "The greys are warm (stone, not slate) in both light levels. A neutral-grey ground turns this world into a generic admin panel, which is the specific failure this design replaced."
+        "body": "A destructive action at row scale uses the 15% wash (rgba(239, 68, 68, 0.15) fill, #ef4444 text). Only an action that destroys many rows at once earns the full gradient. Repetition of a full-strength danger colour down a table is a defect, not emphasis."
       },
       {
         "name": "The Inherit Rule",
         "section": "typography",
-        "body": "Form controls declare `font: inherit` plus an explicit 14px. Without it the webview serves Arial at 13.33px inside an interface set in Plex, and the mismatch is visible on every button."
-      },
-      {
-        "name": "The Tabular Figures Rule",
-        "section": "typography",
-        "body": "Anything the eye compares down a column — item ids, counts — sets `font-variant-numeric: tabular-nums`. Without it the digits jitter as rows scroll."
+        "body": "Form controls must declare font: inherit. Without it the browser serves Arial at 13.33px inside an interface set in Inter at 16px, and the mismatch is visible on every button in the app. Any global stylesheet this project grows starts with button, input, select, textarea { font: inherit; }."
       },
       {
         "name": "The Weight-Not-Family Rule",
         "section": "typography",
-        "body": "Hierarchy is built from weight and size within Plex. Do not introduce a third family, a serif, or a condensed cut to signal importance."
-      },
-      {
-        "name": "The Night Tracking Rule",
-        "section": "typography",
-        "body": "Light text on a dark ground blooms and closes counters, so the night level adds `letter-spacing: 0.012em` at the document level. The day level needs none."
+        "body": "Hierarchy is built from weight and size within a single family. Do not introduce a second display face, a serif, or a condensed cut to signal importance."
       },
       {
         "name": "The No Outer Scrollbar Rule",
         "section": "layout",
-        "body": "The application shell never scrolls. New full-height regions get their own `overflow-y: auto` container with a border; they do not extend the page."
+        "body": "The application shell never scrolls. New full-height regions get their own overflow-y: auto container with a radius and a border; they do not extend the page."
       },
       {
         "name": "The Three Steps Rule",
         "section": "elevation",
-        "body": "There are three elevation steps and no fourth. A new surface picks the step matching its role — chrome, work, or interruption — and inherits that exact token. A skin may render a step as `none`; it may not add a fourth."
+        "body": "There are three elevation steps and no fourth. A new surface picks the step matching its role — chrome, work, or interruption — and inherits that exact shadow value. Inventing an intermediate weight flattens the ranking for everything else."
       },
       {
-        "name": "The No Halo Rule",
+        "name": "The Glass-Needs-Ground Rule",
         "section": "elevation",
-        "body": "A shadow carries an offset and a soft blur, or it does not exist. A zero-offset coloured glow is decoration and has no place here."
+        "body": "Every translucent surface sits on the app gradient, never on another translucent surface. Stacked glass turns the blur to mud and the border contrast to nothing."
       },
       {
-        "name": "The Radius-Tracks-Role Rule",
+        "name": "The Neutral Overlay Rule",
+        "section": "colors",
+        "body": "Chrome tints are alpha overlays, never palette colours. Reach for overlay(isDarkMode, alpha) and one of the four steps (0.03 row hover, 0.10 hairline, 0.20 scrollbar thumb, 0.30 thumb hover) rather than introducing a slate that only works in one theme."
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "section": "typography",
+        "body": "Anything that puts numbers in a column — the item table, the search results — sets font-variant-numeric: tabular-nums. Digits that change width as rows scroll are a defect, not a detail."
+      },
+      {
+        "name": "The Dark-Bloom Rule",
+        "section": "typography",
+        "body": "Light type on dark glass blooms and closes its counters, so dark mode carries letter-spacing: 0.012em at the document root and light mode carries none. Compensation belongs to the theme, not to individual components."
+      },
+      {
+        "name": "The Dark-Ground Rule",
         "section": "shapes",
-        "body": "Pick a radius from the role token (`control` / `field` / `action` / `chip` / `panel` / `modal` / `workspace`), not from a pixel value and not from the component's name. Two nested surfaces never share a step."
+        "body": "The app mark never sits directly on a light surface or on a saturated fill. Its indigo check would vanish against the indigo button gradient, and its paper nib would vanish against the light theme's wash. It brings its own ground everywhere it appears."
+      },
+      {
+        "name": "The Radius-Tracks-Size Rule",
+        "section": "shapes",
+        "body": "Pick a radius from the surface's footprint, not its component name. A 40px-tall control takes 8–10px; a full-height card takes 24px. Two nested surfaces never share a radius."
       }
     ],
     "dos": [
-      "Do read every colour, radius, shadow and blur from the theme object. A literal in a component is wrong in three of the four skins.",
-      "Do reserve stamped fills for actions that commit something. Blue commits, green creates, red destroys, amber annotates.",
-      "Do pick a radius from its role token and an elevation from one of the three named steps.",
-      "Do keep surfaces opaque in this skin. Paper does not transmit light.",
-      "Do ship day and night together. Every token in `theme.ts` has both; a one-level feature is an unfinished feature.",
-      "Do encode meaning twice. The action hue is always accompanied by its label.",
-      "Do keep the action channel identical across skins — it is data, not chrome.",
-      "Do give any surface that renders outside `<App/>` a `:root` custom property bridge rather than threading the theme through props.",
-      "Do add new interface icons to `src/components/Icon.tsx` in the house geometry — 24-unit box, 1.5 stroke, `currentColor`, `aria-hidden`."
+      "Do reserve saturated gradients for actions that commit something. Indigo commits, Ledger Green creates, Struck Red destroys, Margin Amber warns.",
+      "Do pick a shadow from the three named steps and inherit its exact value.",
+      "Do scale the corner radius to the surface footprint (6px control → 24px workspace card), and never give nested surfaces the same radius.",
+      "Do keep every new surface translucent over the app gradient, with a backdrop-filter blur and the inverted hairline border.",
+      "Do ship dark and light together. Every value in this file has a light-mode counterpart in buildGlassTheme; a one-theme feature is an unfinished feature.",
+      "Do put anything inline styles cannot express — @font-face, the type reset, :focus-visible, :hover, :disabled, scrollbars — in buildGlobalStyles. It is theme-aware; a static stylesheet is not.",
+      "Do keep button, input, select, textarea { font: inherit; font-size: 14px; } in place. It is the only thing stopping the webview serving Arial at 13.33px.",
+      "Do give every new control the shared focus ring by using a real <button>, <input> or <select>. The global rule covers them; a clickable <div> gets nothing.",
+      "Do treat emoji glyphs as part of the voice — 🔨 for tradeskill, 💾 for save, ⚡ for bulk. They are load-bearing, not filler."
     ],
     "donts": [
-      "Don't reintroduce translucency, `backdrop-filter`, or a gradient into this skin. Those belong to Glass, which still ships and is one dropdown away.",
-      "Don't drift toward neutral-grey enterprise chrome. The warmth of the stock is what keeps this a stock book rather than an admin panel.",
-      "Don't invent a fourth elevation weight or a one-off `box-shadow`.",
-      "Don't repeat a full-strength danger fill down a table; that is what the 10% wash exists for.",
-      "Don't introduce a third type family, a serif, or a condensed cut.",
+      "Don't drift toward enterprise-dashboard grey: flat corporate chrome, hairline-boxed panels, and no atmosphere. The glass and the colour are the point of this product's surface.",
+      "Don't stack a translucent surface on another translucent surface.",
+      "Don't invent a fourth elevation weight or a one-off box-shadow.",
+      "Don't repeat a full-strength danger gradient down a table; that is what the 15% wash exists for.",
+      "Don't introduce a second type family, a serif, or a condensed cut. Weight and size carry the hierarchy.",
       "Don't load fonts, icons, or styles from a CDN. The app ships everything it renders.",
       "Don't let the application shell scroll. New full-height regions scroll inside their own bordered container.",
-      "Don't use an emoji as an interface glyph. It cannot follow a skin or a light level, and every platform draws a different picture for it.",
-      "Don't add a colour whose meaning duplicates one already in the palette."
+      "Don't add a colour whose meaning duplicates one already in the palette.",
+      "Don't place the app mark on a light or saturated ground, and don't recolour it — it carries the palette already."
     ]
   }
 }
