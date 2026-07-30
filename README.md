@@ -24,8 +24,7 @@ Filters map each item id to one of four actions:
 | 3  | Always Merge  |
 | 4  | Always Sell   |
 
-The numbers are the on-disk source of truth, and ids 1 and 2 are the opposite
-way round from what the names suggest at a glance — 1 stores, 2 loots. This
+The numbers are the on-disk source of truth. This
 matches `FILTER_MAP` in `src/types.ts` and the in-game behaviour.
 
 Files use a caret-delimited body under a `[Filters]` header:
